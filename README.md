@@ -54,8 +54,6 @@ This project simulates cyber attacks and defenses in VANETs through:
 
 ## Contributors
 - **Kyle Dottin** 
-- **Yousra El Yaakoubi** 
-- **Paul Caillaud** 
-- **William Nicolussi**
+- **Nassim Anemiche**
 
 
