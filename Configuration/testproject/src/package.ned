@@ -1,0 +1,3 @@
+package testproject;
+
+@license(LGPL);
