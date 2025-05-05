@@ -1,6 +1,6 @@
 # Security-agent-in-VANETs-AI-Based-Intrusion-Detection
 
-Internship implementing AI-driven Red (attack) and Blue (defense) agents for securing Vehicular Ad-hoc Networks (VANETs) using the Veins simulator and Secure Multiparty Computation (MPC).
+This internship project implements AI-driven Red (attack) and Blue (defense) agents for securing Vehicular Ad-hoc Networks (VANETs) using the Veins simulator and Secure Multiparty Computation (MPC).
 
 ## Project Overview
 
