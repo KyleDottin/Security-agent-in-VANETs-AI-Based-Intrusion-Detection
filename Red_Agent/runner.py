@@ -1,4 +1,8 @@
 import openai
+import traci
+
+sumoBinary= "/home/veins/src/sumo/bin/sumo"
+sumoCmd = [sumoBinary,"-c",""]
 
 openai.api_key = "sk-..."  # Remplace par ta clé API
 
