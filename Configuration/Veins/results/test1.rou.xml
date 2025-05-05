@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
-    <vType id="car" accel="2.0" decel="4.5" length="5.0" maxSpeed="13.9" sigma="0.5" color="1,0,0"/>
+    <vType id="car" accel="2.0" decel="4.5" length="5.0" maxSpeed="13.9" sigma="0" color="1,0,0"/>
     <route id="route0" edges="e0"/>
     <vehicle id="veh0" type="car" route="route0" depart="0"/>
 </routes>
