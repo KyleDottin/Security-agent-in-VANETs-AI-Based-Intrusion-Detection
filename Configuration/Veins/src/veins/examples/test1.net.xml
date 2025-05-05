@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<net version="1.5">
-    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,500.00,0.00" origBoundary="0.00,0.00,500.00,0.00" projParameter="!"/>
-    <edge id="e0" from="n0" to="n1" priority="1">
-        <lane id="e0_0" index="0" speed="13.9" length="500.00" shape="0.00,0.00 500.00,0.00"/>
-    </edge>
-    <node id="n0" x="0.00" y="0.00" type="priority"/>
-    <node id="n1" x="500.00" y="0.00" type="priority"/>
-</net>
