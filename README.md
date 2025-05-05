@@ -10,7 +10,7 @@ This project simulates cyber attacks and defenses in VANETs through:
 - **Privacy Layer**: MPC protocols for secure vehicle-to-infrastructure communication
 - **Veins Framework**: Realistic network stack simulation with OMNeT++ and SUMO
 
-## 🎯 Key Features
+## Key Features
 
 - **Multi-Layer Attack Simulation**
   - Network, transport, and application layer attacks
@@ -49,4 +49,4 @@ This project simulates cyber attacks and defenses in VANETs through:
 ### Setup
 1. **Install Veins Framework**
    ```bash
-   git clone https://github.com/veins/veins.git
+   git clone https://github.com/KyleDottin/Security-agent-in-VANETs-AI-Based-Intrusion-Detection.git
