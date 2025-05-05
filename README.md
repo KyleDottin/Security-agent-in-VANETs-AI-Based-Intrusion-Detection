@@ -50,3 +50,12 @@ This project simulates cyber attacks and defenses in VANETs through:
 1. **Install Veins Framework**
    ```bash
    git clone https://github.com/KyleDottin/Security-agent-in-VANETs-AI-Based-Intrusion-Detection.git
+
+
+## Contributors
+- **Kyle Dottin** 
+- **Yousra El Yaakoubi** 
+- **Paul Caillaud** 
+- **William Nicolussi**
+
+
