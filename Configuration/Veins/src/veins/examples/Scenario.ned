@@ -1,12 +1,15 @@
 package veins.examples;
 
-import veins.modules.mobility.traci.TraCIScenarioManagerLaunchd;
+import veins.nodes.BaseWaveApplLayer;
+import veins.nodes.Vehicle;
 
-network SimpleScenario
+network SimpleScenarioNoTraCI
 {
+    parameters:
+        @display("bgb=800,400");
     submodules:
-        manager: TraCIScenarioManagerLaunchd {
+        car[2]: Vehicle {
             parameters:
-                @display("p=100,100");
+                @display("i=vehicle/van;p=100+200*i,150");
         }
 }
