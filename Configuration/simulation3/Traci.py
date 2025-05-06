@@ -30,155 +30,297 @@ traci.start(Sumo_config)
 
 
 # Step 6: Define Variables
-vehicle_id = 'veh1'  # ID du véhicule à contrôler
-vehicle_speed = 0
-total_speed = 0
+# Identifiants des véhicules
+vehicle_id1 = 'v1'
+vehicle_id2 = 'v2'
+
+# État des véhicules
+vehicles_state = {
+    vehicle_id1: {
+        "position": None,
+        "speed": 0,
+        "lane": None,
+        "route": None,
+        "messages": [],
+        "last_sent_time": 0,
+        "target_speed": 15,
+        "stopped": False,
+        "communication_range": 100  # portée de communication en mètres
+    },
+    vehicle_id2: {
+        "position": None,
+        "speed": 0,
+        "lane": None,
+        "route": None,
+        "messages": [],
+        "last_sent_time": 0,
+        "target_speed": 10,
+        "stopped": False,
+        "communication_range": 100
+    }
+}
+
+# Types de messages
+MESSAGE_TYPES = {
+    "INFO": 0,       # Information générale
+    "WARNING": 1,    # Avertissement
+    "EMERGENCY": 2,  # Urgence
+    "SPEED": 3,      # Information sur la vitesse
+    "ROUTE": 4,      # Information sur l'itinéraire
+    "STOP": 5        # Demande d'arrêt
+}
+
 step_count = 0
-distance_traveled = 0
-previous_position = None
-target_speeds = [10, 15, 5, 20]  # Vitesses cibles en m/s
-current_target_index = 0
-lane_change_interval = 100  # Nombre de pas entre les changements de voie
-next_lane_change = lane_change_interval
+message_interval = 40  # Envoyer des messages tous les 40 pas (2 secondes à 0.05s par pas)
 
 # Step 7: Define Functions
-def add_vehicle_if_not_exists(veh_id, route_id="route_0", veh_type="passenger"):
+def add_vehicle_if_not_exists(veh_id, route_id, type_id="passenger", color=(255, 0, 0, 255), depart_pos="0", depart_speed="0"):
     """Ajoute un véhicule s'il n'existe pas déjà dans la simulation"""
     if veh_id not in traci.vehicle.getIDList():
         try:
             # Paramètres: id, route_id, type, départ, position_départ, vitesse_départ, voie_départ
-            traci.vehicle.add(veh_id, route_id, veh_type, "0", "0", "0", "0")
-            traci.vehicle.setColor(veh_id, (255, 0, 0, 255))  # Rouge (R,G,B,A)
-            print(f"Véhicule {veh_id} ajouté à la simulation")
+            traci.vehicle.add(veh_id, route_id, type_id, "0", depart_pos, depart_speed, "0")
+            traci.vehicle.setColor(veh_id, color)
+            print(f"Véhicule {veh_id} ajouté à la simulation sur route {route_id}")
             return True
         except traci.exceptions.TraCIException as e:
-            print(f"Erreur lors de l'ajout du véhicule: {e}")
+            print(f"Erreur lors de l'ajout du véhicule {veh_id}: {e}")
             return False
     return True
 
-def adjust_vehicle_speed(veh_id, target_speed):
-    """Ajuste progressivement la vitesse du véhicule vers la cible"""
-    current_speed = traci.vehicle.getSpeed(veh_id)
-    # Ajustement progressif (max 0.5 m/s par étape)
-    speed_diff = target_speed - current_speed
-    adjustment = max(min(speed_diff, 0.5), -0.5)
-    new_speed = current_speed + adjustment
-    traci.vehicle.setSpeed(veh_id, new_speed)
-    return new_speed
-
-def change_lane_safely(veh_id):
-    """Change de voie de manière sécurisée"""
-    # Obtenir le nombre de voies disponibles
-    current_edge = traci.vehicle.getRoadID(veh_id)
-    if current_edge.startswith(":"):  # Ignorer les intersections
-        return
-        
-    current_lane = traci.vehicle.getLaneIndex(veh_id)
-    lane_count = traci.edge.getLaneNumber(current_edge)
-    
-    if lane_count > 1:  # S'il y a plus d'une voie
-        # Choix aléatoire d'une nouvelle voie différente de l'actuelle
-        possible_lanes = list(range(lane_count))
-        possible_lanes.remove(current_lane)
-        new_lane = random.choice(possible_lanes)
-        
-        print(f"Changement de voie: {current_lane} -> {new_lane}")
-        traci.vehicle.changeLane(veh_id, new_lane, 5.0)  # Durée de 5 secondes
-
-def collect_vehicle_data(veh_id):
-    """Collecte et affiche des données sur le véhicule"""
+def update_vehicle_state(veh_id):
+    """Met à jour l'état du véhicule dans le dictionnaire de suivi"""
     if veh_id in traci.vehicle.getIDList():
-        position = traci.vehicle.getPosition(veh_id)
-        speed = traci.vehicle.getSpeed(veh_id)
-        lane_id = traci.vehicle.getLaneID(veh_id)
-        angle = traci.vehicle.getAngle(veh_id)
-        edge_id = traci.vehicle.getRoadID(veh_id)
-        
-        data = {
-            "id": veh_id,
-            "position": position,
-            "speed": speed,
-            "lane_id": lane_id,
-            "angle": angle,
-            "edge_id": edge_id
-        }
-        
-        print(f"Données du véhicule {veh_id}:")
-        print(f"  Position: ({position[0]:.2f}, {position[1]:.2f})")
-        print(f"  Vitesse: {speed:.2f} m/s")
-        print(f"  Voie: {lane_id}")
-        print(f"  Angle: {angle:.2f}°")
-        print(f"  Segment: {edge_id}")
-        
-        return data
-    return None
+        vehicles_state[veh_id]["position"] = traci.vehicle.getPosition(veh_id)
+        vehicles_state[veh_id]["speed"] = traci.vehicle.getSpeed(veh_id)
+        vehicles_state[veh_id]["lane"] = traci.vehicle.getLaneID(veh_id)
+        vehicles_state[veh_id]["route"] = traci.vehicle.getRouteID(veh_id)
+        return True
+    return False
 
-def calculate_distance(pos1, pos2):
-    """Calcule la distance euclidienne entre deux positions"""
+def calculate_distance_between_vehicles(veh_id1, veh_id2):
+    """Calcule la distance entre deux véhicules"""
+    pos1 = vehicles_state[veh_id1]["position"]
+    pos2 = vehicles_state[veh_id2]["position"]
+    
     if pos1 and pos2:
-        return ((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)**0.5
-    return 0
+        dx = pos1[0] - pos2[0]
+        dy = pos1[1] - pos2[1]
+        return math.sqrt(dx*dx + dy*dy)
+    return float('inf')  # Retourne l'infini si les positions ne sont pas disponibles
 
-# Step 8: Take simulation steps until there are no more vehicles in the network
+def is_in_communication_range(veh_id1, veh_id2):
+    """Vérifie si deux véhicules sont à portée de communication"""
+    distance = calculate_distance_between_vehicles(veh_id1, veh_id2)
+    range1 = vehicles_state[veh_id1]["communication_range"]
+    range2 = vehicles_state[veh_id2]["communication_range"]
+    
+    # Un véhicule est à portée si la distance est inférieure à la portée de communication
+    return distance <= max(range1, range2)
+
+def send_message(sender_id, receiver_id, msg_type, content):
+    """Envoie un message d'un véhicule à un autre"""
+    # Mise à jour du temps d'envoi
+    vehicles_state[sender_id]["last_sent_time"] = step_count
+    
+    # Créer le message
+    message = {
+        "type": msg_type,
+        "content": content,
+        "sender": sender_id,
+        "time": step_count,
+        "delivered": False
+    }
+    
+    # Vérifier si les véhicules sont à portée
+    if is_in_communication_range(sender_id, receiver_id):
+        # Ajouter le message à la file des messages du récepteur
+        vehicles_state[receiver_id]["messages"].append(message)
+        message["delivered"] = True
+        print(f"COMMUNICATION: {sender_id} -> {receiver_id}: {MESSAGE_TYPES[msg_type]} - {content}")
+        return True
+    else:
+        print(f"ÉCHEC COMMUNICATION: {sender_id} -> {receiver_id}: Hors de portée ({calculate_distance_between_vehicles(sender_id, receiver_id):.2f}m)")
+        return False
+
+def process_messages(veh_id):
+    """Traite les messages reçus par un véhicule"""
+    if not vehicles_state[veh_id]["messages"]:
+        return
+    
+    # Traiter chaque message non traité
+    unprocessed_messages = [msg for msg in vehicles_state[veh_id]["messages"] if not msg.get("processed", False)]
+    
+    for message in unprocessed_messages:
+        sender = message["sender"]
+        msg_type = message["type"]
+        content = message["content"]
+        
+        # Marquer le message comme traité
+        message["processed"] = True
+        
+        # Traiter selon le type de message
+        if msg_type == MESSAGE_TYPES["STOP"]:
+            # Demande d'arrêt d'urgence
+            print(f"{veh_id} reçoit une demande d'arrêt de {sender}")
+            if not vehicles_state[veh_id]["stopped"]:
+                traci.vehicle.setSpeed(veh_id, 0)
+                vehicles_state[veh_id]["stopped"] = True
+                # Envoyer accusé de réception
+                send_message(veh_id, sender, MESSAGE_TYPES["INFO"], "Arrêt en cours")
+                
+        elif msg_type == MESSAGE_TYPES["SPEED"]:
+            # Suggestion de vitesse
+            new_speed = float(content)
+            print(f"{veh_id} reçoit suggestion vitesse de {sender}: {new_speed} m/s")
+            if not vehicles_state[veh_id]["stopped"]:
+                vehicles_state[veh_id]["target_speed"] = new_speed
+                # Adapter progressivement la vitesse
+                current_speed = vehicles_state[veh_id]["speed"]
+                adjustment = (new_speed - current_speed) * 0.5  # Ajustement progressif
+                traci.vehicle.setSpeed(veh_id, current_speed + adjustment)
+                
+        elif msg_type == MESSAGE_TYPES["WARNING"]:
+            # Message d'avertissement, peut réduire la vitesse
+            print(f"{veh_id} reçoit un avertissement de {sender}: {content}")
+            if not vehicles_state[veh_id]["stopped"]:
+                # Réduire la vitesse de 30%
+                current_speed = vehicles_state[veh_id]["speed"]
+                traci.vehicle.setSpeed(veh_id, current_speed * 0.7)
+                
+        elif msg_type == MESSAGE_TYPES["EMERGENCY"]:
+            # Message d'urgence, arrêt immédiat
+            print(f"{veh_id} reçoit un message d'URGENCE de {sender}: {content}")
+            traci.vehicle.setSpeed(veh_id, 0)
+            vehicles_state[veh_id]["stopped"] = True
+            
+    # Supprimer les messages traités plus anciens que 100 pas
+    vehicles_state[veh_id]["messages"] = [
+        msg for msg in vehicles_state[veh_id]["messages"] 
+        if (not msg.get("processed", False)) or (step_count - msg["time"] < 100)
+    ]
+
+def display_vehicle_info(veh_id):
+    """Affiche les informations sur un véhicule"""
+    if veh_id in traci.vehicle.getIDList():
+        state = vehicles_state[veh_id]
+        pos = state["position"]
+        speed = state["speed"]
+        lane = state["lane"]
+        
+        print(f"Véhicule {veh_id}:")
+        print(f"  Position: ({pos[0]:.2f}, {pos[1]:.2f})")
+        print(f"  Vitesse: {speed:.2f} m/s")
+        print(f"  Voie: {lane}")
+        print(f"  Messages non traités: {len([m for m in state['messages'] if not m.get('processed', False)])}")
+        print(f"  État d'arrêt: {'Arrêté' if state['stopped'] else 'En mouvement'}")
+
+# Step 8: Main simulation loop
 try:
-    # S'assurer que le véhicule est ajouté à la simulation
-    add_vehicle_if_not_exists(vehicle_id)
+    # Ajouter les véhicules à la simulation avec des routes différentes
+    add_vehicle_if_not_exists(vehicle_id1, "route_0", color=(255, 0, 0, 255))  # Rouge
+    add_vehicle_if_not_exists(vehicle_id2, "route_1", color=(0, 0, 255, 255), depart_pos="50")  # Bleu
+    
+    # Définir les vitesses initiales
+    traci.vehicle.setSpeed(vehicle_id1, vehicles_state[vehicle_id1]["target_speed"])
+    traci.vehicle.setSpeed(vehicle_id2, vehicles_state[vehicle_id2]["target_speed"])
+    
+    print("Démarrage de la simulation avec communication entre véhicules")
     
     while traci.simulation.getMinExpectedNumber() > 0:
-        # Move simulation forward 1 step
+        # Avancer la simulation d'un pas
         traci.simulationStep()
         step_count += 1
         
-        # Contrôler le véhicule s'il existe dans la simulation
-        if vehicle_id in traci.vehicle.getIDList():
-            # Ajuster la vitesse du véhicule selon la cible actuelle
-            current_target = target_speeds[current_target_index]
-            vehicle_speed = adjust_vehicle_speed(vehicle_id, current_target)
-            total_speed += vehicle_speed
+        # Mettre à jour l'état des véhicules
+        for veh_id in [vehicle_id1, vehicle_id2]:
+            update_vehicle_state(veh_id)
+        
+        # Vérifier si les véhicules sont à portée de communication
+        if step_count % 20 == 0:  # Vérifier tous les 20 pas (1 seconde)
+            in_range = is_in_communication_range(vehicle_id1, vehicle_id2)
+            distance = calculate_distance_between_vehicles(vehicle_id1, vehicle_id2)
+            if in_range:
+                print(f"Les véhicules sont à portée de communication ({distance:.2f}m)")
             
-            # Changer de cible de vitesse tous les 200 pas
-            if step_count % 200 == 0:
-                current_target_index = (current_target_index + 1) % len(target_speeds)
-                print(f"Nouvelle vitesse cible: {target_speeds[current_target_index]} m/s")
+        # Communication périodique
+        if step_count % message_interval == 0:
+            # Véhicule 1 envoie sa vitesse au véhicule 2
+            if vehicle_id1 in traci.vehicle.getIDList():
+                send_message(
+                    vehicle_id1, 
+                    vehicle_id2, 
+                    MESSAGE_TYPES["SPEED"], 
+                    str(vehicles_state[vehicle_id1]["speed"])
+                )
             
-            # Changement de voie périodique
-            if step_count >= next_lane_change:
-                change_lane_safely(vehicle_id)
-                next_lane_change = step_count + lane_change_interval
-            
-            # Collecter la position actuelle
-            current_position = traci.vehicle.getPosition(vehicle_id)
-            
-            # Calculer la distance parcourue
-            if previous_position:
-                distance_traveled += calculate_distance(previous_position, current_position)
-            previous_position = current_position
-            
-            # Afficher des données toutes les 50 étapes
-            if step_count % 50 == 0:
-                vehicle_data = collect_vehicle_data(vehicle_id)
-                print(f"Distance totale parcourue: {distance_traveled:.2f} m")
-                print(f"Vitesse moyenne: {total_speed/step_count:.2f} m/s")
-                
-                # Récupérer les véhicules à proximité
-                nearby_vehicles = traci.vehicle.getIDList()
-                nearby_count = len(nearby_vehicles) - 1  # Exclure notre véhicule
-                if nearby_count > 0:
-                    print(f"Véhicules à proximité: {nearby_count}")
-        else:
-            # Tenter de réintroduire le véhicule s'il a disparu
-            if add_vehicle_if_not_exists(vehicle_id):
-                print(f"Véhicule {vehicle_id} réintroduit dans la simulation")
-            else:
-                print("Impossible de réintroduire le véhicule")
-                
-    print("Simulation terminée - plus de véhicules dans le réseau")
-    print(f"Distance totale parcourue: {distance_traveled:.2f} m")
-    if step_count > 0:
-        print(f"Vitesse moyenne: {total_speed/step_count:.2f} m/s")
+            # Véhicule 2 envoie un avertissement au véhicule 1 s'il est plus lent
+            if vehicle_id2 in traci.vehicle.getIDList() and step_count > message_interval * 2:
+                if vehicles_state[vehicle_id2]["speed"] < vehicles_state[vehicle_id1]["speed"] * 0.7:
+                    send_message(
+                        vehicle_id2, 
+                        vehicle_id1, 
+                        MESSAGE_TYPES["WARNING"], 
+                        "Vitesse réduite en avant"
+                    )
+        
+        # Scénarios de communication spéciaux
+        
+        # Scénario 1: Demande d'arrêt d'urgence à l'étape 200
+        if step_count == 200:
+            if vehicle_id1 in traci.vehicle.getIDList() and vehicle_id2 in traci.vehicle.getIDList():
+                print("\n--- SCÉNARIO: Arrêt d'urgence demandé par véhicule 1 ---")
+                send_message(
+                    vehicle_id1, 
+                    vehicle_id2, 
+                    MESSAGE_TYPES["STOP"], 
+                    "Arrêt d'urgence requis"
+                )
+        
+        # Scénario 2: Message d'urgence à l'étape 400
+        if step_count == 400:
+            if vehicle_id2 in traci.vehicle.getIDList() and vehicle_id1 in traci.vehicle.getIDList():
+                print("\n--- SCÉNARIO: Message d'urgence envoyé par véhicule 2 ---")
+                send_message(
+                    vehicle_id2, 
+                    vehicle_id1, 
+                    MESSAGE_TYPES["EMERGENCY"], 
+                    "Accident détecté! Arrêt immédiat!"
+                )
+        
+        # Scénario 3: Reprise après arrêt à l'étape 600
+        if step_count == 600:
+            print("\n--- SCÉNARIO: Reprise après arrêt ---")
+            for veh_id in [vehicle_id1, vehicle_id2]:
+                if veh_id in traci.vehicle.getIDList():
+                    vehicles_state[veh_id]["stopped"] = False
+                    traci.vehicle.setSpeed(veh_id, vehicles_state[veh_id]["target_speed"])
+                    # Informer l'autre véhicule
+                    other_veh = vehicle_id2 if veh_id == vehicle_id1 else vehicle_id1
+                    send_message(
+                        veh_id, 
+                        other_veh, 
+                        MESSAGE_TYPES["INFO"], 
+                        "Reprise du mouvement"
+                    )
+        
+        # Traitement des messages pour chaque véhicule
+        for veh_id in [vehicle_id1, vehicle_id2]:
+            if veh_id in traci.vehicle.getIDList():
+                process_messages(veh_id)
+        
+        # Afficher les informations des véhicules périodiquement
+        if step_count % 100 == 0:
+            print(f"\n=== État à l'étape {step_count} ===")
+            for veh_id in [vehicle_id1, vehicle_id2]:
+                if veh_id in traci.vehicle.getIDList():
+                    display_vehicle_info(veh_id)
+            print("=====================================\n")
 
 except Exception as e:
     print(f"Erreur pendant la simulation: {e}")
+    import traceback
+    traceback.print_exc()
 
 finally:
     # Step 9: Close connection between SUMO and Traci
