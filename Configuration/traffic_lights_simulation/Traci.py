@@ -23,14 +23,14 @@ Sumo_config = [
 traci.start(Sumo_config)
 
 # Initialize variables
-vehicle_ids = ['v0', 'v1']  # Updated vehicle IDs
+vehicle_ids = ['v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6']  # Updated vehicle IDs
 total_speed = {vid: 0 for vid in vehicle_ids}
 vehicle_count = {vid: 0 for vid in vehicle_ids}
 
-traffic_light_id = "J4"  # Updated traffic light ID
+traffic_light_id = "J2"  # Updated traffic light ID
 
-# Custom green light phase (GrrG = v0 & v1 go)
-green_phase = "GGrr"  # Updated green phase to match the traffic light configuration
+# Custom green light phase (GGgrrrGGgrrr = allow traffic from specific directions)
+green_phase = "GGgrrrGGgrrr"  # Updated green phase to match the traffic light configuration
 
 # How many steps to force green light
 green_duration = 100  # Adjust this value as needed
