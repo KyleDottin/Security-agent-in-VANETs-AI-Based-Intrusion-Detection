@@ -1,20 +1,17 @@
 # Step 1: Add modules to provide access to specific libraries and functions
-import os # Module provides functions to handle file paths, directories, environment variables
-import sys # Module provides access to Python-specific system parameters and functions
+import os  # Module provides functions to handle file paths, directories, environment variables
+import sys  # Module provides access to Python-specific system parameters and functions
+import csv  # For saving data to CSV files
 
 # Step 2: Establish path to SUMO (SUMO_HOME)
-
 if 'SUMO_HOME' in os.environ:
     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
     sys.path.append(tools)
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-
 # Step 3: Add Traci module to provide access to specific libraries and functions
-import traci # Static network information (such as reading and analyzing network files)
-
-
+import traci  # Static network information (such as reading and analyzing network files)
 
 # Step 4: Define Sumo configuration
 Sumo_config = [
@@ -22,165 +19,105 @@ Sumo_config = [
     '-c', 'traci.sumocfg',
     '--step-length', '0.05',
     '--delay', '1000',
-    '--lateral-resolution', '0.1'
+    '--lateral-resolution', '0.1',
+    # Enable device.btreceiver and device.btsender for V2V communication tracking
+    '--device.btreceiver.explicit', 'v0,v1',
+    '--device.btsender.explicit', 'v0,v1',
+    '--device.btreceiver.range', '100',  # Communication range in meters
+    '--device.btreceiver.probability', '1',  # 100% probability of reception within range
+    '--device.btsender.probability', '1'  # 100% probability of sending
 ]
 
 # Step 5: Open connection between SUMO and Traci
 traci.start(Sumo_config)
 
-
 # Step 6: Define Variables
-vehicle_id = 'veh1'  # ID du véhicule à contrôler
 vehicle_speed = 0
 total_speed = 0
-step_count = 0
-distance_traveled = 0
-previous_position = None
-target_speeds = [10, 15, 5, 20]  # Vitesses cibles en m/s
-current_target_index = 0
-lane_change_interval = 100  # Nombre de pas entre les changements de voie
-next_lane_change = lane_change_interval
+# Data structure to store communication logs
+communication_logs = []
+
 
 # Step 7: Define Functions
-def add_vehicle_if_not_exists(veh_id, route_id="route_0", veh_type="passenger"):
-    """Ajoute un véhicule s'il n'existe pas déjà dans la simulation"""
-    if veh_id not in traci.vehicle.getIDList():
-        try:
-            # Paramètres: id, route_id, type, départ, position_départ, vitesse_départ, voie_départ
-            traci.vehicle.add(veh_id, route_id, veh_type, "0", "0", "0", "0")
-            traci.vehicle.setColor(veh_id, (255, 0, 0, 255))  # Rouge (R,G,B,A)
-            print(f"Véhicule {veh_id} ajouté à la simulation")
-            return True
-        except traci.exceptions.TraCIException as e:
-            print(f"Erreur lors de l'ajout du véhicule: {e}")
-            return False
-    return True
+def log_communication(step_time, sender, receiver, distance, packet_size=1024):
+    """
+    Log a communication event between two vehicles
 
-def adjust_vehicle_speed(veh_id, target_speed):
-    """Ajuste progressivement la vitesse du véhicule vers la cible"""
-    current_speed = traci.vehicle.getSpeed(veh_id)
-    # Ajustement progressif (max 0.5 m/s par étape)
-    speed_diff = target_speed - current_speed
-    adjustment = max(min(speed_diff, 0.5), -0.5)
-    new_speed = current_speed + adjustment
-    traci.vehicle.setSpeed(veh_id, new_speed)
-    return new_speed
+    Parameters:
+    step_time: Current simulation time
+    sender: ID of the sending vehicle
+    receiver: ID of the receiving vehicle
+    distance: Distance between the vehicles
+    packet_size: Size of the simulated packet in bytes
+    """
+    log_entry = {
+        'time': step_time,
+        'sender': sender,
+        'receiver': receiver,
+        'distance': distance,
+        'packet_size': packet_size,
+        'success': distance <= 100  # Successful if within range
+    }
+    communication_logs.append(log_entry)
+    print(f"Communication: {sender} → {receiver}, Distance: {distance:.2f}m, Success: {log_entry['success']}")
+    return log_entry
 
-def change_lane_safely(veh_id):
-    """Change de voie de manière sécurisée"""
-    # Obtenir le nombre de voies disponibles
-    current_edge = traci.vehicle.getRoadID(veh_id)
-    if current_edge.startswith(":"):  # Ignorer les intersections
-        return
-        
-    current_lane = traci.vehicle.getLaneIndex(veh_id)
-    lane_count = traci.edge.getLaneNumber(current_edge)
-    
-    if lane_count > 1:  # S'il y a plus d'une voie
-        # Choix aléatoire d'une nouvelle voie différente de l'actuelle
-        possible_lanes = list(range(lane_count))
-        possible_lanes.remove(current_lane)
-        new_lane = random.choice(possible_lanes)
-        
-        print(f"Changement de voie: {current_lane} -> {new_lane}")
-        traci.vehicle.changeLane(veh_id, new_lane, 5.0)  # Durée de 5 secondes
 
-def collect_vehicle_data(veh_id):
-    """Collecte et affiche des données sur le véhicule"""
-    if veh_id in traci.vehicle.getIDList():
-        position = traci.vehicle.getPosition(veh_id)
-        speed = traci.vehicle.getSpeed(veh_id)
-        lane_id = traci.vehicle.getLaneID(veh_id)
-        angle = traci.vehicle.getAngle(veh_id)
-        edge_id = traci.vehicle.getRoadID(veh_id)
-        
-        data = {
-            "id": veh_id,
-            "position": position,
-            "speed": speed,
-            "lane_id": lane_id,
-            "angle": angle,
-            "edge_id": edge_id
-        }
-        
-        print(f"Données du véhicule {veh_id}:")
-        print(f"  Position: ({position[0]:.2f}, {position[1]:.2f})")
-        print(f"  Vitesse: {speed:.2f} m/s")
-        print(f"  Voie: {lane_id}")
-        print(f"  Angle: {angle:.2f}°")
-        print(f"  Segment: {edge_id}")
-        
-        return data
-    return None
+def calculate_vehicle_distance(id1, id2):
+    """Calculate the Euclidean distance between two vehicles"""
+    if id1 in traci.vehicle.getIDList() and id2 in traci.vehicle.getIDList():
+        x1, y1 = traci.vehicle.getPosition(id1)
+        x2, y2 = traci.vehicle.getPosition(id2)
+        return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+    return float('inf')  # Return infinity if vehicles don't exist
 
-def calculate_distance(pos1, pos2):
-    """Calcule la distance euclidienne entre deux positions"""
-    if pos1 and pos2:
-        return ((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)**0.5
-    return 0
+
+def save_communication_logs(filename='v2v_communication_logs.csv'):
+    """Save the logged communications to a CSV file"""
+    with open(filename, 'w', newline='') as csvfile:
+        fieldnames = ['time', 'sender', 'receiver', 'distance', 'packet_size', 'success']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for log in communication_logs:
+            writer.writerow(log)
+    print(f"Communication logs saved to {filename}")
+
 
 # Step 8: Take simulation steps until there are no more vehicles in the network
+step_count = 0
 try:
-    # S'assurer que le véhicule est ajouté à la simulation
-    add_vehicle_if_not_exists(vehicle_id)
-    
     while traci.simulation.getMinExpectedNumber() > 0:
-        # Move simulation forward 1 step
-        traci.simulationStep()
+        traci.simulationStep()  # Move simulation forward 1 step
+        current_time = traci.simulation.getTime()
         step_count += 1
-        
-        # Contrôler le véhicule s'il existe dans la simulation
-        if vehicle_id in traci.vehicle.getIDList():
-            # Ajuster la vitesse du véhicule selon la cible actuelle
-            current_target = target_speeds[current_target_index]
-            vehicle_speed = adjust_vehicle_speed(vehicle_id, current_target)
-            total_speed += vehicle_speed
-            
-            # Changer de cible de vitesse tous les 200 pas
-            if step_count % 200 == 0:
-                current_target_index = (current_target_index + 1) % len(target_speeds)
-                print(f"Nouvelle vitesse cible: {target_speeds[current_target_index]} m/s")
-            
-            # Changement de voie périodique
-            if step_count >= next_lane_change:
-                change_lane_safely(vehicle_id)
-                next_lane_change = step_count + lane_change_interval
-            
-            # Collecter la position actuelle
-            current_position = traci.vehicle.getPosition(vehicle_id)
-            
-            # Calculer la distance parcourue
-            if previous_position:
-                distance_traveled += calculate_distance(previous_position, current_position)
-            previous_position = current_position
-            
-            # Afficher des données toutes les 50 étapes
-            if step_count % 50 == 0:
-                vehicle_data = collect_vehicle_data(vehicle_id)
-                print(f"Distance totale parcourue: {distance_traveled:.2f} m")
-                print(f"Vitesse moyenne: {total_speed/step_count:.2f} m/s")
-                
-                # Récupérer les véhicules à proximité
-                nearby_vehicles = traci.vehicle.getIDList()
-                nearby_count = len(nearby_vehicles) - 1  # Exclure notre véhicule
-                if nearby_count > 0:
-                    print(f"Véhicules à proximité: {nearby_count}")
-        else:
-            # Tenter de réintroduire le véhicule s'il a disparu
-            if add_vehicle_if_not_exists(vehicle_id):
-                print(f"Véhicule {vehicle_id} réintroduit dans la simulation")
-            else:
-                print("Impossible de réintroduire le véhicule")
-                
-    print("Simulation terminée - plus de véhicules dans le réseau")
-    print(f"Distance totale parcourue: {distance_traveled:.2f} m")
-    if step_count > 0:
-        print(f"Vitesse moyenne: {total_speed/step_count:.2f} m/s")
 
-except Exception as e:
-    print(f"Erreur pendant la simulation: {e}")
+        # Simulate packet exchange between v0 and v1 every 10 steps (adjust as needed)
+        if step_count % 10 == 0 and 'v0' in traci.vehicle.getIDList() and 'v1' in traci.vehicle.getIDList():
+            # Calculate distance between vehicles
+            distance = calculate_vehicle_distance('v0', 'v1')
+
+            # Log v0 to v1 communication
+            log_communication(current_time, 'v0', 'v1', distance)
+
+            # Log v1 to v0 communication (reply)
+            log_communication(current_time + 0.01, 'v1', 'v0', distance)
+
+        # Here you can decide what to do with simulation data at each step
+        if 'v1' in traci.vehicle.getIDList():
+            vehicle_speed = traci.vehicle.getSpeed('v1')
+            total_speed = total_speed + vehicle_speed
+
+            # Print vehicle positions for debugging
+            if 'v0' in traci.vehicle.getIDList():
+                v0_pos = traci.vehicle.getPosition('v0')
+                v1_pos = traci.vehicle.getPosition('v1')
+                distance = calculate_vehicle_distance('v0', 'v1')
+                print(f"Time: {current_time:.2f}s, V0 pos: {v0_pos}, V1 pos: {v1_pos}, Distance: {distance:.2f}m")
+
+        print(f"Time: {current_time:.2f}s, Vehicle speed: {vehicle_speed:.2f} m/s")
 
 finally:
-    # Step 9: Close connection between SUMO and Traci
-    print("Fermeture de la connexion TraCI")
+    # Step 9: Save communication logs and close TraCI connection
+    save_communication_logs()
     traci.close()
+    print("Simulation ended. Communication logs saved.")
