@@ -46,3 +46,4 @@ while traci.simulation.getMinExpectedNumber() > 0:
 
 # Step 9: Close connection between SUMO and Traci
 traci.close()
+#
