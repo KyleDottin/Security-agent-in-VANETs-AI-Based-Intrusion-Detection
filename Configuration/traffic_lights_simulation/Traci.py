@@ -24,29 +24,29 @@ Sumo_config = [
 # Step 5: Start SUMO
 traci.start(Sumo_config)
 
-# Step 6: Define variables
-total_speed = {'v0': 0, 'v1': 0, 'v2': 0}
-vehicle_count = {'v0': 0, 'v1': 0, 'v2': 0}
+# Step 6: Initialize variables
+vehicle_ids = ['v0', 'v1', 'v2']
+total_speed = {vid: 0 for vid in vehicle_ids}
+vehicle_count = {vid: 0 for vid in vehicle_ids}
 
-# ID of the traffic light
-traffic_light_id = "junction0"  # Remplace avec l'ID réel du feu
+# Correct traffic light ID from net.xml
+traffic_light_id = "J2"
 
-# Step 7: Run the simulation loop
+# Step 7: Run simulation loop
 try:
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
 
-        for vid in ['v0', 'v1', 'v2']:
+        for vid in vehicle_ids:
             if vid in traci.vehicle.getIDList():
                 speed = traci.vehicle.getSpeed(vid)
                 total_speed[vid] += speed
                 vehicle_count[vid] += 1
                 print(f"{vid} speed: {speed:.2f} m/s")
 
-                # Check traffic light if vehicle is v0 or v1
                 if vid in ['v0', 'v1']:
                     edge_id = traci.vehicle.getRoadID(vid)
-                    if edge_id.startswith(":") or "junction" in edge_id:
+                    if edge_id in ['E1', '-E0', ':J2_1', ':J2_2']:  # Optional: refine conditions
                         light_state = traci.trafficlight.getRedYellowGreenState(traffic_light_id)
                         print(f"Traffic Light {traffic_light_id} state: {light_state}")
 
@@ -55,7 +55,7 @@ finally:
     print("Simulation finished.")
 
     # Print average speeds
-    for vid in total_speed:
+    for vid in vehicle_ids:
         if vehicle_count[vid] > 0:
             avg_speed = total_speed[vid] / vehicle_count[vid]
             print(f"Average speed of {vid}: {avg_speed:.2f} m/s")
