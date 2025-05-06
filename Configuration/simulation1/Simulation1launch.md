@@ -1,7 +1,22 @@
-To launch simulation1 you need first to open a linux terminal and type 
+# Launching `simulation1`
+
+To run the simulation, follow these steps from a Linux terminal:
+
+## 1. Set the SUMO environment variable
+```bash
 export SUMO_HOME=/usr/share/sumo
+```
 
-to verify if it works try echo $SUMO_HOME
+## 2. Verify the environment variable
+You can check that it's correctly set with:
+```bash
+echo $SUMO_HOME
+```
 
-and then launch the simulation by tiping "python3 Traci.py"
-Sumo would launch automatically and then run the simulation and you can retrieve the vehicle's speed
+## 3. Launch the simulation
+Run the Python script:
+```bash
+python3 Traci.py
+```
+
+This will automatically start **SUMO**, run the simulation, and allow you to retrieve the vehicle's speed.
