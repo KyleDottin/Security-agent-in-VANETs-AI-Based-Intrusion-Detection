@@ -1,43 +1,44 @@
-#!/usr/bin/env python
+# Step 1: Add modules to provide access to specific libraries and functions
+import os # Module provides functions to handle file paths, directories, environment variables
+import sys # Module provides access to Python-specific system parameters and functions
 
-import os
-import sys
-import optparse
-
-# we need to import some python modules from the $SUMO_HOME/tools directory
+# Step 2: Establish path to SUMO (SUMO_HOME)
 if 'SUMO_HOME' in os.environ:
     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
     sys.path.append(tools)
 else:
-    sys.exit("please declare environment variable 'SUMO_HOME'")
+    sys.exit("Please declare environment variable 'SUMO_HOME'")
 
+# Step 3: Add Traci module to provide access to specific libraries and functions
+import traci # Static network information (such as reading and analyzing network files)
 
-from sumolib import checkBinary  # Checks for the binary in environ vars
-import traci
+# Step 4: Define Sumo configuration
+Sumo_config = [
+    'sumo-gui',
+    '-c', 'traci.sumocfg',
+    '--step-length', '0.05',
+    '--delay', '1000',
+    '--lateral-resolution', '0.1'
+]
 
+# Step 5: Open connection between SUMO and Traci
+traci.start(Sumo_config)
 
-def get_options():
-    opt_parser = optparse.OptionParser()
-    opt_parser.add_option("--nogui", action="store_true",default=False, help="run the commandline version of sumo")
-    options, args = opt_parser.parse_args()
-    return options
+# Step 6: Define Variables
+vehicle_speed = 0
+total_speed = 0
 
+# Step 7: Define Functions
 
-# contains TraCI control loop
-def run():
+# Step 8: Take simulation steps until there are no more vehicles in the network
+while traci.simulation.getMinExpectedNumber() > 0:
+    traci.simulationStep() # Move simulation forward 1 step
+    # Here you can decide what to do with simulation data at each step
+    if 'v1' in traci.vehicle.getIDList():
+        vehicle_speed = traci.vehicle.getSpeed('v1')
+        total_speed = total_speed + vehicle_speed
+    # step_count = step_count + 1
+    print(f"Vehicle speed: {vehicle_speed} m/s")
 
-
-# main entry point
-if __name__ == "__main__":
-    options = get_options()
-
-    # check binary
-    if options.nogui:
-        sumoBinary = checkBinary('sumo')
-    else:
-        sumoBinary = checkBinary('sumo-gui')
-
-    # traci starts sumo as a subprocess and then this script connects and runs
-    traci.start([sumoBinary, "-c", "demo.sumocfg",
-                             "--tripinfo-output", "tripinfo.xml"])
-    run()
+# Step 9: Close connection between SUMO and Traci
+traci.close()
