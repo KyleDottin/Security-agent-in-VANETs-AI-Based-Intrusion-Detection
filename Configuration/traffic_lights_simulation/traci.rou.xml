@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-05-06 13:40:21 by Eclipse SUMO netedit Version 1.11.0
+<!-- generated on 2025-05-06 13:56:11 by Eclipse SUMO netedit Version 1.11.0
 -->
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
-    <trip id="v0" depart="0.00" from="E0" to="E3" via="E4 -E20 -E0 E2.55"/>
-    <trip id="v1" depart="0.00" from="E2" to="-E0" via="E2.55 E3 E0 E4 -E20 -E1"/>
+    <trip id="v0" depart="0.00" from="-E0" to="-E1"/>
+    <trip id="v1" depart="0.00" from="E0" to="E2"/>
+    <trip id="v2" depart="0.00" from="E1" to="-E00"/>
+    <trip id="v3" depart="0.00" from="-E0" to="-E00"/>
+    <trip id="v4" depart="0.00" from="-E2" to="E0.86"/>
+    <trip id="v5" depart="0.00" from="-E2" to="-E1"/>
+    <trip id="v6" depart="0.00" from="E0" to="E0.86"/>
 </routes>
