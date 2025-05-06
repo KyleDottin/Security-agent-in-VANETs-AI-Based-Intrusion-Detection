@@ -1,6 +1,7 @@
 # Step 1: Add modules to provide access to specific libraries and functions
 import os  # Module provides functions to handle file paths, directories, environment variables
 import sys  # Module provides access to Python-specific system parameters and functions
+import keyboard  # For keyboard input detection
 
 # Step 2: Establish path to SUMO (SUMO_HOME)
 if 'SUMO_HOME' in os.environ:
@@ -27,38 +28,51 @@ traci.start(Sumo_config)
 # Step 6: Define Variables
 vehicle_speed = 0
 total_speed = 0
-stop_start_time = None  # When the vehicle starts stopping
-stop_duration = 3.0  # Duration of stop in seconds
-is_stopping = False  # Flag to track if the vehicle is in stopping mode
-has_stopped = False  # Flag to track if the vehicle has already been stopped
+vehicle_stopped = False
+stop_duration = 3.0  # 3 seconds in simulation time
+stop_start_time = 0  # When the vehicle started stopping
+
 
 # Step 7: Define Functions
+def stop_vehicle(vehicle_id):
+    """Stop the vehicle immediately at its current position"""
+    lane_id = traci.vehicle.getLaneID(vehicle_id)
+    position = traci.vehicle.getLanePosition(vehicle_id)
+    edge_id = lane_id.split('_')[0]  # Extract edge ID from lane ID
+    lane_index = int(lane_id.split('_')[-1])  # Extract lane index
+
+    traci.vehicle.setStop(
+        vehID=vehicle_id,
+        edgeID=edge_id,
+        pos=position,
+        laneIndex=lane_index,
+        duration=3000,  # 3 seconds in milliseconds
+        flags=0
+    )
+    return traci.simulation.getTime()  # Return the current simulation time
+
+
+# Register keyboard event for 'S' key
+print("Press 'S' during simulation to make vehicle v1 stop for 3 seconds.")
 
 # Step 8: Take simulation steps until there are no more vehicles in the network
 while traci.simulation.getMinExpectedNumber() > 0:
     traci.simulationStep()  # Move simulation forward 1 step
     current_time = traci.simulation.getTime()
 
+    # Check if 'S' key was pressed
+    if keyboard.is_pressed('s') and 'v1' in traci.vehicle.getIDList() and not vehicle_stopped:
+        stop_start_time = stop_vehicle('v1')
+        vehicle_stopped = True
+        print(f"Vehicle v1 stopping at time {current_time:.2f}")
+
+    # Check if it's time to resume after stop duration
+    if vehicle_stopped and (current_time - stop_start_time) >= stop_duration:
+        vehicle_stopped = False  # Reset for potential future stops
+        print(f"Vehicle v1 resumed driving at time {current_time:.2f}")
+
     # Here you can decide what to do with simulation data at each step
     if 'v1' in traci.vehicle.getIDList():
-        # If the vehicle hasn't been stopped yet and is not currently stopping, initiate stop
-        # We'll start the stop after the vehicle has been in the simulation for a bit
-        if not has_stopped and not is_stopping and current_time > 5.0:
-            # Command the vehicle to stop
-            traci.vehicle.setSpeed('v1', 0.0)
-            stop_start_time = current_time
-            is_stopping = True
-            print(f"Vehicle v1 starting to stop at time {current_time}")
-
-        # If the vehicle is stopping and 3 seconds have passed, resume normal driving
-        if is_stopping and (current_time - stop_start_time) >= stop_duration:
-            # Resume normal driving by setting the speed to -1 (let SUMO control it)
-            traci.vehicle.setSpeed('v1', -1.0)
-            is_stopping = False
-            has_stopped = True
-            print(f"Vehicle v1 resuming normal driving at time {current_time}")
-
-        # Get the current speed
         vehicle_speed = traci.vehicle.getSpeed('v1')
         total_speed = total_speed + vehicle_speed
 
