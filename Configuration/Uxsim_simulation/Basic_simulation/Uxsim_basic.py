@@ -3,7 +3,7 @@ from IPython.display import display, Image
 
 #Map
 W = World(
-    name="simple_demo",    # Scenario name. Can be blank. Used as the folder name for saving results.
+    name="basic_demo",    # Scenario name. Can be blank. Used as the folder name for saving results.
     deltan=5,   # Simulation aggregation unit Δn. Defines how many vehicles are grouped together (i.e., platoon size) for computation. Computation cost is generally inversely proportional to deltan^2.
     tmax=1200,  # Total simulation time (s)
     print_mode=1, save_mode=1, show_mode=1,    # Various options. print_mode determines whether to print information. Usually set to 1, but recommended 0 when running multiple simulations automatically. save_mode determines if visualization results are saved. show_mode determines if visualization results are displayed. It's good to set show_mode=1 on Jupyter Notebook, otherwise recommended 0.
@@ -29,5 +29,31 @@ W.exec_simulation()
 #Plot
 W.analyzer.network_fancy(animation_speed_inverse=15, sample_ratio=0.3, interval=3, trace_length=3, network_font_size=0)
 
-with open("demo/Y_intersection.gif", "rb") as f:
+with open("outbasic_demo/anim_network_fancy.gif", "rb") as f:
     display(Image(data=f.read(), format='png'))
+
+#data in csv file
+df = W.analyzer.basic_to_pandas()
+display(df)
+
+#OD-specific traffic situation
+df = W.analyzer.od_to_pandas()
+display(df)
+
+#MFD
+df = W.analyzer.mfd_to_pandas()
+display(df)
+
+#link-level
+df = W.analyzer.link_to_pandas()
+display(df)
+
+#within link
+df = W.analyzer.link_traffic_state_to_pandas()
+display(df)
+
+#vehicle-level
+df = W.analyzer.vehicles_to_pandas()
+display(df)
+
+W.analyzer.output_data()
