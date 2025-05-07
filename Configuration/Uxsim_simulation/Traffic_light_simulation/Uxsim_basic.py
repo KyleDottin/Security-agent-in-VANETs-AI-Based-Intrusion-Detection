@@ -25,8 +25,8 @@ W.addLink("link3", "merge", "dest", length=1000, free_flow_speed=20,
           number_of_lanes=1)
 
 # Define demand
-W.adddemand("orig1", "dest", 0, 1000, 0.4)
-W.adddemand("orig2", "dest", 500, 1000, 0.6)
+W.adddemand("orig1", "dest", 0, 1000, 1)
+W.adddemand("orig2", "dest", 500, 1000, 2)
 
 # Execute simulation in steps for dynamic signal logic
 while W.check_simulation_ongoing():
