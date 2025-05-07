@@ -42,35 +42,24 @@ green_force_counter = 0
 vehicle_threshold = 5  # Trigger green if >= this many vehicles in queue
 
 try:
-    while traci.simulation.getMinExpectedNumber() > 0:
+    max_steps = 1000  # or however many simulation steps you want
+
+    for step in range(max_steps):
         traci.simulationStep()
-        step += 1
 
-        # --- Traffic Light Dynamic Control ---
-        # Count total vehicles waiting on incoming lanes
-        total_queue = sum(traci.lane.getLastStepVehicleNumber(lane) for lane in incoming_lanes)
-
-        if total_queue >= vehicle_threshold and not force_green:
-            force_green = True
-            green_force_counter = green_force_duration
-            print(f"[Step {step}] High traffic detected ({total_queue} vehicles) → Forcing green light.")
-
-        if force_green:
+        if step <= green_force_duration:
             traci.trafficlight.setRedYellowGreenState(traffic_light_id, green_phase)
-            green_force_counter -= 1
-            print(f"[Step {step}] Forced green phase active ({green_force_counter} steps left).")
+            print(f"[Step {step}] Traffic light set to: {green_phase}")
+        else:
+            print(f"[Step {step}] Default traffic light control resumes")
 
-            if green_force_counter <= 0:
-                force_green = False
-                print(f"[Step {step}] Green force duration ended. Returning to normal control.")
-
-        # --- Speed Monitoring ---
         for vid in vehicle_ids:
             if vid in traci.vehicle.getIDList():
                 speed = traci.vehicle.getSpeed(vid)
                 total_speed[vid] += speed
                 vehicle_count[vid] += 1
                 print(f"{vid} speed: {speed:.2f} m/s")
+
 
 finally:
     traci.close()
