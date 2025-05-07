@@ -2,7 +2,6 @@
     <input>
         <net-file value="traci.net.xml"/>
         <route-files value="traci.rou.xml"/>
-        <additional-files value="traci_tls.add.xml"/>
     </input>
 
     <time>
