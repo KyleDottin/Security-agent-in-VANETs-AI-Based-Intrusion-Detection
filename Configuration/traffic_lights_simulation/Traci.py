@@ -22,33 +22,49 @@ Sumo_config = [
 # Start SUMO
 traci.start(Sumo_config)
 
-# Initialize variables
-vehicle_ids = ['v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6']  # Updated vehicle IDs
+# Vehicle and traffic light setup
+vehicle_ids = ['v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6']
 total_speed = {vid: 0 for vid in vehicle_ids}
 vehicle_count = {vid: 0 for vid in vehicle_ids}
+traffic_light_id = "J2"
 
-traffic_light_id = "J2"  # Updated traffic light ID
+# Phase to force (must match your network definition)
+green_phase = "GGgrrrGGgrrr"  # Modify as per your actual light phase layout
 
-# Custom green light phase (GGgrrrGGgrrr = allow traffic from specific directions)
-green_phase = "GGgrrrGGgrrr"  # Updated green phase to match the traffic light configuration
+# Lanes to monitor (adjust based on your .net.xml file)
+incoming_lanes = ["E0_0", "E1_0", "E2_0", "E3_0"]
 
-# How many steps to force green light
-green_duration = 100  # Adjust this value as needed
+# Dynamic control thresholds
 step = 0
+force_green = False
+green_force_duration = 50  # Number of steps to keep green once activated
+green_force_counter = 0
+vehicle_threshold = 5  # Trigger green if >= this many vehicles in queue
 
 try:
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
         step += 1
 
-        # Force green light for the first X steps
-        if step <= green_duration:
-            traci.trafficlight.setRedYellowGreenState(traffic_light_id, green_phase)
-            print(f"[Step {step}] Traffic light set to: {green_phase}")
-        else:
-            # Let SUMO resume normal traffic light control
-            print(f"[Step {step}] Default traffic light control resumes")
+        # --- Traffic Light Dynamic Control ---
+        # Count total vehicles waiting on incoming lanes
+        total_queue = sum(traci.lane.getLastStepVehicleNumber(lane) for lane in incoming_lanes)
 
+        if total_queue >= vehicle_threshold and not force_green:
+            force_green = True
+            green_force_counter = green_force_duration
+            print(f"[Step {step}] High traffic detected ({total_queue} vehicles) → Forcing green light.")
+
+        if force_green:
+            traci.trafficlight.setRedYellowGreenState(traffic_light_id, green_phase)
+            green_force_counter -= 1
+            print(f"[Step {step}] Forced green phase active ({green_force_counter} steps left).")
+
+            if green_force_counter <= 0:
+                force_green = False
+                print(f"[Step {step}] Green force duration ended. Returning to normal control.")
+
+        # --- Speed Monitoring ---
         for vid in vehicle_ids:
             if vid in traci.vehicle.getIDList():
                 speed = traci.vehicle.getSpeed(vid)
@@ -58,7 +74,7 @@ try:
 
 finally:
     traci.close()
-    print("Simulation finished.")
+    print("\nSimulation finished.")
     for vid in vehicle_ids:
         if vehicle_count[vid] > 0:
             avg_speed = total_speed[vid] / vehicle_count[vid]
