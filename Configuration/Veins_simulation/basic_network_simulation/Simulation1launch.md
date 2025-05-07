@@ -16,7 +16,7 @@ echo $SUMO_HOME
 ## 3. Launch the simulation
 Run the Python script:
 ```bash
-python3 Uxsim_basic.py
+python3 Uxsim_traffic_light.py
 ```
 
 This will automatically start **SUMO**, run the simulation, and allow you to retrieve the vehicle's speed.
