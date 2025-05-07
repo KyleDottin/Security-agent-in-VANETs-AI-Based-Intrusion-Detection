@@ -50,12 +50,12 @@ def red_agent_ddos():
                 f"Red agent DDoS at t = {W.TIME}: Attacking signal phase on {random_link.name}, new phase = {random_phase}")
 
 
-# Correction des signal_group
+# signal_group correction
 for link in W.LINKS:
     if hasattr(link, 'signal_group') and isinstance(link.signal_group, int):
         link.signal_group = [link.signal_group]
 
-# Simulation en pas de temps
+# Simulation
 while W.check_simulation_ongoing():
     W.exec_simulation(duration_t2=10.0)
     red_agent_ddos()
