@@ -50,16 +50,18 @@ def red_agent_ddos():
                 f"Red agent DDoS at t = {W.TIME}: Attacking signal phase on {random_link.name}, new phase = {random_phase}")
 
 
-# Execute simulation in steps for dynamic signal logic
+# signal_group correction
+for link in W.LINKS:
+    if hasattr(link, 'signal_group') and isinstance(link.signal_group, int):
+        link.signal_group = [link.signal_group]
+
+# Simulation
 while W.check_simulation_ongoing():
-    W.exec_simulation(duration_t2=10)  # Advance simulation by 10s
-
-    # DDoS attack initiated by the red agent
+    W.exec_simulation(duration_t2=10.0)
     red_agent_ddos()
-
-    # Display simulation status every 100 seconds
     if int(W.TIME) % 100 == 0:
         print(f"t = {W.TIME} s; Signal phase = {node_signal.signal_phase}")
+
 
 # Visualization
 W.analyzer.network_fancy(animation_speed_inverse=15, sample_ratio=0.3,
