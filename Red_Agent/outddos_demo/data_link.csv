@@ -1,4 +1,0 @@
-link,start_node,end_node,traffic_volume,vehicles_remain,free_travel_time,average_travel_time,stddiv_travel_time,length
-link1,orig1,merge,375,155,50.0,439.875,230.69186022701365,1000
-link2,orig2,merge,295,125,50.0,139.0625,89.10583740932277,1000
-link3,merge,dest,635,35,50.0,51.520833333333336,2.753706466847103,1000
