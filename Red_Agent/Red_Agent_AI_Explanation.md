@@ -20,19 +20,11 @@ This project provides a Python-based template for interacting with local Large L
 pip install gpt4all requests
 ```
 
-### 2. GPT4All Setup
-
-* Download GPT4All from: [https://gpt4all.io/](https://www.nomic.ai/gpt4all)
-* Place the required model in the GPT4All models directory (e.g., `nous-hermes-2-mistral-7b-dpo.Q4_0.gguf`)
-
-### 3. Ollama Setup
-
-* Download and install Ollama from: [https://ollama.com/](https://ollama.com/download)
-* Run the model via:
-
-```bash
-ollama run nous-hermes
-```
+| GPT4All                                                   | Ollama                                                    |
+| --------------------------------------------------------- | --------------------------------------------------------- |
+| Download from: [https://gpt4all.io/](https://www.nomic.ai/gpt4a) | Download from: [https://ollama.com/](https://ollama.com/download) |
+| Place model in GPT4All models directory                   | Use `ollama run nous-hermes` to launch                    |
+| Example model: `nous-hermes-2-mistral-7b-dpo.Q4_0.gguf`   | Example model name: `nous-hermes`                         |
 
 ---
 
