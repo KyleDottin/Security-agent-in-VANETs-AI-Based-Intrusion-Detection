@@ -4,7 +4,7 @@ import traci
 
 
 #Powershell command to set the environment variable
- # & "C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe" -c "C:\Users\$USERNAME\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg" --remote-port 8813
+ # & "C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe" -c "C:\Users\$env:USERNAME\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg" --remote-port 8813
 # Define path to SUMO installation
 sumo_home = r"C:\Program Files (x86)\Eclipse\Sumo"
 tools_path = os.path.join(sumo_home, 'tools')
@@ -18,7 +18,7 @@ else:
 #Path for the configuration of the simulation
 username = os.getlogin()
 path1 =r"C:\Users"
-path2=r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
+path2=r"\PycharmProjects\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
 path_conf=path1+f"\{username}"+path2
 
 # Define Sumo configuration
