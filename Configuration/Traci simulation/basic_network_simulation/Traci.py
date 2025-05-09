@@ -12,10 +12,16 @@ if os.path.isdir(tools_path):
 else:
     sys.exit(f"Error: 'tools' folder not found in {tools_path}")
 
-# Define SUMO configuration
+#Path for the configuration of the simulation
+username = os.getlogin()
+path1 =r"C:\Users"
+path2=r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
+path_conf=path1+f"\{username}"+path2
+
+# Define Sumo configuration
 Sumo_config = [
-    r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe",
-    '-c', r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg",
+    r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe",  # Chemin complet vers l'exécutable
+    '-c', path_conf,  # Chemin vers ton fichier .sumocfg
     '--step-length', '0.05',
     '--delay', '1000',
     '--lateral-resolution', '0.1'
