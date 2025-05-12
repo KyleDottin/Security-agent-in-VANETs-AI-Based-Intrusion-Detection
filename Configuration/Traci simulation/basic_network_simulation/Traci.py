@@ -18,7 +18,7 @@ else:
 #Path for the configuration of the simulation
 username = os.getlogin()
 path1 =r"C:\Users"
-path2=r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
+path2=r"\PycharmProjects\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
 path_conf=path1+f"\{username}"+path2
 
 # Define Sumo configuration
