@@ -4,17 +4,3 @@ There are 2 vehicles waiting in front of the traffic light. The traffic light pr
 The road has a slope of 3 degrees uphill, and the outside temperature is 20°C.
 What is the best driving behavior to minimize energy consumption?"
 
-
-
-
--typess={"Conv": 0, "Elec": 1, "PHEB": 2}
--v=float (vitesse)
--road_speed=float
--slope=float
--température=g=float
--passengers=float
--station distance=tuple(...,int)
--queue=int //how many cars in front 
--tls_program=liste int //list of duration time of traffic lights 
--tls_index=int // index of the actual phase of the traffic light
--tls_remaining time =int //remaining time of the actual phase of the traffic light
