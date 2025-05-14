@@ -1,25 +1,7 @@
-<!-- <?xml version="1.0"?>
-debug config
+<?xml version="1.0"?>
 <launch>
-		<copy file=traci.net.xml/>
-		<copy file=traci.rou.xml/>
-		<copy file=traci.sumocfg type="config"/>
-</launch>
- -->
-<launch>
-    <!-- Lancer SUMO avec la configuration et la connexion TraCI -->
-    <cmd>
-        sumo -c ../sumo/traci.sumocfg --remote-port 9999
-    </cmd>
-
-    <!-- Paramètres supplémentaires pour Veins -->
-    <node name="TraCIScenarioManager" type="TraCIScenarioManagerLaunchd" enabled="true">
-        <param name="host" value="localhost"/>
-        <param name="port" value="9999"/>
-        <param name="sumoConfig" value="../sumo/traci.sumocfg"/>
-        <param name="updateInterval" value="1s"/> <!-- Intervalle de mise à jour -->
-        <param name="moduleType" value="Car"/> <!-- Type de module pour chaque véhicule -->
-        <param name="seed" value="42"/> <!-- Exemple de seed pour la simulation -->
-        <param name="autoShutdown" value="true"/> <!-- Arrêt automatique après la simulation -->
-    </node>
+    <!-- Copy necessary files -->
+    <copy file="traci.net.xml"/>
+    <copy file="traci.rou.xml"/>
+    <copy file="traci.sumocfg" type="config"/>
 </launch>

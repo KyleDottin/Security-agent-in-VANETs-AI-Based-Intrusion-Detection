@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for BasicProject2ndTry
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -O out -KVEINS_PROJ=C:/Users/tru89/veins-master/veins-master -DVEINS_IMPORT -I. -I$$\(VEINS_PROJ\)/src -Isrc -L$$\(VEINS_PROJ\)/src -lveins$$\(D\)
+#  opp_makemake -f --deep -O out -KVEINS_PROJ=C:/Users/tru89/veins-veins-5.3.1 -DVEINS_IMPORT -I. -I$$\(VEINS_PROJ\)/src -Isrc -L$$\(VEINS_PROJ\)/src -lveins$$\(D\)
 #
 
 # Name of target to be created (-o option)
@@ -42,7 +42,7 @@ MSGFILES =
 SMFILES =
 
 # Other makefile variables (-K)
-VEINS_PROJ=C:/Users/tru89/veins-master/veins-master
+VEINS_PROJ=C:/Users/tru89/veins-veins-5.3.1
 
 #------------------------------------------------------------------------------
 
