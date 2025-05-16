@@ -1,9 +1,9 @@
-file 7359 1747229963                                            
+file 6133 1747387097                                            
 version 3
-run Default-0-20250514-15:37:40-13856
+run Default-0-20250516-11:16:16-5960
 attr configname Default
-attr datetime 20250514-15:37:40
-attr datetimef 20250514-153740
+attr datetime 20250516-11:16:16
+attr datetimef 20250516-111616
 attr experiment Default
 attr inifile omnetpp.ini
 attr iterationvars ""
@@ -11,17 +11,17 @@ attr iterationvarsd ""
 attr iterationvarsf ""
 attr measurement ""
 attr network BasicProjectNetwork
-attr processid 13856
+attr processid 5960
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-config image-path ../../../../veins/images
+config image-path ../../../veins-veins-5.3.1/images
 config cmdenv-express-mode true
 config cmdenv-autoflush true
 config cmdenv-status-frequency 1s
-config **.cmdenv-log-level info
+config **.cmdenv-log-level trace
 config image-path ../../images
 config network BasicProjectNetwork
 config debug-on-errors true
@@ -82,33 +82,34 @@ config *.node[*].veinsmobility.y 0
 config *.node[*].veinsmobility.z 0
 config *.node[*].veinsmobility.setHostSpeed false
 config *.node[*0].veinsmobility.accidentCount 0
-config *.node[*0].veinsmobility.accidentStart 73s
+config *.node[*0].veinsmobility.accidentStart 5s
 config *.node[*0].veinsmobility.accidentDuration 50s
+config **.node[*].nic.mac1609_4.useAcks true
+config **.node[*].nic.mac1609_4.pcapRecording true
+config **.node[*].nic.mac1609_4.pcapFile "\"results/vehicle-network.pcap\""
+config *.node[*].veinsmobility.collectStatistics true
+config *.rsu[*].applLayer.collectStatistics true
+config *.node[*].applLayer.packetReceived.vector-recording true
+config *.node[*].applLayer.rssi.vector-recording true
 
-vector 0 BasicProjectNetwork.rsu[0].nic.phy80211p RadioState ETV
-vector 1 BasicProjectNetwork.rsu[0].nic.phy80211p RadioChannel ETV
-vector 2 BasicProjectNetwork.node[0].nic.phy80211p RadioState ETV
-vector 3 BasicProjectNetwork.node[0].nic.phy80211p RadioChannel ETV
-vector 4 BasicProjectNetwork.manager posx ETV
-vector 5 BasicProjectNetwork.manager posy ETV
-vector 6 BasicProjectNetwork.node[1].nic.phy80211p RadioState ETV
-vector 7 BasicProjectNetwork.node[1].nic.phy80211p RadioChannel ETV
-vector 8 BasicProjectNetwork.manager posx ETV
-vector 9 BasicProjectNetwork.manager posy ETV
-vector 10 BasicProjectNetwork.manager speed ETV
-vector 11 BasicProjectNetwork.manager speed ETV
-vector 12 BasicProjectNetwork.manager acceleration ETV
-vector 13 BasicProjectNetwork.manager co2emission ETV
-vector 14 BasicProjectNetwork.manager acceleration ETV
-vector 15 BasicProjectNetwork.manager co2emission ETV
-15	4305 233 91 411 3 11 9 1.3914088986338 10.555661482811 43.305223157183 285.41810936996
-14	4538 240 91 411 3 11 9 -0.19634001890663 2.5457943856018 12.827453393286 27.576488662491
-11	4778 259 51 411 2 11 10 1.4392818092834 14.463075221476 93.189865408297 1092.6242261644
-9	5037 274 11 411 1 11 11 26.600526524136 26.732664885967 293.52600597388 7832.5225289129
-8	5311 273 11 411 1 11 11 30.101047873433 123.2998654083 711.86711862345 56894.858680298
-13	5584 312 91 508 3 15 13 0.973 9.6784473634539 53.369757952981 315.41094171038
-12	5896 336 91 508 3 15 13 -4.5 2.5855512305163 12.74380952539 67.205641969849
-10	6232 371 51 508 2 15 14 0.086319760591712 14.20835130096 75.530134930661 674.33615446918
-5	6603 377 11 508 1 15 15 23.477578816555 53.651928166352 508.57273898658 18818.763978801
-4	6980 377 11 508 1 15 15 31.239865069339 79.997315689981 1074.9440986868 80190.182461647
+vector 0 BasicProjectNetwork.node[0].veinsmobility posx ETV
+vector 1 BasicProjectNetwork.node[0].veinsmobility posy ETV
+vector 2 BasicProjectNetwork.node[1].veinsmobility posx ETV
+vector 3 BasicProjectNetwork.node[1].veinsmobility posy ETV
+vector 4 BasicProjectNetwork.node[0].veinsmobility speed ETV
+vector 5 BasicProjectNetwork.node[1].veinsmobility speed ETV
+vector 6 BasicProjectNetwork.node[0].veinsmobility acceleration ETV
+vector 7 BasicProjectNetwork.node[0].veinsmobility co2emission ETV
+vector 8 BasicProjectNetwork.node[1].veinsmobility acceleration ETV
+vector 9 BasicProjectNetwork.node[1].veinsmobility co2emission ETV
+0	4440 196 11 291 1 8 8 79.403698335162 79.997315689981 637.21222369902 50755.378247238
+1	4636 197 11 291 1 8 8 32.442140515797 53.651928166352 330.37620892182 14219.299110522
+2	4833 197 11 291 1 8 8 30.101047873433 80.723816259941 384.96406802518 20860.28308841
+3	5030 197 11 291 1 8 8 26.663710878339 26.732664885967 213.65786828131 5706.2150671297
+4	5227 176 51 291 2 8 7 0.086319760591712 7.1104160954133 21.217809506701 105.24570897869
+5	5403 172 51 291 2 8 7 1.4392818092834 13.898426422849 50.613816259941 488.1856211515
+6	5575 141 91 291 3 8 6 -4.5 2.5855512305163 -1.3782220149785 36.29746590089
+7	5716 119 91 291 3 8 6 0.973 4.4326416094096 14.313507454513 46.973295400476
+8	5835 149 91 291 3 8 6 1.3682811009465 2.5457943856018 12.459144613566 27.154728439354
+9	5984 147 91 291 3 8 6 2.1732912127287 10.555661482811 35.827564944515 262.10911331226
 
