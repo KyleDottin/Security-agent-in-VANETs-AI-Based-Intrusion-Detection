@@ -299,7 +299,55 @@ IMPORTANT: Répondez uniquement avec l'attaque elle-même, sans explication ni c
 
         print(f"\n=== PROMPT D'ATTAQUE GÉNÉRÉ ===\n{prompt_to_send}\n{'='*30}")
 
+                # Si la réponse contient des données de trafic, les analyser
+        if "typess" in prompt_to_send and "road_speed" in prompt_to_send:
+            traffic_data = self.parse_traffic_data(prompt_to_send)
+            if traffic_data:
+                print(f"\n=== DONNÉES DE TRAFIC ANALYSÉES ===")
+                for key, value in traffic_data.items():
+                    print(f"- {key}: {value}")
+                print('='*30)
+        
         return prompt_to_send
+
+    def parse_traffic_data(self, data_string):
+        """
+        Parse a string containing traffic data into properly typed variables.
+        
+        Args:
+            data_string (str): JSON-like string containing traffic data
+        
+        Returns:
+            dict: Dictionary with properly typed traffic data
+        """
+        # Replace tuple notation with list notation for JSON parsing
+        cleaned_data = re.sub(r'\(([^)]+)\)', r'[\1]', data_string)
+        
+        # Parse the cleaned string as JSON
+        try:
+            data_dict = json.loads(cleaned_data)
+        except json.JSONDecodeError as e:
+            print(f"Error parsing JSON: {e}")
+            return None
+        
+        # Convert the values to the specified types
+        result = {
+            "typess": data_dict.get("typess", {"Conv": 0, "Elec": 1, "PHEB": 2}),
+            "v": float(data_dict.get("v", 0.0)),
+            "road_speed": float(data_dict.get("road_speed", 0.0)),
+            "slope": float(data_dict.get("slope", 0.0)),
+            "temperature": float(data_dict.get("temperature", 0.0)),
+            "passengers": float(data_dict.get("passengers", 0.0)),
+            "station_distance": tuple(int(x) for x in data_dict.get("station distance", [0, 0, 0])),
+            "queue": int(data_dict.get("queue", 0)),
+            "tls_program": [int(x) for x in data_dict.get("tls_program", [])],
+            "tls_index": int(data_dict.get("tls_index", 0)),
+            "tls_remaining_time": int(data_dict.get("tls_remaining time", 0))
+        }
+        
+        return result
+
+
 
 def red_agent(step):
     # Configuration
@@ -320,6 +368,5 @@ def red_agent(step):
     attack = trainer.run_step(use_attacker_model=True)
 
     return attack
-
 
 red_agent(1)
