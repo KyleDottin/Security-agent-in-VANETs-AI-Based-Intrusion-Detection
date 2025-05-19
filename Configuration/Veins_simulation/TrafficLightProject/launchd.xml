@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Copy necessary files -->
+    <copy file="traci.net.xml"/>
+    <copy file="traci.rou.xml"/>
+    <copy file="traci.nod.xml"/>
+    <copy file="traci.sumocfg" type="config"/>
+</launch>
