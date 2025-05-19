@@ -317,7 +317,7 @@ def red_agent(step):
 
     # Lancer une étape d'entraînement
     print(f"\nDémarrage de l'étape {step}...")
-    attack, evaluation_info = trainer.run_step(use_attacker_model=True)
+    attack = trainer.run_step(use_attacker_model=True)
 
     return attack
 
