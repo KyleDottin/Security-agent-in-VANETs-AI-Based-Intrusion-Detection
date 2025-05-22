@@ -127,3 +127,6 @@ async def simulate_attack(simulate_attack: SimulateAttack):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# Launch the server before
+# example of command : curl -X POST "http://localhost:8000/create_vehicle" -H "Content-Type: application/json" -d "{\"vehicle_id\":\"veh123\",\"vehicle_type\":\"car\",\"make\":\"Toyota\",\"model\":\"Corolla\",\"position_x\":100.5,\"position_y\":200.0,\"speed\":45.0}"
