@@ -21,3 +21,4 @@
 2025-05-22 11:00:50,799 - MCPClient - INFO - Disconnected from MCP server
 2025-05-22 11:01:12,609 - MCPClient - INFO - Connected to MCP server
 2025-05-22 11:01:12,612 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-22 11:10:10,956 - MCPClient - INFO - Disconnected from MCP server
