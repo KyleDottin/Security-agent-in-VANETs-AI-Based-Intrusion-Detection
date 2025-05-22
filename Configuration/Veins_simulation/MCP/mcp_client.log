@@ -1,0 +1,23 @@
+2025-05-22 10:32:54,541 - MCPClient - INFO - Connected to MCP server
+2025-05-22 10:32:54,545 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-22 10:35:13,268 - MCPClient - INFO - Processing query: Create a vehicle with ID car_001 of type sedan at position 100, 200
+2025-05-22 10:35:13,268 - MCPClient - INFO - Calling LLM
+2025-05-22 10:35:13,293 - MCPClient - ERROR - Error calling LLM: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+2025-05-22 10:35:13,294 - MCPClient - ERROR - Error processing query: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+2025-05-22 10:39:39,182 - MCPClient - INFO - Connected to MCP server
+2025-05-22 10:39:39,186 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-22 10:39:48,776 - MCPClient - INFO - Processing query: Create a vehicle with ID car_001 of type sedan at position 100, 200
+2025-05-22 10:39:48,776 - MCPClient - INFO - Calling LLM
+2025-05-22 10:39:49,081 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-22 10:39:49,081 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-22 10:40:54,112 - MCPClient - INFO - Processing query: Create a vehicle with ID car_001 of type sedan at position 100, 200
+2025-05-22 10:40:54,112 - MCPClient - INFO - Calling LLM
+2025-05-22 10:40:54,325 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-22 10:40:54,326 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-22 10:42:03,036 - MCPClient - INFO - Processing query: Create a vehicle with ID car_001 of type sedan at position 100, 200
+2025-05-22 10:42:03,037 - MCPClient - INFO - Calling LLM
+2025-05-22 10:42:03,335 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-22 10:42:03,335 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-22 11:00:50,799 - MCPClient - INFO - Disconnected from MCP server
+2025-05-22 11:01:12,609 - MCPClient - INFO - Connected to MCP server
+2025-05-22 11:01:12,612 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
