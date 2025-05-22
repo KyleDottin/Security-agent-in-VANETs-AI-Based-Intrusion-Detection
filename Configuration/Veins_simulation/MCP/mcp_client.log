@@ -22,3 +22,15 @@
 2025-05-22 11:01:12,609 - MCPClient - INFO - Connected to MCP server
 2025-05-22 11:01:12,612 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
 2025-05-22 11:10:10,956 - MCPClient - INFO - Disconnected from MCP server
+2025-05-22 12:50:57,258 - MCPClient - INFO - Connected to MCP server
+2025-05-22 12:50:57,262 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-22 12:53:26,607 - MCPClient - INFO - Disconnected from MCP server
+2025-05-22 12:54:40,579 - MCPClient - INFO - Connected to MCP server
+2025-05-22 12:54:40,584 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-22 12:55:30,609 - MCPClient - INFO - Disconnected from MCP server
+2025-05-22 12:57:24,964 - MCPClient - INFO - Connected to MCP server
+2025-05-22 12:57:24,968 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-22 13:00:35,817 - MCPClient - INFO - Disconnected from MCP server
+2025-05-22 13:06:06,655 - MCPClient - INFO - Connected to MCP server
+2025-05-22 13:06:06,660 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-22 13:06:48,921 - MCPClient - INFO - Disconnected from MCP server

@@ -22,10 +22,9 @@ logger = logging.getLogger(__name__)
 # Data models for your VANET simulation
 class Vehicle(BaseModel):
     vehicle_id: str
-    type: str
-    position: Dict[str, float]  # x, y coordinates
+    vehicle_type: str
+    position: Dict[str, float]
     speed: float
-    route: List[str]
     is_malicious: bool = False
 
 
@@ -66,8 +65,6 @@ async def handle_list_tools() -> list[types.Tool]:
                     "position_x": {"type": "number", "description": "X coordinate position"},
                     "position_y": {"type": "number", "description": "Y coordinate position"},
                     "speed": {"type": "number", "description": "Initial speed of the vehicle", "default": 0.0},
-                    "route": {"type": "array", "items": {"type": "string"}, "description": "List of road segments",
-                              "default": []}
                 },
                 "required": ["vehicle_id", "vehicle_type", "position_x", "position_y"]
             }
@@ -167,11 +164,11 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
 
 
 async def create_vehicle(
-        vehicle_id: str,
-        vehicle_type: str,
-        position_x: float,
-        position_y: float,
-        speed: float = 0.0,
+    vehicle_id: str,
+    vehicle_type: str,
+    position_x: float,
+    position_y: float,
+    speed: float = 0.0,
 ) -> Dict[str, Any]:
     """Create a new vehicle in the VANET simulation."""
     try:
@@ -183,10 +180,9 @@ async def create_vehicle(
 
         vehicle = Vehicle(
             vehicle_id=vehicle_id,
-            type=vehicle_type,
+            vehicle_type=vehicle_type,
             position={"x": position_x, "y": position_y},
-            speed=speed,
-            route=route or []
+            speed=speed
         )
 
         simulation_state.vehicles[vehicle_id] = vehicle
@@ -227,12 +223,12 @@ async def simulate_attack(
             attack_type=attack_type,
             target_vehicle_id=target_vehicle_id,
             description=description,
-            severity=min(max(severity, 1), 10)  # Clamp to 1-10
+            severity=min(max(severity, 1), 10)  # Clamp severity to 1-10
         )
 
         simulation_state.active_attacks[attack_id] = attack
 
-        # Mark target vehicle as under attack
+        # Mark target vehicle as malicious
         simulation_state.vehicles[target_vehicle_id].is_malicious = True
 
         logger.info(f"Simulated {attack_type} attack on vehicle {target_vehicle_id}")
@@ -289,7 +285,7 @@ async def detect_intrusion(vehicle_id: str) -> Dict[str, Any]:
         is_malicious = vehicle.is_malicious
         threat_level = "HIGH" if is_malicious else "LOW"
 
-        # Check if vehicle is involved in any active attacks
+        # Gather active attacks involving this vehicle
         active_attacks = [
             attack for attack in simulation_state.active_attacks.values()
             if attack.target_vehicle_id == vehicle_id
@@ -378,7 +374,6 @@ async def reset_simulation() -> Dict[str, Any]:
 
 async def main():
     """Main entry point for the MCP server."""
-    # Import here to avoid issues with event loop
     async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
         await server.run(
             read_stream,
