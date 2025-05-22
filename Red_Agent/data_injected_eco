@@ -1,4 +1,4 @@
--typess={"Conv": 0, "Elec": 1, "PHEB": 2}
+-typess=int (0: Conv, 1: Elec, 2: PHEB)
 -v=float (vitesse)
 -road_speed=float
 -slope=float
@@ -9,3 +9,6 @@
 -tls_program=liste int //list of duration time of traffic lights 
 -tls_index=int // index of the actual phase of the traffic light
 -tls_remaining time =int //remaining time of the actual phase of the traffic light
+
+
+[typess, v, road_speed, slope, Temperature, passengers, station_distance, queue, tls_program, tls_idx, tls_remaining_time]
