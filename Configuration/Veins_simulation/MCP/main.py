@@ -11,7 +11,7 @@ from pydantic_settings import BaseSettings
 load_dotenv()
 
 class Settings(BaseSettings):
-    server_script_path: str = r"C:\Users\tru89\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Veins_simulation\MCP\main.py"
+    server_script_path: str = r"C:\Users\tru89\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Veins_simulation\MCP\Server\main.py"
 
 settings = Settings()
 
@@ -56,9 +56,13 @@ class ToolCall(BaseModel):
 
 class Vehicle(BaseModel):
     vehicle_id: str
-    type: str
+    vehicle_type: str
     make: str
-    model: str # See what are the parameters on cars in sumo
+    model: str
+    position_x: float
+    position_y: float
+    speed: float = 0.0
+
 
 class AttackReport(BaseModel):
     attack_id: str
@@ -76,6 +80,16 @@ class SimulateAttack(BaseModel):
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Simulation API"}
+
+# Add an endpoint to process queries using the MCP client
+@app.post("/query")
+async def process_query(request: QueryRequest):
+    try:
+        client = app.state.client
+        messages = await client.process_query(request.query)
+        return {"messages": messages}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Endpoint to create a vehicle
 @app.post("/create_vehicle")
