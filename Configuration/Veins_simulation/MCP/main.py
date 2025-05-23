@@ -19,7 +19,7 @@ settings = Settings()
 async def lifespan(app: FastAPI):
     client = MCPClient()
     try:
-        connected = await client.connect_to_server(settings.server_script_path)
+        connected = await client.connect_to_server(settings.server_script_path) #Connection to the server
         if not connected:
             raise HTTPException(
                 status_code=500, detail="Failed to connect to MCP server"
@@ -97,7 +97,6 @@ async def create_vehicle(vehicle: Vehicle):
     try:
         # Use the Veins Python Bridge to create a vehicle in the simulation
         # result = veins_bridge.create_vehicle(vehicle.vehicle_id, vehicle.type)
-        # For now, just return the vehicle data for demonstration purposes
         return {"message": "Vehicle created successfully", "vehicle": vehicle}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -108,7 +107,6 @@ async def report_attack(attack_report: AttackReport):
     try:
         # Use the Veins Python Bridge to report an attack in the simulation
         # result = veins_bridge.report_attack(attack_report.attack_id, attack_report.vehicle_id, attack_report.agent_id, attack_report.details)
-        # For now, just return the attack report data for demonstration purposes
         return {"message": "Attack reported successfully", "attack_report": attack_report}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -119,7 +117,6 @@ async def simulate_attack(simulate_attack: SimulateAttack):
     try:
         # Use the Veins Python Bridge to simulate an attack in the simulation
         # result = veins_bridge.simulate_attack(simulate_attack.attack_id)
-        # For now, just return the simulate attack data for demonstration purposes
         return {"message": "Attack simulated successfully", "simulate_attack": simulate_attack}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -128,5 +125,5 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
-# Launch the server before
 # example of command : curl -X POST "http://localhost:8000/create_vehicle" -H "Content-Type: application/json" -d "{\"vehicle_id\":\"veh123\",\"vehicle_type\":\"car\",\"make\":\"Toyota\",\"model\":\"Corolla\",\"position_x\":100.5,\"position_y\":200.0,\"speed\":45.0}"
+

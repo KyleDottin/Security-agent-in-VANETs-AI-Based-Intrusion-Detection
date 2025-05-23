@@ -34,3 +34,104 @@
 2025-05-22 13:06:06,655 - MCPClient - INFO - Connected to MCP server
 2025-05-22 13:06:06,660 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
 2025-05-22 13:06:48,921 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:22:50,606 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:22:50,609 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:23:42,019 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:23:58,831 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:23:58,834 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:24:26,869 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:24:49,927 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:24:49,930 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:26:34,256 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:36:54,577 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:36:54,582 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:39:21,886 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:39:21,887 - MCPClient - INFO - Calling LLM
+2025-05-23 09:39:22,193 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:39:22,193 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:39:53,678 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:40:31,837 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:40:31,840 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:40:34,884 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:40:34,885 - MCPClient - INFO - Calling LLM
+2025-05-23 09:40:35,118 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:40:35,118 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:41:04,646 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:41:13,270 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:41:13,273 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:41:16,384 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:41:16,384 - MCPClient - INFO - Calling LLM
+2025-05-23 09:41:16,677 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:41:16,677 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:42:41,204 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:42:48,651 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:42:48,655 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:43:53,208 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:44:06,761 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:44:06,765 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:44:09,476 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:44:09,476 - MCPClient - INFO - Calling LLM
+2025-05-23 09:44:09,692 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:44:09,692 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:45:43,629 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:45:53,011 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:45:53,015 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:45:58,140 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:45:58,140 - MCPClient - INFO - Calling LLM
+2025-05-23 09:45:58,374 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:45:58,374 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:47:22,259 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:47:30,355 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:47:30,359 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:47:32,225 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:47:32,225 - MCPClient - INFO - Calling LLM
+2025-05-23 09:47:32,438 - MCPClient - ERROR - Error calling LLM: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:47:32,438 - MCPClient - ERROR - Error processing query: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}}
+2025-05-23 09:50:22,588 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:50:30,444 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:50:30,448 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:50:34,559 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:50:34,559 - MCPClient - INFO - Calling LLM
+2025-05-23 09:50:35,198 - MCPClient - ERROR - OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 09:50:35,198 - MCPClient - ERROR - Error calling LLM: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 09:50:35,198 - MCPClient - ERROR - Error processing query: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 09:52:18,651 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:52:24,154 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:52:24,157 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:52:26,822 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:52:26,822 - MCPClient - INFO - Calling LLM
+2025-05-23 09:52:27,513 - MCPClient - ERROR - OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 09:52:27,513 - MCPClient - ERROR - Error calling LLM: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 09:52:27,513 - MCPClient - ERROR - Error processing query: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 09:53:18,374 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 09:55:23,016 - MCPClient - INFO - Connected to MCP server
+2025-05-23 09:55:23,020 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 09:55:24,439 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 09:55:24,439 - MCPClient - INFO - Calling LLM
+2025-05-23 09:55:24,796 - MCPClient - ERROR - OpenRouter Error: 405 - 
+2025-05-23 09:55:24,796 - MCPClient - ERROR - Error calling LLM: OpenRouter Error: 405 - 
+2025-05-23 09:55:24,796 - MCPClient - ERROR - Error processing query: OpenRouter Error: 405 - 
+2025-05-23 09:59:44,657 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 10:06:44,748 - MCPClient - INFO - Connected to MCP server
+2025-05-23 10:06:44,751 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 10:06:53,874 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 10:07:01,553 - MCPClient - INFO - Connected to MCP server
+2025-05-23 10:07:01,557 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 10:07:05,321 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 10:07:05,321 - MCPClient - INFO - Calling LLM
+2025-05-23 10:07:06,005 - MCPClient - ERROR - OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 10:07:06,005 - MCPClient - ERROR - Error calling LLM: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 10:07:06,005 - MCPClient - ERROR - Error processing query: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 10:07:34,900 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 10:07:34,900 - MCPClient - INFO - Calling LLM
+2025-05-23 10:07:35,335 - MCPClient - ERROR - OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 10:07:35,336 - MCPClient - ERROR - Error calling LLM: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 10:07:35,336 - MCPClient - ERROR - Error processing query: OpenRouter Error: 401 - {"error":{"message":"No auth credentials found","code":401}}
+2025-05-23 10:15:57,430 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 10:16:08,723 - MCPClient - INFO - Connected to MCP server
+2025-05-23 10:16:08,728 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 10:16:19,159 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 10:16:19,159 - MCPClient - INFO - Calling LLM
+2025-05-23 10:17:19,452 - MCPClient - INFO - Processing query: Where are you recovering those information?
+2025-05-23 10:17:19,453 - MCPClient - INFO - Calling LLM
+2025-05-23 10:17:34,230 - MCPClient - INFO - Disconnected from MCP server
