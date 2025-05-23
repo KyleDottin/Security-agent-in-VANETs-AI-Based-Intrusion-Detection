@@ -41,10 +41,9 @@ This project simulates cyber attacks and defenses in VANETs through:
 ## Installation
 
 ### Prerequisites
-- Ubuntu 22.04 LTS (recommended)
 - Python 3.10+
-- SUMO 1.18
-- OMNeT++ 6.0
+- SUMO 1.22
+- OMNeT++ 6.0.3
 
 ### Setup
 1. **Install Veins Framework**
