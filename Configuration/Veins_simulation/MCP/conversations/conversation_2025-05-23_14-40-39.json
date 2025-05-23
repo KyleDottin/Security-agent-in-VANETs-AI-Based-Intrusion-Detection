@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What vehicles are currently in the simulation?"
+  },
+  {
+    "role": "assistant",
+    "content": ""
+  }
+]

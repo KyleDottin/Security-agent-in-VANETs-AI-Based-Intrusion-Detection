@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from mcp_client import MCPClient
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
-# from veins_python import VeinsPythonBridge  # Import the Veins Python Bridge
+# from veins_python import VeinsPythonBridge
 
 load_dotenv()
 
@@ -126,4 +126,4 @@ if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 # example of command : curl -X POST "http://localhost:8000/create_vehicle" -H "Content-Type: application/json" -d "{\"vehicle_id\":\"veh123\",\"vehicle_type\":\"car\",\"make\":\"Toyota\",\"model\":\"Corolla\",\"position_x\":100.5,\"position_y\":200.0,\"speed\":45.0}"
-
+# curl -X POST "http://localhost:8000/query" -H "Content-Type: application/json" -d "{\"query\": \"What vehicles are currently in the simulation?\"}"

@@ -135,3 +135,8 @@
 2025-05-23 10:17:19,452 - MCPClient - INFO - Processing query: Where are you recovering those information?
 2025-05-23 10:17:19,453 - MCPClient - INFO - Calling LLM
 2025-05-23 10:17:34,230 - MCPClient - INFO - Disconnected from MCP server
+2025-05-23 14:35:09,086 - MCPClient - INFO - Connected to MCP server
+2025-05-23 14:35:09,091 - MCPClient - INFO - Available tools: ['create_vehicle', 'simulate_attack', 'get_simulation_status', 'detect_intrusion', 'start_simulation', 'stop_simulation', 'reset_simulation']
+2025-05-23 14:40:32,817 - MCPClient - INFO - Processing query: What vehicles are currently in the simulation?
+2025-05-23 14:40:32,824 - MCPClient - INFO - Calling LLM
+2025-05-23 14:41:20,117 - MCPClient - INFO - Disconnected from MCP server
