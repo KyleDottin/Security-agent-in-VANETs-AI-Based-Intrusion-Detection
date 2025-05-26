@@ -32,7 +32,7 @@ This project simulates cyber attacks and defenses in VANETs through:
 
 | Category              | Technologies                                                                 |
 |-----------------------|------------------------------------------------------------------------------|
-| **Simulation**        | Veins 5.2, OMNeT++ 6.0, SUMO 1.18, Uxsim                                           |
+| **Simulation**        | Veins 5.3.1, OMNeT++ 6.0.3, SUMO 1.22                                         |
 | **AI/ML**            | TensorFlow/PyTorch, Scikit-learn, XGBoost                                   |
 | **MPC**              | MP-SPDZ, PySyft                                                             |
 | **Languages**         | C++ (OMNeT++ modules), Python 3.10+                                         |
