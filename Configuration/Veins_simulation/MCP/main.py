@@ -125,12 +125,9 @@ class ToolCall(BaseModel):
 
 class Vehicle(BaseModel):
     vehicle_id: str
-    vehicle_type: str
-    make: str
-    model: str
-    position_x: float
-    position_y: float
-    speed: float = 0.0
+    time_departure: float
+    road_depart: str
+    road_arrival: str
 
 
 class AttackReport(BaseModel):
@@ -245,5 +242,5 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
-# example of command : curl -X POST "http://localhost:8000/create_vehicle" -H "Content-Type: application/json" -d "{\"vehicle_id\":\"veh123\",\"vehicle_type\":\"car\",\"make\":\"Toyota\",\"model\":\"Corolla\",\"position_x\":100.5,\"position_y\":200.0,\"speed\":45.0}"
+# example of command : curl -X POST "http://localhost:8000/create_vehicle" \ -H "Content-Type: application/json" \ -d "{\"vehicle_id\":\"veh123\",\"time_departure\":10.5,\"road_depart\":\"E1\",\"road_arrival\":\"-E0.46\"}"
 # curl -X POST "http://localhost:8000/query" -H "Content-Type: application/json" -d "{\"query\": \"What vehicles are currently in the simulation?\"}"
