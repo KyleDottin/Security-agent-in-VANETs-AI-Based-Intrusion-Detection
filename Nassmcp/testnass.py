@@ -11,29 +11,35 @@ import os
 import threading
 
 
+##global
 running = False
 simulation_thread = None
-
 traci_connection = None
 step_counter = 0
 
 
-#Functions
-def add_vehicle_to_xml(vehicle_id, route_id, type_id, xml_path):
-    # Si le fichier n'existe pas, on le crée avec une racine
-    if not os.path.exists(xml_path):
-        root = ET.Element("additional")
+# Functions
+def add_vehicle_to_route_file(vehicle_id, depart_time, from_edge, to_edge, route_file_path):
+    if not os.path.exists(route_file_path):
+        root = ET.Element("routes")
         tree = ET.ElementTree(root)
-    else:
-        tree = ET.parse(xml_path)
-        root = tree.getroot()
+        tree.write(route_file_path)
 
-    # Crée un nouvel élément vehicle
-    vehicle = ET.Element("vehicle", id=vehicle_id, type=type_id, route=route_id, depart="0")
-    root.append(vehicle)
+    tree = ET.parse(route_file_path)
+    root = tree.getroot()
 
-    # Sauvegarde
-    tree.write(xml_path)
+    trip_attribs = {
+        "id": vehicle_id,
+        "depart": str(depart_time),
+        "from": from_edge,
+        "to": to_edge
+    }
+    trip = ET.Element("trip", trip_attribs)
+    root.append(trip)
+
+    tree.write(route_file_path, encoding="UTF-8", xml_declaration=True)
+
+
 
 def simulation_loop():
     global running, step_counter
@@ -78,30 +84,20 @@ def simulation_loop():
 
 app = FastAPI()
 
+##curl -X POST http://127.0.0.1:8000/add_vehicle?vehicle_id=veh2&depart=5.0&from_edge=E1&to_edge=-E0.46"
+@app.post("/add_vehicle")
+def add_vehicle(vehicle_id: str, depart: float, from_edge: str, to_edge: str):
+    route_file_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
+
+    try:
+        add_vehicle_to_route_file(vehicle_id, depart, from_edge, to_edge, route_file_path)
+        return {"status": f"Vehicle {vehicle_id} added to route file."}
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Simulation API"}
-
-@app.post("/create_vehicle")
-def create_vehicle():
-    try:
-        vehicle_id = "veh1"
-        route_id = "route0"
-        type_id = "car"
-        xml_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\dynamic_vehicles.add.xml"
-
-        # 1. Ajout au XML
-        add_vehicle_to_xml(vehicle_id, route_id, type_id, xml_path)
-
-        # 2. Ajout à la simulation en direct via TraCI
-        traci.vehicle.add(vehID=vehicle_id, routeID=route_id, typeID=type_id)
-        traci.vehicle.setColor(vehicle_id, (255, 0, 0))
-        traci.vehicle.setSpeed(vehicle_id, 10.0)
-
-        return {"status": f"Vehicle {vehicle_id} added and saved"}
-    except Exception as e:
-        return {"error": str(e)}
 
 @app.post("/create_agent")
 def create_agent():
@@ -156,62 +152,4 @@ def stop_simulation():
     global running
     running = False
     return {"status": "Simulation stopped"}
-
-# @app.post("/step")
-# def step():
-#     global traci_connection, step_counter
-
-#     if traci_connection is None:
-#         return {"error": "Not connected to TraCI"}
-
-#     try:
-#         traci.simulationStep()
-#         step_counter += 1
-
-#         vehicles_data = []
-#         vehicle_ids = traci.vehicle.getIDList()
-
-#         for veh_id in vehicle_ids:
-#             speed = traci.vehicle.getSpeed(veh_id)
-#             pos = traci.vehicle.getPosition(veh_id)
-#             angle = traci.vehicle.getAngle(veh_id)
-#             road_id = traci.vehicle.getRoadID(veh_id)
-#             veh_type = traci.vehicle.getTypeID(veh_id)
-#             accel = traci.vehicle.getAcceleration(veh_id)
-#             length = traci.vehicle.getLength(veh_id)
-#             color = traci.vehicle.getColor(veh_id)
-#             next_tls = traci.vehicle.getNextTLS(veh_id)
-
-#             tls_info = None
-#             if next_tls:
-#                 tls_id, dist, state, _ = next_tls[0]
-#                 tls_info = {
-#                     "tls_id": tls_id,
-#                     "distance": dist,
-#                     "state": state
-#                 }
-
-#             vehicles_data.append({
-#                 "id": veh_id,
-#                 "position": pos,
-#                 "speed": speed,
-#                 "acceleration": accel,
-#                 "angle": angle,
-#                 "road_id": road_id,
-#                 "vehicle_type": veh_type,
-#                 "length": length,
-#                 "color": color,
-#                 "next_traffic_light": tls_info
-#             })
-
-#         return {
-#             "step": step_counter,
-#             "simulation_time": traci.simulation.getTime(),
-#             "vehicles": vehicles_data
-#         }
-
-#     except Exception as e:
-#         return {"error": str(e)}
-
-
 
