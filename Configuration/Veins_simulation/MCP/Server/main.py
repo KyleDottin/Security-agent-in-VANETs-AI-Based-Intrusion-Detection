@@ -54,6 +54,7 @@ server = Server("vanet-security-mcp")
 async def handle_list_tools() -> list[types.Tool]:
     """List available tools."""
     return [
+# vehicle id, time departure, road depart, road arrival
         types.Tool(
             name="create_vehicle",
             description="Create a new vehicle in the VANET simulation",
@@ -165,10 +166,9 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
 
 async def create_vehicle(
     vehicle_id: str,
-    vehicle_type: str,
-    position_x: float,
-    position_y: float,
-    speed: float = 0.0,
+    time_departure: float,
+    road_depart: str,
+    road_arrival: str,
 ) -> Dict[str, Any]:
     """Create a new vehicle in the VANET simulation."""
     try:
@@ -180,14 +180,14 @@ async def create_vehicle(
 
         vehicle = Vehicle(
             vehicle_id=vehicle_id,
-            vehicle_type=vehicle_type,
-            position={"x": position_x, "y": position_y},
-            speed=speed
+            vehicle_type="car",  # default value since vehicle_type is no longer input
+            position={"x": 0.0, "y": 0.0},  # default position
+            speed=0.0  # default speed
         )
 
         simulation_state.vehicles[vehicle_id] = vehicle
 
-        logger.info(f"Created vehicle {vehicle_id} at position ({position_x}, {position_y})")
+        logger.info(f"Created vehicle {vehicle_id} with departure at {time_departure} from {road_depart} to {road_arrival}")
 
         return {
             "success": True,
