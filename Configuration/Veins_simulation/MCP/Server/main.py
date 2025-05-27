@@ -388,6 +388,6 @@ async def main():
             ),
         )
 
-
+# If I want to LLM to also interact with sumo, start and stop simulation, I need to implement them here
 if __name__ == "__main__":
     asyncio.run(main())
