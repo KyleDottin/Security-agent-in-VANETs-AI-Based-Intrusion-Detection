@@ -10,7 +10,7 @@ import os
 
 import threading
 
-latest_data = None
+
 running = False
 simulation_thread = None
 
@@ -36,16 +36,15 @@ def add_vehicle_to_xml(vehicle_id, route_id, type_id, xml_path):
     tree.write(xml_path)
 
 def simulation_loop():
-    global latest_data, running, step_counter
+    global running, step_counter
 
     while running and traci_connection is not None:
         try:
             traci.simulationStep()
+            print(f"\n--- Simulation Step: {step_counter} ---")
             step_counter += 1
 
-            vehicles_data = []
             vehicle_ids = traci.vehicle.getIDList()
-
             for veh_id in vehicle_ids:
                 speed = traci.vehicle.getSpeed(veh_id)
                 pos = traci.vehicle.getPosition(veh_id)
@@ -57,36 +56,24 @@ def simulation_loop():
                 color = traci.vehicle.getColor(veh_id)
                 next_tls = traci.vehicle.getNextTLS(veh_id)
 
-                tls_info = None
+                print(f"Vehicle ID: {veh_id}")
+                print(f"  Position: {pos}")
+                print(f"  Speed: {speed:.2f} m/s")
+                print(f"  Acceleration: {accel:.2f} m/s²")
+                print(f"  Angle: {angle:.2f}°")
+                print(f"  Road ID: {road_id}")
+                print(f"  Vehicle Type: {veh_type}")
+                print(f"  Length: {length:.2f} m")
+                print(f"  Color: {color}")
                 if next_tls:
                     tls_id, dist, state, _ = next_tls[0]
-                    tls_info = {"tls_id": tls_id, "distance": dist, "state": state}
-
-                vehicles_data.append({
-                    "id": veh_id,
-                    "position": pos,
-                    "speed": speed,
-                    "acceleration": accel,
-                    "angle": angle,
-                    "road_id": road_id,
-                    "vehicle_type": veh_type,
-                    "length": length,
-                    "color": color,
-                    "next_traffic_light": tls_info
-                })
-
-            latest_data = {
-                "step": step_counter,
-                "simulation_time": traci.simulation.getTime(),
-                "vehicles": vehicles_data
-            }
-
-            time.sleep(0.1)  # tu peux ajuster la vitesse ici
+                    print(f"  Next traffic light ID: {tls_id}, Distance: {dist:.2f} m, Light State: {state}")
+            
+            time.sleep(0.05)  # ou moins si tu veux que ça aille plus vite
 
         except Exception as e:
-            latest_data = {"error": str(e)}
+            print("Erreur dans la boucle de simulation:", e)
             running = False
-
 
 
 app = FastAPI()
@@ -150,16 +137,12 @@ def start_sumo_and_connect():
 
 @app.post("/start_simulation")
 def start_simulation():
-    global running, simulation_thread, step_counter, latest_data
+    global running, simulation_thread, step_counter
 
     if running:
         return {"status": "Simulation already running"}
 
-    if traci_connection is None:
-        return {"error": "Not connected to TraCI"}
-
     step_counter = 0
-    latest_data = None
     running = True
 
     simulation_thread = threading.Thread(target=simulation_loop, daemon=True)
@@ -168,19 +151,11 @@ def start_simulation():
     return {"status": "Simulation started"}
 
 
-@app.get("/latest_state")
-def get_latest_state():
-    if latest_data is None:
-        return {"error": "No data available"}
-    return latest_data
-
-
 @app.post("/stop_simulation")
 def stop_simulation():
     global running
     running = False
     return {"status": "Simulation stopped"}
-
 
 # @app.post("/step")
 # def step():
