@@ -4,14 +4,21 @@ import sys
 import time
 import subprocess
 sys.path.append(r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\veins_python")
-
-
-
-
 from fastapi import FastAPI
 import xml.etree.ElementTree as ET
 import os
 
+import threading
+
+latest_data = None
+running = False
+simulation_thread = None
+
+traci_connection = None
+step_counter = 0
+
+
+#Functions
 def add_vehicle_to_xml(vehicle_id, route_id, type_id, xml_path):
     # Si le fichier n'existe pas, on le crée avec une racine
     if not os.path.exists(xml_path):
@@ -27,6 +34,61 @@ def add_vehicle_to_xml(vehicle_id, route_id, type_id, xml_path):
 
     # Sauvegarde
     tree.write(xml_path)
+
+def simulation_loop():
+    global latest_data, running, step_counter
+
+    while running and traci_connection is not None:
+        try:
+            traci.simulationStep()
+            step_counter += 1
+
+            vehicles_data = []
+            vehicle_ids = traci.vehicle.getIDList()
+
+            for veh_id in vehicle_ids:
+                speed = traci.vehicle.getSpeed(veh_id)
+                pos = traci.vehicle.getPosition(veh_id)
+                angle = traci.vehicle.getAngle(veh_id)
+                road_id = traci.vehicle.getRoadID(veh_id)
+                veh_type = traci.vehicle.getTypeID(veh_id)
+                accel = traci.vehicle.getAcceleration(veh_id)
+                length = traci.vehicle.getLength(veh_id)
+                color = traci.vehicle.getColor(veh_id)
+                next_tls = traci.vehicle.getNextTLS(veh_id)
+
+                tls_info = None
+                if next_tls:
+                    tls_id, dist, state, _ = next_tls[0]
+                    tls_info = {"tls_id": tls_id, "distance": dist, "state": state}
+
+                vehicles_data.append({
+                    "id": veh_id,
+                    "position": pos,
+                    "speed": speed,
+                    "acceleration": accel,
+                    "angle": angle,
+                    "road_id": road_id,
+                    "vehicle_type": veh_type,
+                    "length": length,
+                    "color": color,
+                    "next_traffic_light": tls_info
+                })
+
+            latest_data = {
+                "step": step_counter,
+                "simulation_time": traci.simulation.getTime(),
+                "vehicles": vehicles_data
+            }
+
+            time.sleep(0.1)  # tu peux ajuster la vitesse ici
+
+        except Exception as e:
+            latest_data = {"error": str(e)}
+            running = False
+
+
+
 app = FastAPI()
 
 
@@ -67,40 +129,114 @@ def simulate_attack():
     return {"status": "attack simulated"}
 
 
-@app.post("/start_sumo")
-def start_sumo():
-    try:
-        sumocfg_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
-        sumo_cmd = [
-            "sumo-gui",  # ou "sumo" si tu veux sans l'interface
-            "-c", sumocfg_path,
-            "--remote-port", "53517"
-        ]
 
-        # Démarre SUMO en tant que sous-processus
-        subprocess.Popen(sumo_cmd)
-        time.sleep(2)  # attend que SUMO démarre
-        traci.init(port=53517)  # essaie de se connecter sur le bon port
+@app.post("/SUMO")
+def start_sumo_and_connect():
+    global traci_connection
+    sumocfg_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
+    sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
+    port = 53517
+    cmd = [
+        sumo_binary,
+        "-c", sumocfg_path,
+        "--step-length", "0.05",
+        "--delay", "1000",
+        "--lateral-resolution", "0.1"
+    ]
 
-        return {"status": "SUMO started and connected to TraCI"}
-    except Exception as e:
-        return {"error": str(e)}
+    traci_connection = traci.start(cmd, port=port)
+    return {"status": "SUMO started and TraCI connected"}
 
-@app.post("/simulate_veins")
-def simulate_veins():
-    try:
-        # Connexion au serveur Veins (OMNeT++ simulé, vérifier port)
-        vc = VeinsClient(port=12345)  # adapte le port au besoin
-        vc.connect()
-        time.sleep(1)  # laisse le temps à la connexion
 
-        node_id = 1  # ID du véhicule dont on veut la position
+@app.post("/start_simulation")
+def start_simulation():
+    global running, simulation_thread, step_counter, latest_data
 
-        # Récupérer la position (x, y) du node_id dans Veins
-        position = vc.get_position(node_id)
+    if running:
+        return {"status": "Simulation already running"}
 
-        vc.close()  # fermer la connexion proprement
+    if traci_connection is None:
+        return {"error": "Not connected to TraCI"}
 
-        return {"status": "Veins simulation triggered", "vehicle_position": position}
-    except Exception as e:
-        return {"error": str(e)}
+    step_counter = 0
+    latest_data = None
+    running = True
+
+    simulation_thread = threading.Thread(target=simulation_loop, daemon=True)
+    simulation_thread.start()
+
+    return {"status": "Simulation started"}
+
+
+@app.get("/latest_state")
+def get_latest_state():
+    if latest_data is None:
+        return {"error": "No data available"}
+    return latest_data
+
+
+@app.post("/stop_simulation")
+def stop_simulation():
+    global running
+    running = False
+    return {"status": "Simulation stopped"}
+
+
+# @app.post("/step")
+# def step():
+#     global traci_connection, step_counter
+
+#     if traci_connection is None:
+#         return {"error": "Not connected to TraCI"}
+
+#     try:
+#         traci.simulationStep()
+#         step_counter += 1
+
+#         vehicles_data = []
+#         vehicle_ids = traci.vehicle.getIDList()
+
+#         for veh_id in vehicle_ids:
+#             speed = traci.vehicle.getSpeed(veh_id)
+#             pos = traci.vehicle.getPosition(veh_id)
+#             angle = traci.vehicle.getAngle(veh_id)
+#             road_id = traci.vehicle.getRoadID(veh_id)
+#             veh_type = traci.vehicle.getTypeID(veh_id)
+#             accel = traci.vehicle.getAcceleration(veh_id)
+#             length = traci.vehicle.getLength(veh_id)
+#             color = traci.vehicle.getColor(veh_id)
+#             next_tls = traci.vehicle.getNextTLS(veh_id)
+
+#             tls_info = None
+#             if next_tls:
+#                 tls_id, dist, state, _ = next_tls[0]
+#                 tls_info = {
+#                     "tls_id": tls_id,
+#                     "distance": dist,
+#                     "state": state
+#                 }
+
+#             vehicles_data.append({
+#                 "id": veh_id,
+#                 "position": pos,
+#                 "speed": speed,
+#                 "acceleration": accel,
+#                 "angle": angle,
+#                 "road_id": road_id,
+#                 "vehicle_type": veh_type,
+#                 "length": length,
+#                 "color": color,
+#                 "next_traffic_light": tls_info
+#             })
+
+#         return {
+#             "step": step_counter,
+#             "simulation_time": traci.simulation.getTime(),
+#             "vehicles": vehicles_data
+#         }
+
+#     except Exception as e:
+#         return {"error": str(e)}
+
+
+
