@@ -77,7 +77,7 @@ def simulation_loop():
                 "vehicles": vehicles_data
             }
 
-            time.sleep(0.1)  # tu peux ajuster la vitesse ici
+            time.sleep(0.1)
 
         except Exception as e:
             latest_data = {"error": str(e)}
