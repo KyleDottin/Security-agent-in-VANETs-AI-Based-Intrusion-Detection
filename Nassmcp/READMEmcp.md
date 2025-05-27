@@ -1,31 +1,22 @@
-🚀 Lancer le serveur FastAPI
-1. Ouvre un terminal dans le dossier du projet
-powershell
-Copier
-Modifier
-cd C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection
-2. Active l’environnement virtuel
-✅ En PowerShell :
-powershell
-Copier
-Modifier
-.\venv\Scripts\activate
-💡 Si tu obtiens une erreur liée à l’exécution des scripts, exécute d'abord :
+Pour lancer le serveur FastAPI
 
-powershell
-Copier
-Modifier
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-✅ Ou en CMD :
-cmd
-Copier
-Modifier
+1. Ouvre un terminal dans le dossier du projet
+
+cd C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Nassmcp
+
+2. Active l’environnement virtuel
+
+En CMD :
 venv\Scripts\activate.bat
+
 3. Lance le serveur FastAPI
-bash
-Copier
-Modifier
-uvicorn testnass:app --reload
+
+uvicorn testnass:app --reload OU  python -m uvicorn testnass:app --reload
+
+
+
+
+
 🔗 Accès à l'API
 API root : http://127.0.0.1:8000
 
