@@ -11,6 +11,9 @@ from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 import os
 import xml.etree.ElementTree as ET
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
 # from veins_python import VeinsPythonBridge
 
 load_dotenv()
@@ -177,10 +180,11 @@ class SimulateAttack(BaseModel):
 # Initialize the Veins Python Bridge
 # veins_bridge = VeinsPythonBridge()
 
-# Root endpoint
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Simulation API"}
+
+@app.get("/", response_class=FileResponse)
+def serve_index():
+    return FileResponse("index.html")
+
 
 # Add an endpoint to process queries using the MCP client
 @app.post("/query")
