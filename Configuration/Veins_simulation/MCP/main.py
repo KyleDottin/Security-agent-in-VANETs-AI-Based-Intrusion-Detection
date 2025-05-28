@@ -180,7 +180,7 @@ class SimulateAttack(BaseModel):
 # Initialize the Veins Python Bridge
 # veins_bridge = VeinsPythonBridge()
 
-
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 @app.get("/", response_class=FileResponse)
 def serve_index():
     return FileResponse("frontend/index.html")
