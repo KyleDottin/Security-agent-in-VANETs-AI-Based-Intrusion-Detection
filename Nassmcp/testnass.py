@@ -2,11 +2,12 @@ import traci
 import sumolib
 import sys
 import time
-import subprocess
 import threading
 import xml.etree.ElementTree as ET
 import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 sys.path.append(r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\veins_python")
 
@@ -16,6 +17,13 @@ simulation_thread = None
 traci_connection = None
 step_counter = 0
 sumo_process = None
+
+# Pydantic model for /add_vehicle
+class Vehicle(BaseModel):
+    vehicle_id: str
+    depart: float
+    from_edge: str
+    to_edge: str
 
 # Functions
 def add_vehicle_to_route_file(vehicle_id, depart_time, from_edge, to_edge, route_file_path):
@@ -81,55 +89,70 @@ def simulation_loop():
 # FastAPI app
 app = FastAPI()
 
-@app.post("/clear_simulation")
-def clear_simulation():
-    global running, traci_connection, simulation_thread, step_counter, sumo_process
+# CORS middleware (allow all origins for dev, restrict for prod)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    try:
-        # Stop the current simulation
-        running = False
-        if simulation_thread and simulation_thread.is_alive():
-            simulation_thread.join(timeout=2)
-
-        if traci_connection:
-            print(f"Type of traci_connection: {type(traci_connection)}")  # Debugging statement
-            print(f"Value of traci_connection: {traci_connection}")  # Debugging statement
-            try:
-                if hasattr(traci_connection, 'close'):
-                    traci_connection.close()
-                else:
-                    print("traci_connection does not have a 'close' attribute")
-            except Exception as e:
-                print(f"Error closing traci_connection: {e}")
-            traci_connection = None
-
-        try:
-            if traci.isLoaded():
-                traci.close()
-        except Exception as e:
-            print(f"Error closing traci: {e}")
-
-        if sumo_process:
-            sumo_process.terminate()
-            sumo_process.wait(timeout=5)
-            sumo_process = None
-
-        step_counter = 0
-
-        # Reset route file to initial state without added vehicles
-        route_file_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
-        route_content = '''<?xml version='1.0' encoding='UTF-8'?>
+basic_content = '''<?xml version='1.0' encoding='UTF-8'?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
     <trip id="v0" depart="0.00" from="E1" to="-E0.46" />
     <trip id="v1" depart="0.00" from="E0" to="E00" />
 </routes>'''
-        with open(route_file_path, "w", encoding="utf-8") as f:
-            f.write(route_content)
 
-        # Restart SUMO with the reset route file
-        sumocfg_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
-        sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
-        port = 53517
+@app.post("/clear_simulation")
+def clear_simulation():
+    global running, traci_connection, simulation_thread, step_counter, sumo_process
+
+    route_file_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
+    sumocfg_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
+    sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
+    port = 53517
+
+    try:
+        if running:
+            running = False
+            if simulation_thread and simulation_thread.is_alive():
+                simulation_thread.join(timeout=2)
+
+        # Tenter de fermer la connexion TraCI
+        try:
+            # TraCI singleton close, assure la fermeture complète
+            import traci
+            traci.close()
+        except Exception as e:
+            print(f"Warning: Error closing TraCI: {e}")
+
+        # Fermer notre instance si besoin
+        if traci_connection is not None:
+            try:
+                traci_connection.close()
+            except Exception as e:
+                print(f"Warning: Error closing traci_connection: {e}")
+            traci_connection = None
+
+        # Fermer le process SUMO
+        if sumo_process:
+            try:
+                sumo_process.terminate()
+                sumo_process.wait(timeout=5)
+            except Exception as e:
+                print(f"Warning: Error terminating SUMO process: {e}")
+            sumo_process = None
+
+        # Petit délai pour s'assurer que le port est libéré
+        time.sleep(0.5)
+
+        # Reset compteur et fichier route
+        step_counter = 0
+        with open(route_file_path, "w", encoding="utf-8") as f:
+            f.write(basic_content)
+
+        # Redémarrage SUMO
         cmd = [
             sumo_binary,
             "-c", sumocfg_path,
@@ -139,16 +162,15 @@ def clear_simulation():
         ]
 
         conn, proc = traci.start(cmd, port=port)
-        print(f"Type of conn: {type(conn)}")  # Debugging statement
-        print(f"Value of conn: {conn}")  # Debugging statement
         traci_connection = conn
         sumo_process = proc
 
+        # Redémarre la simulation
+        running = True
         simulation_thread = threading.Thread(target=simulation_loop, daemon=True)
         simulation_thread.start()
-        running = True
 
-        return {"status": "Simulation cleared and restarted"}
+        return {"status": "Simulation cleared, route file reset, and SUMO restarted."}
 
     except Exception as e:
         return {"error": str(e)}
@@ -156,12 +178,12 @@ def clear_simulation():
 
 
 @app.post("/add_vehicle")
-def add_vehicle(vehicle_id: str, depart: float, from_edge: str, to_edge: str):
+def add_vehicle(vehicle: Vehicle):
     route_file_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
 
     try:
-        add_vehicle_to_route_file(vehicle_id, depart, from_edge, to_edge, route_file_path)
-        return {"status": f"Vehicle {vehicle_id} added to route file."}
+        add_vehicle_to_route_file(vehicle.vehicle_id, vehicle.depart, vehicle.from_edge, vehicle.to_edge, route_file_path)
+        return {"status": f"Vehicle {vehicle.vehicle_id} added to route file."}
     except Exception as e:
         return {"error": str(e)}
 
