@@ -183,7 +183,7 @@ class SimulateAttack(BaseModel):
 
 @app.get("/", response_class=FileResponse)
 def serve_index():
-    return FileResponse("index.html")
+    return FileResponse("frontend/index.html")
 
 
 # Add an endpoint to process queries using the MCP client
