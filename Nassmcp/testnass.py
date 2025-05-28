@@ -84,6 +84,42 @@ def simulation_loop():
 
 app = FastAPI()
 
+
+@app.post("/clear_simulation")
+def clear_simulation():
+    global running, traci_connection, simulation_thread, step_counter
+
+    try:
+        # Stop simulation loop
+        running = False
+        if simulation_thread and simulation_thread.is_alive():
+            simulation_thread.join(timeout=2)
+
+        # Close TraCI connection if open
+        if traci_connection is not None:
+            traci_connection.close()
+            traci_connection = None
+
+        # Reset simulation step counter
+        step_counter = 0
+
+        # Rewrite the route file
+        route_file_path = r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
+        route_content = '''<?xml version='1.0' encoding='UTF-8'?> 
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <trip id="v0" depart="0.00" from="E1" to="-E0.46" />
+    <trip id="v1" depart="0.00" from="E0" to="E00" />
+</routes>'''
+
+        with open(route_file_path, "w", encoding="utf-8") as f:
+            f.write(route_content)
+
+        return {"status": "Simulation cleared and route file reset"}
+
+    except Exception as e:
+        return {"error": str(e)}
+    
+    
 ##curl -X POST http://127.0.0.1:8000/add_vehicle?vehicle_id=veh2&depart=5.0&from_edge=E1&to_edge=-E0.46"
 @app.post("/add_vehicle")
 def add_vehicle(vehicle_id: str, depart: float, from_edge: str, to_edge: str):
