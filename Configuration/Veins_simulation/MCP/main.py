@@ -271,12 +271,32 @@ def clear_route_file():
     path1 = r"C:\Users"
     path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
     route_file_path = path1 + f"\{username}" + path2
+    global traci_connection, running
 
     try:
-        reset_route_file_to_basic(route_file_path,basic_content)
+        # Stop the simulation if it's running
+        if running:
+            running = False
+            if simulation_thread and simulation_thread.is_alive():
+                simulation_thread.join(timeout=2)  # Wait up to 2 seconds for thread to finish
+
+        # Close TraCI connection and SUMO simulation
+        if traci_connection is not None:
+            try:
+                traci.close()
+            except Exception as traci_error:
+                print(f"Warning: Error closing TraCI connection: {traci_error}")
+            traci_connection = None
+
+        # Reset the route file
+        reset_route_file_to_basic(route_file_path, basic_content)
         return {"status": "Route file cleared and reset to basic version with vehicles v0 and v1"}
+
     except Exception as e:
         return {"error": str(e)}
+
+
+
 
 if __name__ == "__main__":
     import uvicorn
