@@ -10,6 +10,10 @@ from mcp_client import MCPClient
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 import os
+import xml.etree.ElementTree as ET
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
 # from veins_python import VeinsPythonBridge
 
 load_dotenv()
@@ -24,7 +28,11 @@ username = os.getlogin()
 path1 =r"C:\Users"
 path2=r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
 path_conf=path1+f"\{username}"+path2
-
+path1 = r"C:\Users"
+path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
+route_file_path = path1 + f"\{username}" + path2
+with open(route_file_path, "r", encoding="utf-8") as file:
+    basic_content = file.read()
 
 class Settings(BaseSettings):
     server_script_path: str = r"C:\Users\tru89\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Veins_simulation\MCP\Server\main.py"
@@ -83,6 +91,36 @@ def simulation_loop():
             latest_data = {"error": str(e)}
             running = False
 
+def add_vehicle_to_route_file(vehicle_id, depart_time, from_edge, to_edge, route_file_path):
+    if not os.path.exists(route_file_path):
+        root = ET.Element("routes")
+        tree = ET.ElementTree(root)
+        tree.write(route_file_path)
+
+    tree = ET.parse(route_file_path)
+    root = tree.getroot()
+
+    trip_attribs = {
+        "id": vehicle_id,
+        "depart": str(depart_time),
+        "from": from_edge,
+        "to": to_edge
+    }
+    trip = ET.Element("trip", trip_attribs)
+    root.append(trip)
+
+    tree.write(route_file_path, encoding="UTF-8", xml_declaration=True)
+
+
+def reset_route_file_to_basic(route_file_path,basic_content):
+    """Reset the route file to its basic version with only the original 2 vehicles"""
+
+    try:
+        with open(route_file_path, 'w', encoding='utf-8') as file:
+            file.write(basic_content)
+        return True
+    except Exception as e:
+        raise Exception(f"Failed to reset route file: {str(e)}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -142,10 +180,11 @@ class SimulateAttack(BaseModel):
 # Initialize the Veins Python Bridge
 # veins_bridge = VeinsPythonBridge()
 
-# Root endpoint
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Simulation API"}
+
+@app.get("/", response_class=FileResponse)
+def serve_index():
+    return FileResponse("frontend/index.html")
+
 
 # Add an endpoint to process queries using the MCP client
 @app.post("/query")
@@ -160,12 +199,12 @@ async def process_query(request: QueryRequest):
 # Endpoint to create a vehicle
 @app.post("/create_vehicle")
 async def create_vehicle(vehicle: Vehicle):
+
     try:
-        # Use the Veins Python Bridge to create a vehicle in the simulation
-        # result = veins_bridge.create_vehicle(vehicle.vehicle_id, vehicle.type)
-        return {"message": "Vehicle created successfully", "vehicle": vehicle}
+        add_vehicle_to_route_file(vehicle.vehicle_id, vehicle.time_departure, vehicle.road_depart, vehicle.road_arrival, route_file_path)
+        return {"status": f"Vehicle {Vehicle.vehicle_id} added to route file."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"error": str(e)}
 
 # Endpoint to report an attack
 @app.post("/report_attack")
@@ -223,14 +262,6 @@ def start_simulation():
 
     return {"status": "Simulation started"}
 
-
-@app.get("/latest_state")
-def get_latest_state():
-    if latest_data is None:
-        return {"error": "No data available"}
-    return latest_data
-
-
 @app.post("/stop_simulation")
 def stop_simulation():
     global running
@@ -238,9 +269,42 @@ def stop_simulation():
     return {"status": "Simulation stopped"}
 
 
+@app.post("/clear")
+def clear_route_file():
+    """Reset the route file to its basic version with only v0 and v1 vehicles"""
+    path1 = r"C:\Users"
+    path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
+    route_file_path = path1 + f"\{username}" + path2
+    global traci_connection, running
+
+    try:
+        # Stop the simulation if it's running
+        if running:
+            running = False
+            if simulation_thread and simulation_thread.is_alive():
+                simulation_thread.join(timeout=2)  # Wait up to 2 seconds for thread to finish
+
+        # Close TraCI connection and SUMO simulation
+        if traci_connection is not None:
+            try:
+                traci.close()
+            except Exception as traci_error:
+                print(f"Warning: Error closing TraCI connection: {traci_error}")
+            traci_connection = None
+
+        # Reset the route file
+        reset_route_file_to_basic(route_file_path, basic_content)
+        return {"status": "Route file cleared and reset to basic version with vehicles v0 and v1"}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
-# example of command : curl -X POST "http://localhost:8000/create_vehicle" \ -H "Content-Type: application/json" \ -d "{\"vehicle_id\":\"veh123\",\"time_departure\":10.5,\"road_depart\":\"E1\",\"road_arrival\":\"-E0.46\"}"
+# example of command : curl -X POST "http://localhost:8000/create_vehicle" \ -H "Content-Type: application/json" \ -d "{\"vehicle_id\":\"v2\",\"time_departure\":5.0,\"road_depart\":\"E1\",\"road_arrival\":\"-E0.46\"}"
 # curl -X POST "http://localhost:8000/query" -H "Content-Type: application/json" -d "{\"query\": \"What vehicles are currently in the simulation?\"}"
