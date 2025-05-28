@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Simulation Control Panel</title>
-    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="icon" href="/static/favicon.png" type="image/png">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -31,7 +31,7 @@
         }
 
         h1, h2 {
-            color: #000000;
+            color: #131057;
         }
 
         section {
@@ -89,15 +89,16 @@
             <button onclick="sendSimplePost('/clear')">Clear Route File</button>
         </section>
 
-        <!-- Create Vehicle -->
+        <!-- Create Vehicles -->
         <section>
-            <h2>Create Vehicle</h2>
+            <h2>Create Vehicle(s)</h2>
             <div class="input-group">
-                <input type="text" id="vehicle_id" placeholder="Vehicle ID">
+                <input type="text" id="vehicle_id_prefix" placeholder="Vehicle ID Prefix (e.g., v)">
+                <input type="number" id="vehicle_count" placeholder="Number of Vehicles" step="1" min="1">
                 <input type="number" id="time_departure" placeholder="Departure Time" step="0.1">
                 <input type="text" id="road_depart" placeholder="Road Depart">
                 <input type="text" id="road_arrival" placeholder="Road Arrival">
-                <button onclick="createVehicle()">Add Vehicle</button>
+                <button onclick="createVehicles()">Add Vehicles</button>
             </div>
         </section>
 
@@ -145,25 +146,41 @@
             }
         }
 
-        async function createVehicle() {
-            const data = {
-                vehicle_id: document.getElementById("vehicle_id").value,
-                time_departure: parseFloat(document.getElementById("time_departure").value),
-                road_depart: document.getElementById("road_depart").value,
-                road_arrival: document.getElementById("road_arrival").value
-            };
+        async function createVehicles() {
+            const prefix = document.getElementById("vehicle_id_prefix").value;
+            const count = parseInt(document.getElementById("vehicle_count").value);
+            const time = parseFloat(document.getElementById("time_departure").value);
+            const from = document.getElementById("road_depart").value;
+            const to = document.getElementById("road_arrival").value;
 
-            try {
-                const response = await fetch("/create_vehicle", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
-                const result = await response.json();
-                alert(JSON.stringify(result, null, 2));
-            } catch (error) {
-                alert("Error: " + error.message);
+            if (!prefix || !count || isNaN(time) || !from || !to) {
+                alert("Please fill in all fields correctly.");
+                return;
             }
+
+            for (let i = 0; i < count; i++) {
+                const vehicleData = {
+                    vehicle_id: `${prefix}${i}`,
+                    time_departure: time,
+                    road_depart: from,
+                    road_arrival: to
+                };
+
+                try {
+                    const response = await fetch("/create_vehicle", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(vehicleData)
+                    });
+
+                    const result = await response.json();
+                    console.log(`Created: ${vehicleData.vehicle_id}`, result);
+                } catch (error) {
+                    console.error(`Error creating ${vehicleData.vehicle_id}:`, error.message);
+                }
+            }
+
+            alert(`Requested creation of ${count} vehicles.`);
         }
 
         async function sendQuery() {
