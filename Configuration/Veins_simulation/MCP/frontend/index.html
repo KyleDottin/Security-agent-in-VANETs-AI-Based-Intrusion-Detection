@@ -68,6 +68,15 @@
             display: flex;
             flex-direction: column;
         }
+
+        #answer-box, #stats-box {
+            white-space: pre-wrap;
+            background: #eef2f7;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -106,9 +115,15 @@
         <section>
             <h2>Send Query</h2>
             <div class="input-group">
-                <input type="text" id="query_text" placeholder="Enter your query">
+                <input type="text" id="query_text" placeholder="Enter your query (type analysis if you want a report of the simulation)">
                 <button onclick="sendQuery()">Send Query</button>
             </div>
+        </section>
+
+        <!-- Response Display -->
+        <section>
+            <h2>Response</h2>
+            <div id="answer-box"></div>
         </section>
 
         <!-- Report Attack -->
@@ -130,6 +145,12 @@
                 <input type="text" id="attack_id_simulate" placeholder="Attack ID">
                 <button onclick="simulateAttack()">Simulate Attack</button>
             </div>
+        </section>
+
+        <!-- Simulation Stats -->
+        <section>
+            <h2>Simulation Stats (Live)</h2>
+            <div id="stats-box">Loading...</div>
         </section>
     </main>
 
@@ -194,11 +215,22 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)
                 });
+
                 const result = await response.json();
-                alert(JSON.stringify(result, null, 2));
+
+                const assistantOnly = result.messages
+                    .filter(m => m.role === "assistant")
+                    .map(m => m.content)
+                    .join("\n\n");
+
+                displayResponse(assistantOnly);
             } catch (error) {
-                alert("Error: " + error.message);
+                displayResponse("Error: " + error.message);
             }
+        }
+
+        function displayResponse(text) {
+            document.getElementById("answer-box").textContent = text;
         }
 
         async function reportAttack() {
@@ -239,6 +271,27 @@
                 alert("Error: " + error.message);
             }
         }
+
+        async function fetchSimulationStats() {
+            try {
+                const res = await fetch("/simulation_stats");
+                const stats = await res.json();
+
+                const box = document.getElementById("stats-box");
+                box.innerHTML = `
+Total Steps: ${stats.total_steps}
+Unique Vehicles: ${stats.unique_vehicles}
+Average Speed: ${stats.average_speed.toFixed(2)}
+Max Speed: ${stats.max_speed.toFixed(2)}
+Data Points: ${stats.data_points}
+                `.trim();
+            } catch (e) {
+                document.getElementById("stats-box").textContent = "Error fetching stats.";
+            }
+        }
+
+        setInterval(fetchSimulationStats, 2000); // Poll every 2 seconds
+        fetchSimulationStats(); // Initial load
     </script>
 </body>
 </html>

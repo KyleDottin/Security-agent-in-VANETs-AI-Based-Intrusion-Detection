@@ -1,0 +1,17 @@
+{
+  "analysis_timestamp": "2025-06-04T14:40:43.556040",
+  "model_used": "Can you tell me how many vehicles are in the simulation?",
+  "simulation_stats": {
+    "total_steps": 41,
+    "total_vehicles": 2,
+    "average_speed": 2.219820973601873,
+    "max_speed": 4.193139471350616,
+    "min_speed": 0.0,
+    "average_acceleration": 2.0434004540604103,
+    "total_co2_emissions": 289589.91380274104,
+    "average_co2_per_vehicle": 144794.95690137052
+  },
+  "llm_analysis": "Analysis result from the AI model",
+  "raw_data_points": 41,
+  "vehicles_analyzed": 2
+}
