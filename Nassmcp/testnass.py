@@ -5,9 +5,11 @@ import time
 import threading
 import xml.etree.ElementTree as ET
 import os
+import ollama
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
 
 sys.path.append(r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\veins_python")
 
@@ -187,13 +189,7 @@ def add_vehicle(vehicle: Vehicle):
     except Exception as e:
         return {"error": str(e)}
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Simulation API"}
 
-@app.post("/create_agent")
-def create_agent():
-    return {"status": "agent created"}
 
 @app.post("/report_attack")
 def report_attack():

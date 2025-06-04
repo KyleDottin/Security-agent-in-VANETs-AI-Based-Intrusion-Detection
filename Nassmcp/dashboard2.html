@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <title>Simulation Control Panel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-papbIur+HqgNss/9fyo6OR3ZRqr90Uj+bZELJ4JFd3whIDo4tnqPAM1cY95pZ9Q4YMFmB3rxEv5FfWZdpk3UNA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+
+  <h1 class="text-4xl font-extrabold mb-8 text-indigo-700">🎛️ Simulation Control Panel</h1>
+
+  <section class="w-full max-w-5xl bg-white rounded-lg shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-semibold mb-4 text-indigo-600">Quick Actions</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition"
+        onclick="callApi('/SUMO')"
+        title="Start SUMO"
+      >
+        <i class="fa-solid fa-play"></i> Start SUMO
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
+        onclick="callApi('/start_simulation')"
+        title="Start simulation"
+      >
+        <i class="fa-solid fa-rocket"></i> Start Simulation
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+        onclick="callApi('/stop_simulation')"
+        title="Stop simulation"
+      >
+        <i class="fa-solid fa-stop"></i> Stop Simulation
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition"
+        onclick="callApi('/clear_simulation')"
+        title="Reset simulation"
+      >
+        <i class="fa-solid fa-rotate"></i> Reset Simulation
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition"
+        onclick="callApi('/create_agent')"
+        title="Create an agent"
+      >
+        <i class="fa-solid fa-user-plus"></i> Create Agent
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition"
+        onclick="callApi('/report_attack')"
+        title="Report an attack"
+      >
+        <i class="fa-solid fa-bug"></i> Report Attack
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition"
+        onclick="callApi('/simulate_attack')"
+        title="Simulate an attack"
+      >
+        <i class="fa-solid fa-shield-virus"></i> Simulate Attack
+      </button>
+    </div>
+  </section>
+
+  <!-- New section for data analysis -->
+  <section class="w-full max-w-5xl bg-white rounded-lg shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-semibold mb-4 text-emerald-600">
+      <i class="fa-solid fa-brain mr-2"></i> Data Analysis with AI
+    </h2>
+
+    <!-- Quick statistics -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-blue-600 font-medium">Simulation Steps</p>
+            <p id="total-steps" class="text-2xl font-bold text-blue-800">-</p>
+          </div>
+          <i class="fa-solid fa-clock-rotate-left text-blue-400 text-2xl"></i>
+        </div>
+      </div>
+      <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-green-600 font-medium">Unique Vehicles</p>
+            <p id="unique-vehicles" class="text-2xl font-bold text-green-800">-</p>
+          </div>
+          <i class="fa-solid fa-car text-green-400 text-2xl"></i>
+        </div>
+      </div>
+      <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-orange-600 font-medium">Average Speed</p>
+            <p id="avg-speed" class="text-2xl font-bold text-orange-800">- m/s</p>
+          </div>
+          <i class="fa-solid fa-gauge-high text-orange-400 text-2xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis buttons -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition"
+        onclick="refreshStats()"
+        title="Refresh statistics"
+      >
+        <i class="fa-solid fa-chart-simple"></i> Statistics
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+        onclick="analyzeWithLLM()"
+        title="Analyze with AI"
+      >
+        <i class="fa-solid fa-robot"></i> Analyze with AI
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition"
+        onclick="showRawData()"
+        title="View raw data"
+      >
+        <i class="fa-solid fa-database"></i> Raw Data
+      </button>
+      <button
+        class="flex items-center justify-center gap-2 px-4 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition"
+        onclick="toggleAnalysisSettings()"
+        title="Analysis settings"
+      >
+        <i class="fa-solid fa-cog"></i> Settings
+      </button>
+    </div>
+
+    <!-- Analysis settings (hidden by default) -->
+    <div id="analysis-settings" class="hidden bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">AI Analysis Settings</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="llm-model" class="block mb-1 font-medium text-gray-700">LLM Model</label>
+          <select id="llm-model" class="w-full border border-gray-300 rounded-md p-2 focus:outline-emerald-500">
+            <option value="qwen3:1.7b" selected>qwen3:1.7b</option>
+            <!-- Add other models if available -->
+          </select>
+        </div>
+        <div>
+          <label for="custom-prompt" class="block mb-1 font-medium text-gray-700">Custom Prompt</label>
+          <input
+            id="custom-prompt"
+            type="text"
+            placeholder="e.g., Focus on speed anomalies"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-emerald-500"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis result display area -->
+    <div id="analysis-result" class="hidden">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">AI Analysis Result</h3>
+      <div class="bg-gradient-to-r from-emerald-50 to-blue-50 p-4 rounded-lg border border-emerald-200">
+        <div id="analysis-content" class="prose prose-sm max-w-none"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="w-full max-w-5xl bg-white rounded-lg shadow-lg p-6 mb-10">
+    <h2 class="text-2xl font-semibold mb-4 text-indigo-600">Add a Vehicle</h2>
+    <form id="vehicleForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+      <div>
+        <label for="veh_id" class="block mb-1 font-medium text-gray-700">Vehicle ID</label>
+        <input
+          id="veh_id"
+          name="veh_id"
+          type="text"
+          placeholder="e.g., v100"
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-indigo-500"
+          required
+        />
+      </div>
+      <div>
+        <label for="depart" class="block mb-1 font-medium text-gray-700">Departure (sec)</label>
+        <input
+          id="depart"
+          name="depart"
+          type="number"
+          step="0.1"
+          placeholder="e.g., 5.0"
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-indigo-500"
+          required
+        />
+      </div>
+      <div>
+        <label for="from_edge" class="block mb-1 font-medium text-gray-700">From edge</label>
+        <input
+          id="from_edge"
+          name="from_edge"
+          type="text"
+          placeholder="e.g., E1"
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-indigo-500"
+          required
+        />
+      </div>
+      <div>
+        <label for="to_edge" class="block mb-1 font-medium text-gray-700">To edge</label>
+        <input
+          id="to_edge"
+          name="to_edge"
+          type="text"
+          placeholder="e.g., E00"
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-indigo-500"
+          required
+        />
+      </div>
+      <div class="sm:col-span-2 flex justify-center">
+        <button
+          type="submit"
+          class="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition"
+        >
+          <i class="fa-solid fa-car-side"></i> Add Vehicle
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <section class="w-full max-w-5xl bg-white rounded-lg shadow-lg p-6">
+    <h2 class="text-2xl font-semibold mb-4 text-indigo-600">Result / Logs</h2>
+    <div class="flex justify-between items-center mb-2">
+      <span class="text-sm text-gray-600">Simulation Logs</span>
+      <button
+        onclick="clearLog()"
+        class="text-sm text-gray-500 hover:text-red-600 transition"
+        title="Clear logs"
+      >
+        <i class="fa-solid fa-trash"></i> Clear
+      </button>
+    </div>
+    <pre
+      id="log"
+      class="whitespace-pre-wrap bg-gray-50 p-4 rounded-md border border-gray-300 min-h-[200px] max-h-[400px] text-sm font-mono text-gray-800 overflow-auto"
+    >Ready for simulation...</pre>
+  </section>
+
+  <script>
+    const BASE_URL = "http://127.0.0.1:8000";
+
+    function callApi(endpoint) {
+      setLog("Loading...");
+      fetch(BASE_URL + endpoint, {
+        method: "POST"
+      })
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then(data => {
+          setLog(JSON.stringify(data, null, 2));
+          if (endpoint.includes('start_simulation') || endpoint.includes('stop_simulation')) {
+            setTimeout(refreshStats, 1000);
+          }
+        })
+        .catch(err => setLog("Error: " + err));
+    }
+
+    function setLog(text) {
+      const log = document.getElementById("log");
+      const timestamp = new Date().toLocaleTimeString();
+      log.textContent = `[${timestamp}] ${text}`;
+    }
+
+    function appendLog(text) {
+      const log = document.getElementById("log");
+      const timestamp = new Date().toLocaleTimeString();
+      if (log.textContent.includes("Ready for simulation...")) {
+        log.textContent = `[${timestamp}] ${text}`;
+      } else {
+        log.textContent += `\n[${timestamp}] ${text}`;
+      }
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function clearLog() {
+      document.getElementById("log").textContent = "Ready for simulation...";
+    }
+
+    function refreshStats() {
+      fetch(BASE_URL + "/simulation_stats")
+        .then(res => res.json())
+        .then(data => {
+          if (data.message) {
+            document.getElementById("total-steps").textContent = "0";
+            document.getElementById("unique-vehicles").textContent = "0";
+            document.getElementById("avg-speed").textContent = "0.0 m/s";
+            appendLog("No simulation data available");
+          } else {
+            document.getElementById("total-steps").textContent = data.total_steps || "0";
+            document.getElementById("unique-vehicles").textContent = data.unique_vehicles || "0";
+            document.getElementById("avg-speed").textContent = `${(data.average_speed || 0).toFixed(2)} m/s`;
+            appendLog(`Statistics updated: ${data.data_points} data points`);
+          }
+        })
+        .catch(err => {
+          appendLog("Error retrieving statistics: " + err);
+        });
+    }
+
+    function analyzeWithLLM() {
+      const modelName = document.getElementById("llm-model").value;
+      const customPrompt = document.getElementById("custom-prompt").value;
+
+      appendLog("Starting AI analysis...");
+      document.getElementById("analysis-result").classList.add("hidden");
+
+      const requestBody = {
+        model_name: modelName
+      };
+
+      if (customPrompt.trim()) {
+        requestBody.custom_prompt = customPrompt.trim();
+      }
+
+      fetch(BASE_URL + "/analyze_simulation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestBody)
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            appendLog("Analysis error: " + data.error);
+          } else {
+            appendLog(`Analysis completed with ${data.model_used}. Vehicles analyzed: ${data.vehicles_analyzed}`);
+            displayAnalysisResult(data);
+          }
+        })
+        .catch(err => {
+          appendLog("Error during analysis: " + err);
+        });
+    }
+
+    function displayAnalysisResult(data) {
+      const resultDiv = document.getElementById("analysis-result");
+      const contentDiv = document.getElementById("analysis-content");
+
+      const analysisHtml = `
+        <div class="mb-4">
+          <h4 class="font-semibold text-emerald-700 mb-2">📊 Simulation Summary</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+            <div class="bg-white p-2 rounded border">
+              <strong>Steps:</strong> ${data.simulation_stats.total_steps}
+            </div>
+            <div class="bg-white p-2 rounded border">
+              <strong>Vehicles:</strong> ${data.simulation_stats.total_vehicles}
+            </div>
+            <div class="bg-white p-2 rounded border">
+              <strong>Avg Speed:</strong> ${data.simulation_stats.average_speed.toFixed(2)} m/s
+            </div>
+            <div class="bg-white p-2 rounded border">
+              <strong>Total CO2:</strong> ${data.simulation_stats.total_co2_emissions.toFixed(2)}
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h4 class="font-semibold text-emerald-700 mb-2">🤖 AI Analysis (${data.model_used})</h4>
+          <div class="bg-white p-4 rounded border text-gray-800 whitespace-pre-wrap">${data.llm_analysis}</div>
+        </div>
+
+        <div class="text-xs text-gray-500">
+          Analysis generated on ${new Date(data.analysis_timestamp).toLocaleString()}
+        </div>
+      `;
+
+      contentDiv.innerHTML = analysisHtml;
+      resultDiv.classList.remove("hidden");
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showRawData() {
+      appendLog("Retrieving raw data...");
+
+      fetch(BASE_URL + "/simulation_data")
+        .then(res => res.json())
+        .then(data => {
+          if (data.total_steps === 0) {
+            appendLog("No simulation data available");
+          } else {
+            const summary = `Raw Data (${data.total_steps} steps):\n${JSON.stringify(data.data.slice(0, 2), null, 2)}${data.total_steps > 2 ? '\n... (data truncated for display)' : ''}`;
+            setLog(summary);
+          }
+        })
+        .catch(err => {
+          appendLog("Error retrieving data: " + err);
+        });
+    }
+
+    function toggleAnalysisSettings() {
+      const settingsDiv = document.getElementById("analysis-settings");
+      settingsDiv.classList.toggle("hidden");
+    }
+
+    document.getElementById("vehicleForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const vehicle_id = document.getElementById("veh_id").value.trim();
+      const depart = parseFloat(document.getElementById("depart").value);
+      const from_edge = document.getElementById("from_edge").value.trim();
+      const to_edge = document.getElementById("to_edge").value.trim();
+
+      if (!vehicle_id || isNaN(depart) || !from_edge || !to_edge) {
+        appendLog("Error: Please fill all fields correctly.");
+        return;
+      }
+
+      appendLog("Adding vehicle...");
+      fetch(BASE_URL + "/add_vehicle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ vehicle_id, depart, from_edge, to_edge })
+      })
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then(data => {
+          appendLog(`Vehicle added: ${JSON.stringify(data)}`);
+          document.getElementById("vehicleForm").reset();
+        })
+        .catch(err => appendLog("Error adding vehicle: " + err));
+    });
+
+    setInterval(() => {
+      if (document.getElementById("total-steps").textContent !== "-") {
+        refreshStats();
+      }
+    }, 10000);
+
+    document.addEventListener("DOMContentLoaded", function() {
+      refreshStats();
+    });
+  </script>
+</body>
+</html>
