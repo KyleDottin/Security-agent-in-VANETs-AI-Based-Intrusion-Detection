@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-MCP Server for VANET Security Simulation
-Compatible with current MCP library
+Enhanced MCP Server for VANET Security Simulation
+Now includes integration with SUMO simulation via FastAPI
 """
 
 import asyncio
 import json
+import httpx
 from typing import Any, Dict, List, Optional
 from mcp.server import Server, NotificationOptions
 from mcp.server.models import InitializationOptions
@@ -46,6 +47,10 @@ class SimulationState(BaseModel):
 # Global simulation state
 simulation_state = SimulationState()
 
+# HTTP client for FastAPI communication
+http_client = httpx.AsyncClient(timeout=30.0)
+FASTAPI_BASE_URL = "http://localhost:8000"
+
 # Create the server instance
 server = Server("vanet-security-mcp")
 
@@ -54,10 +59,10 @@ server = Server("vanet-security-mcp")
 async def handle_list_tools() -> list[types.Tool]:
     """List available tools."""
     return [
-# vehicle id, time departure, road depart, road arrival
+        # Existing VANET security tools
         types.Tool(
-            name="create_vehicle",
-            description="Create a new vehicle in the VANET simulation",
+            name="create_vehicle_memory",
+            description="Create a new vehicle in the in-memory VANET simulation",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -87,7 +92,7 @@ async def handle_list_tools() -> list[types.Tool]:
         ),
         types.Tool(
             name="get_simulation_status",
-            description="Get the current status of the VANET simulation",
+            description="Get the current status of the in-memory VANET simulation",
             inputSchema={
                 "type": "object",
                 "properties": {},
@@ -105,9 +110,11 @@ async def handle_list_tools() -> list[types.Tool]:
                 "required": ["vehicle_id"]
             }
         ),
+
+        # New SUMO integration tools
         types.Tool(
-            name="start_simulation",
-            description="Start the VANET simulation",
+            name="start_sumo",
+            description="Start SUMO simulation and connect TraCI",
             inputSchema={
                 "type": "object",
                 "properties": {},
@@ -115,8 +122,8 @@ async def handle_list_tools() -> list[types.Tool]:
             }
         ),
         types.Tool(
-            name="stop_simulation",
-            description="Stop the VANET simulation",
+            name="start_sumo_simulation",
+            description="Start the SUMO simulation loop",
             inputSchema={
                 "type": "object",
                 "properties": {},
@@ -124,8 +131,80 @@ async def handle_list_tools() -> list[types.Tool]:
             }
         ),
         types.Tool(
-            name="reset_simulation",
-            description="Reset the VANET simulation to initial state",
+            name="stop_sumo_simulation",
+            description="Stop the SUMO simulation loop",
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "additionalProperties": False
+            }
+        ),
+        types.Tool(
+            name="create_sumo_vehicle",
+            description="Create a new vehicle in the SUMO simulation",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "vehicle_id": {"type": "string", "description": "Unique identifier for the vehicle"},
+                    "time_departure": {"type": "number", "description": "Departure time in seconds"},
+                    "road_depart": {"type": "string", "description": "Starting road/edge ID"},
+                    "road_arrival": {"type": "string", "description": "Destination road/edge ID"}
+                },
+                "required": ["vehicle_id", "time_departure", "road_depart", "road_arrival"]
+            }
+        ),
+        types.Tool(
+            name="get_sumo_stats",
+            description="Get current SUMO simulation statistics",
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "additionalProperties": False
+            }
+        ),
+        types.Tool(
+            name="query_sumo_analysis",
+            description="Query the SUMO simulation data with AI analysis",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {"type": "string", "description": "Natural language query about the simulation"}
+                },
+                "required": ["query"]
+            }
+        ),
+        types.Tool(
+            name="clear_sumo_simulation",
+            description="Clear and reset the SUMO simulation",
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "additionalProperties": False
+            }
+        ),
+
+        # Original memory-based simulation controls
+        types.Tool(
+            name="start_memory_simulation",
+            description="Start the in-memory VANET simulation",
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "additionalProperties": False
+            }
+        ),
+        types.Tool(
+            name="stop_memory_simulation",
+            description="Stop the in-memory VANET simulation",
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "additionalProperties": False
+            }
+        ),
+        types.Tool(
+            name="reset_memory_simulation",
+            description="Reset the in-memory VANET simulation to initial state",
             inputSchema={
                 "type": "object",
                 "properties": {},
@@ -139,20 +218,37 @@ async def handle_list_tools() -> list[types.Tool]:
 async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent]:
     """Handle tool calls."""
     try:
-        if name == "create_vehicle":
-            result = await create_vehicle(**arguments)
+        # SUMO integration tools
+        if name == "start_sumo":
+            result = await start_sumo()
+        elif name == "start_sumo_simulation":
+            result = await start_sumo_simulation()
+        elif name == "stop_sumo_simulation":
+            result = await stop_sumo_simulation()
+        elif name == "create_sumo_vehicle":
+            result = await create_sumo_vehicle(**arguments)
+        elif name == "get_sumo_stats":
+            result = await get_sumo_stats()
+        elif name == "query_sumo_analysis":
+            result = await query_sumo_analysis(**arguments)
+        elif name == "clear_sumo_simulation":
+            result = await clear_sumo_simulation()
+
+        # Original memory-based tools
+        elif name == "create_vehicle_memory":
+            result = await create_vehicle_memory(**arguments)
         elif name == "simulate_attack":
             result = await simulate_attack(**arguments)
         elif name == "get_simulation_status":
             result = await get_simulation_status()
         elif name == "detect_intrusion":
             result = await detect_intrusion(**arguments)
-        elif name == "start_simulation":
-            result = await start_simulation()
-        elif name == "stop_simulation":
-            result = await stop_simulation()
-        elif name == "reset_simulation":
-            result = await reset_simulation()
+        elif name == "start_memory_simulation":
+            result = await start_memory_simulation()
+        elif name == "stop_memory_simulation":
+            result = await stop_memory_simulation()
+        elif name == "reset_memory_simulation":
+            result = await reset_memory_simulation()
         else:
             result = {"success": False, "error": f"Unknown tool: {name}"}
 
@@ -164,58 +260,131 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
         return [types.TextContent(type="text", text=json.dumps(error_result, indent=2))]
 
 
-async def create_vehicle(
-    vehicle_id: str,
-    time_departure: float,
-    road_depart: str,
-    road_arrival: str,
+# SUMO Integration Functions
+async def start_sumo() -> Dict[str, Any]:
+    """Start SUMO simulation via FastAPI"""
+    try:
+        response = await http_client.post(f"{FASTAPI_BASE_URL}/SUMO")
+        result = response.json()
+        return {"success": True, "sumo_status": result}
+    except Exception as e:
+        return {"success": False, "error": f"Error starting SUMO: {str(e)}"}
+
+
+async def start_sumo_simulation() -> Dict[str, Any]:
+    """Start SUMO simulation loop via FastAPI"""
+    try:
+        response = await http_client.post(f"{FASTAPI_BASE_URL}/start_simulation")
+        result = response.json()
+        return {"success": True, "simulation_status": result}
+    except Exception as e:
+        return {"success": False, "error": f"Error starting SUMO simulation: {str(e)}"}
+
+
+async def stop_sumo_simulation() -> Dict[str, Any]:
+    """Stop SUMO simulation loop via FastAPI"""
+    try:
+        response = await http_client.post(f"{FASTAPI_BASE_URL}/stop_simulation")
+        result = response.json()
+        return {"success": True, "simulation_status": result}
+    except Exception as e:
+        return {"success": False, "error": f"Error stopping SUMO simulation: {str(e)}"}
+
+
+async def create_sumo_vehicle(vehicle_id: str, time_departure: float, road_depart: str, road_arrival: str) -> Dict[
+    str, Any]:
+    """Create vehicle in SUMO simulation via FastAPI"""
+    try:
+        vehicle_data = {
+            "vehicle_id": vehicle_id,
+            "time_departure": time_departure,
+            "road_depart": road_depart,
+            "road_arrival": road_arrival
+        }
+        response = await http_client.post(f"{FASTAPI_BASE_URL}/create_vehicle", json=vehicle_data)
+        result = response.json()
+        return {"success": True, "vehicle_creation": result}
+    except Exception as e:
+        return {"success": False, "error": f"Error creating SUMO vehicle: {str(e)}"}
+
+
+async def get_sumo_stats() -> Dict[str, Any]:
+    """Get SUMO simulation statistics via FastAPI"""
+    try:
+        response = await http_client.get(f"{FASTAPI_BASE_URL}/simulation_stats")
+        result = response.json()
+        return {"success": True, "stats": result}
+    except Exception as e:
+        return {"success": False, "error": f"Error getting SUMO stats: {str(e)}"}
+
+
+async def query_sumo_analysis(query: str) -> Dict[str, Any]:
+    """Query SUMO simulation with AI analysis via FastAPI"""
+    try:
+        query_data = {"query": query}
+        response = await http_client.post(f"{FASTAPI_BASE_URL}/query", json=query_data)
+        result = response.json()
+        return {"success": True, "analysis": result}
+    except Exception as e:
+        return {"success": False, "error": f"Error querying SUMO analysis: {str(e)}"}
+
+
+async def clear_sumo_simulation() -> Dict[str, Any]:
+    """Clear SUMO simulation via FastAPI"""
+    try:
+        response = await http_client.post(f"{FASTAPI_BASE_URL}/clear")
+        result = response.json()
+        return {"success": True, "clear_status": result}
+    except Exception as e:
+        return {"success": False, "error": f"Error clearing SUMO simulation: {str(e)}"}
+
+
+# Original VANET Security Functions (renamed to avoid confusion)
+async def create_vehicle_memory(
+        vehicle_id: str,
+        vehicle_type: str,
+        position_x: float,
+        position_y: float,
+        speed: float = 0.0
 ) -> Dict[str, Any]:
-    """Create a new vehicle in the VANET simulation."""
+    """Create a new vehicle in the in-memory VANET simulation."""
     try:
         if vehicle_id in simulation_state.vehicles:
             return {
                 "success": False,
-                "error": f"Vehicle {vehicle_id} already exists"
+                "error": f"Vehicle {vehicle_id} already exists in memory"
             }
 
         vehicle = Vehicle(
             vehicle_id=vehicle_id,
-            vehicle_type="car",  # default value since vehicle_type is no longer input
-            position={"x": 0.0, "y": 0.0},  # default position
-            speed=0.0  # default speed
+            vehicle_type=vehicle_type,
+            position={"x": position_x, "y": position_y},
+            speed=speed
         )
 
         simulation_state.vehicles[vehicle_id] = vehicle
-
-        logger.info(f"Created vehicle {vehicle_id} with departure at {time_departure} from {road_depart} to {road_arrival}")
+        logger.info(f"Created vehicle {vehicle_id} in memory simulation")
 
         return {
             "success": True,
             "vehicle": vehicle.dict(),
-            "message": f"Vehicle {vehicle_id} created successfully"
+            "message": f"Vehicle {vehicle_id} created in memory simulation"
         }
 
     except Exception as e:
-        logger.error(f"Error creating vehicle: {e}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        logger.error(f"Error creating vehicle in memory: {e}")
+        return {"success": False, "error": str(e)}
 
 
-async def simulate_attack(
-        attack_id: str,
-        attack_type: str,
-        target_vehicle_id: str,
-        description: str,
-        severity: int = 5
-) -> Dict[str, Any]:
+# Keep all your existing functions but rename them to avoid confusion
+async def simulate_attack(attack_id: str, attack_type: str, target_vehicle_id: str, description: str,
+                          severity: int = 5) -> Dict[str, Any]:
     """Simulate a security attack in the VANET."""
     try:
         if target_vehicle_id not in simulation_state.vehicles:
             return {
                 "success": False,
-                "error": f"Target vehicle {target_vehicle_id} does not exist"
+                "error": f"Target vehicle {target_vehicle_id} does not exist in memory simulation"
             }
 
         attack = AttackScenario(
@@ -223,12 +392,10 @@ async def simulate_attack(
             attack_type=attack_type,
             target_vehicle_id=target_vehicle_id,
             description=description,
-            severity=min(max(severity, 1), 10)  # Clamp severity to 1-10
+            severity=min(max(severity, 1), 10)
         )
 
         simulation_state.active_attacks[attack_id] = attack
-
-        # Mark target vehicle as malicious
         simulation_state.vehicles[target_vehicle_id].is_malicious = True
 
         logger.info(f"Simulated {attack_type} attack on vehicle {target_vehicle_id}")
@@ -241,14 +408,11 @@ async def simulate_attack(
 
     except Exception as e:
         logger.error(f"Error simulating attack: {e}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        return {"success": False, "error": str(e)}
 
 
 async def get_simulation_status() -> Dict[str, Any]:
-    """Get the current status of the VANET simulation."""
+    """Get the current status of the in-memory VANET simulation."""
     try:
         return {
             "success": True,
@@ -261,13 +425,9 @@ async def get_simulation_status() -> Dict[str, Any]:
                 "active_attacks": [a.dict() for a in simulation_state.active_attacks.values()]
             }
         }
-
     except Exception as e:
         logger.error(f"Error getting simulation status: {e}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        return {"success": False, "error": str(e)}
 
 
 async def detect_intrusion(vehicle_id: str) -> Dict[str, Any]:
@@ -276,16 +436,13 @@ async def detect_intrusion(vehicle_id: str) -> Dict[str, Any]:
         if vehicle_id not in simulation_state.vehicles:
             return {
                 "success": False,
-                "error": f"Vehicle {vehicle_id} does not exist"
+                "error": f"Vehicle {vehicle_id} does not exist in memory simulation"
             }
 
         vehicle = simulation_state.vehicles[vehicle_id]
-
-        # Simple intrusion detection logic
         is_malicious = vehicle.is_malicious
         threat_level = "HIGH" if is_malicious else "LOW"
 
-        # Gather active attacks involving this vehicle
         active_attacks = [
             attack for attack in simulation_state.active_attacks.values()
             if attack.target_vehicle_id == vehicle_id
@@ -302,74 +459,53 @@ async def detect_intrusion(vehicle_id: str) -> Dict[str, Any]:
 
     except Exception as e:
         logger.error(f"Error detecting intrusion: {e}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        return {"success": False, "error": str(e)}
 
 
-async def start_simulation() -> Dict[str, Any]:
-    """Start the VANET simulation."""
+async def start_memory_simulation() -> Dict[str, Any]:
+    """Start the in-memory VANET simulation."""
     try:
         simulation_state.is_running = True
         simulation_state.simulation_time = 0.0
-
-        logger.info("VANET simulation started")
-
+        logger.info("In-memory VANET simulation started")
         return {
             "success": True,
-            "message": "Simulation started successfully",
+            "message": "In-memory simulation started successfully",
             "simulation_time": simulation_state.simulation_time
         }
-
     except Exception as e:
-        logger.error(f"Error starting simulation: {e}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        logger.error(f"Error starting memory simulation: {e}")
+        return {"success": False, "error": str(e)}
 
 
-async def stop_simulation() -> Dict[str, Any]:
-    """Stop the VANET simulation."""
+async def stop_memory_simulation() -> Dict[str, Any]:
+    """Stop the in-memory VANET simulation."""
     try:
         simulation_state.is_running = False
-
-        logger.info("VANET simulation stopped")
-
+        logger.info("In-memory VANET simulation stopped")
         return {
             "success": True,
-            "message": "Simulation stopped successfully",
+            "message": "In-memory simulation stopped successfully",
             "final_simulation_time": simulation_state.simulation_time
         }
-
     except Exception as e:
-        logger.error(f"Error stopping simulation: {e}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        logger.error(f"Error stopping memory simulation: {e}")
+        return {"success": False, "error": str(e)}
 
 
-async def reset_simulation() -> Dict[str, Any]:
-    """Reset the VANET simulation to initial state."""
+async def reset_memory_simulation() -> Dict[str, Any]:
+    """Reset the in-memory VANET simulation to initial state."""
     try:
         global simulation_state
         simulation_state = SimulationState()
-
-        logger.info("VANET simulation reset")
-
+        logger.info("In-memory VANET simulation reset")
         return {
             "success": True,
-            "message": "Simulation reset successfully"
+            "message": "In-memory simulation reset successfully"
         }
-
     except Exception as e:
-        logger.error(f"Error resetting simulation: {e}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        logger.error(f"Error resetting memory simulation: {e}")
+        return {"success": False, "error": str(e)}
 
 
 async def main():
@@ -388,6 +524,6 @@ async def main():
             ),
         )
 
-# If I want to LLM to also interact with sumo, start and stop simulation, I need to implement them here
+
 if __name__ == "__main__":
     asyncio.run(main())

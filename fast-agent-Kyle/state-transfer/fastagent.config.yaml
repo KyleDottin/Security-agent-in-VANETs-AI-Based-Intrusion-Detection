@@ -1,0 +1,41 @@
+# Model string takes format:
+#   <provider>.<model_string>.<reasoning_effort?> (e.g. anthropic.claude-3-5-sonnet-20241022 or openai.o3-mini.low)
+#
+# Can be overriden with a command line switch --model=<model>, or within the Agent decorator.
+# Check here for current details: https://fast-agent.ai/models/
+
+# set the default model for fast-agent below:
+default_model: generic.qwen3:1.7b   
+api_base: "http://localhost:11434/v1" 
+
+# Add custom headers if needed for Ollama
+custom_headers:
+  Authorization: "Bearer dummy"
+
+# Logging and Console Configuration:
+logger:
+  # Switched off to avoid cluttering the console
+  progress_display: false
+
+  # Show chat User/Assistant messages on the console
+  show_chat: true
+  # Show tool calls on the console
+  show_tools: true
+  # Truncate long tool responses on the console
+  truncate_tools: true
+
+# MCP Servers
+mcp:
+  servers:
+    # Your existing server
+    agent_one:
+      transport: http
+      url: http://localhost:8000/mcp
+    
+    # New SUMO simulation server
+    sumo_simulation:
+      transport: stdio
+      command: python
+      args: ["mcp_sumo_server.py"]
+      # Optional: Set working directory if needed
+      # cwd: "/path/to/your/project"
