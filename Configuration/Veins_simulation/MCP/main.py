@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_mcp import FastApiMCP
 from pydantic import BaseModel
 from typing import Dict, Any, List
 from contextlib import asynccontextmanager
@@ -304,6 +305,7 @@ async def lifespan(app: FastAPI):
             await app.state.client.cleanup()
 
 app = FastAPI(title="Enhanced SUMO Simulation API", lifespan=lifespan)
+
 
 app.add_middleware(
     CORSMiddleware,

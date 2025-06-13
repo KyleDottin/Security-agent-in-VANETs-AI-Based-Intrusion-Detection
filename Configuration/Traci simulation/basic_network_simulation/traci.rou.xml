@@ -2,4 +2,4 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
     <trip id="v0" depart="0.00" from="E1" to="-E0.46" />
     <trip id="v1" depart="0.00" from="E0" to="E00" />
-</routes>
+<trip id="veh0" depart="3.0" from="E0" to="E00" /><trip id="veh1" depart="3.0" from="E0" to="E00" /><trip id="veh2" depart="3.0" from="E0" to="E00" /></routes>
