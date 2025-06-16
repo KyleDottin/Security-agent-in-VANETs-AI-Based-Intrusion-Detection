@@ -68,11 +68,11 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "vehicle_id": {"type": "string", "description": "Unique identifier for the vehicle"},
                     "vehicle_type": {"type": "string", "description": "Type of vehicle (car, truck, bus, etc.)"},
-                    "position_x": {"type": "number", "description": "X coordinate position"},
-                    "position_y": {"type": "number", "description": "Y coordinate position"},
+                    "departure_road": {"type": "number", "description": "X coordinate position"},
+                    "arrival_road": {"type": "number", "description": "Y coordinate position"},
                     "speed": {"type": "number", "description": "Initial speed of the vehicle", "default": 0.0},
                 },
-                "required": ["vehicle_id", "vehicle_type", "position_x", "position_y"]
+                "required": ["vehicle_id", "vehicle_type", "departure_road", "arrival_road"]
             }
         ),
         types.Tool(
@@ -111,7 +111,6 @@ async def handle_list_tools() -> list[types.Tool]:
             }
         ),
 
-        # New SUMO integration tools
         types.Tool(
             name="start_sumo",
             description="Start SUMO simulation and connect TraCI",
@@ -183,7 +182,6 @@ async def handle_list_tools() -> list[types.Tool]:
             }
         ),
 
-        # Original memory-based simulation controls
         types.Tool(
             name="start_memory_simulation",
             description="Start the in-memory VANET simulation",
