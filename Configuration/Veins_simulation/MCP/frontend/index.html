@@ -204,30 +204,146 @@
             alert(`Requested creation of ${count} vehicles.`);
         }
 
-        async function sendQuery() {
-            const data = {
-                query: document.getElementById("query_text").value
-            };
+async function sendQuery() {
+    const queryInput = document.getElementById("query_text");
+    const submitButton = document.getElementById("submit_button"); // Assuming you have a submit button
+    const query = queryInput.value.trim();
 
-            try {
-                const response = await fetch("/query", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
+    if (!query) {
+        displayResponse("Please enter a query.");
+        return;
+    }
 
-                const result = await response.json();
+    // Show loading state
+    displayResponse("Processing query...");
 
-                const assistantOnly = result.messages
-                    .filter(m => m.role === "assistant")
-                    .map(m => m.content)
-                    .join("\n\n");
+    // Disable input and button to prevent multiple submissions
+    queryInput.disabled = true;
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Processing...";
+    }
 
-                displayResponse(assistantOnly);
-            } catch (error) {
-                displayResponse("Error: " + error.message);
-            }
+    const data = {
+        query: query
+    };
+
+    try {
+        const response = await fetch("/query", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
+
+        const result = await response.json();
+
+        // Handle error responses from backend
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
+        // Extract assistant messages
+        const assistantOnly = result.messages
+            .filter(m => m.role === "assistant")
+            .map(m => m.content)
+            .join("\n\n");
+
+        if (!assistantOnly) {
+            displayResponse("No response received from the assistant.");
+        } else {
+            displayResponse(assistantOnly);
+        }
+
+        // Clear input after successful query
+        queryInput.value = "";
+
+    } catch (error) {
+        console.error("Query error:", error);
+        displayResponse("Error: " + error.message);
+    } finally {
+        // Re-enable input and button
+        queryInput.disabled = false;
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = "Send Query";
+        }
+
+        // Focus back to input for next query
+        queryInput.focus();
+    }
+}
+
+// Enhanced displayResponse function with better loading indication
+function displayResponse(text) {
+    const responseElement = document.getElementById("response");
+    if (responseElement) {
+        // Add loading animation for "Processing query..." message
+        if (text === "Processing query...") {
+            responseElement.innerHTML = `
+                <div style="display: flex; align-items: center; color: #666;">
+                    <div class="loading-spinner" style="
+                        width: 16px;
+                        height: 16px;
+                        border: 2px solid #f3f3f3;
+                        border-top: 2px solid #3498db;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                        margin-right: 8px;
+                    "></div>
+                    Processing query...
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+        } else {
+            // Regular response display
+            responseElement.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${escapeHtml(text)}</pre>`;
+        }
+
+        // Scroll to response
+        responseElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } else {
+        console.log("Response:", text);
+    }
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Add keyboard shortcut and prevent form submission on Enter
+document.addEventListener('DOMContentLoaded', function() {
+    const queryInput = document.getElementById("query_text");
+    if (queryInput) {
+        // Ctrl+Enter to send query
+        queryInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+                event.preventDefault();
+                sendQuery();
+            }
+        });
+    }
+
+    // If there's a form, prevent default submission
+    const form = queryInput?.closest('form');
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            sendQuery();
+        });
+    }
+});
 
         function displayResponse(text) {
             document.getElementById("answer-box").textContent = text;

@@ -12,15 +12,13 @@ from mcp.client.stdio import stdio_client
 from logger import *
 
 load_dotenv()
-print("OPENROUTER_API_KEY:", os.getenv("OPENROUTER_API_KEY"))
 
 
 class MCPClient:
     def __init__(self):
         self.session: Optional[ClientSession] = None
         self.exit_stack = AsyncExitStack()
-        self.api_key = os.getenv("OPENROUTER_API_KEY")
-        self.base_url = "https://openrouter.ai/api/v1/chat/completions"
+        self.base_url = "http://localhost:11434/api/chat"
         self.tools = []
         self.messages = []
         self.logger = logger
@@ -104,32 +102,135 @@ class MCPClient:
 
     async def call_llm(self):
         try:
-            self.logger.info("Calling LLM")
+            self.logger.info("Calling local Ollama LLM")
+
+            # Ensure base_url is set for Ollama
+            if not hasattr(self, 'base_url') or not self.base_url:
+                self.base_url = "http://localhost:11434/api/chat"
+
             headers = {
-                "Authorization": f"Bearer {self.api_key}",
                 "Content-Type": "application/json",
             }
+
+            # Build payload for Ollama
             payload = {
-                "model": "deepseek/deepseek-r1:free",
+                "model": "qwen3:1.7b",
                 "messages": self.messages,
-                "max_tokens": 1000,
+                "stream": False,
+                "options": {
+                    "temperature": 0.7,
+                    "num_predict": 1000,  # Max tokens for Ollama
+                }
             }
 
-            async with httpx.AsyncClient() as client:
+            # Add tools to payload if available (Ollama format)
+            if self.tools:
+                # Format tools for Ollama
+                formatted_tools = []
+                for tool in self.tools:
+                    formatted_tool = {
+                        "type": "function",
+                        "function": {
+                            "name": tool["name"],
+                            "description": tool["description"],
+                            "parameters": tool["input_schema"]
+                        }
+                    }
+                    formatted_tools.append(formatted_tool)
+
+                payload["tools"] = formatted_tools
+
+            self.logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
+
+            async with httpx.AsyncClient(timeout=120.0) as client:  # Longer timeout for local processing
                 response = await client.post(
                     self.base_url,
                     headers=headers,
                     json=payload,
                 )
 
+            self.logger.debug(f"Response status: {response.status_code}")
+
             if response.status_code != 200:
-                self.logger.error(f"OpenRouter Error: {response.status_code} - {response.text}")
-                raise Exception(f"OpenRouter Error: {response.status_code} - {response.text}")
+                error_text = response.text
+                self.logger.error(f"Ollama Error: {response.status_code} - {error_text}")
 
-            return response.json()
+                # Try to parse Ollama error for better debugging
+                try:
+                    error_json = response.json()
+                    if "error" in error_json:
+                        error_message = error_json["error"]
+                        self.logger.error(f"Ollama API Error: {error_message}")
+                        raise Exception(f"Ollama Error: {error_message}")
+                except json.JSONDecodeError:
+                    pass  # If we can't parse the error, use the original text
 
+                # Check for common Ollama issues
+                if response.status_code == 404:
+                    raise Exception(f"Model 'qwen3:1.7b' not found. Please run: ollama pull qwen3:1.7b")
+                elif response.status_code == 500:
+                    raise Exception(f"Ollama server error. Check if Ollama is running and the model is available.")
+                else:
+                    raise Exception(f"Ollama Error: {response.status_code} - {error_text}")
+
+            try:
+                response_data = response.json()
+                self.logger.debug(f"Response data: {json.dumps(response_data, indent=2)}")
+
+                # Ollama response format validation
+                if "message" in response_data:
+                    # Single response format
+                    if "content" not in response_data["message"]:
+                        raise Exception("No content in Ollama response message")
+
+                    # Convert to OpenAI-compatible format for consistency
+                    formatted_response = {
+                        "choices": [{
+                            "message": {
+                                "role": response_data["message"]["role"],
+                                "content": response_data["message"]["content"]
+                            },
+                            "finish_reason": "stop"
+                        }],
+                        "model": response_data.get("model", "qwen3:1.7b"),
+                        "usage": {
+                            "prompt_tokens": response_data.get("prompt_eval_count", 0),
+                            "completion_tokens": response_data.get("eval_count", 0),
+                            "total_tokens": response_data.get("prompt_eval_count", 0) + response_data.get("eval_count",
+                                                                                                          0)
+                        }
+                    }
+
+                    # Handle tool calls if present
+                    if "tool_calls" in response_data["message"]:
+                        formatted_response["choices"][0]["message"]["tool_calls"] = response_data["message"][
+                            "tool_calls"]
+
+                    return formatted_response
+
+                else:
+                    self.logger.error(f"Unexpected Ollama response format: {response_data}")
+                    raise Exception(f"Invalid response format from Ollama: missing 'message'")
+
+            except json.JSONDecodeError as e:
+                self.logger.error(f"JSON decode error: {str(e)}")
+                self.logger.error(f"Response text was: {response.text}")
+                raise Exception(f"Failed to parse JSON response from Ollama: {str(e)}")
+
+        except httpx.TimeoutException as e:
+            self.logger.error(f"Timeout calling Ollama: {str(e)}")
+            raise Exception(f"Ollama request timeout. The model might be slow to respond: {str(e)}")
+        except httpx.ConnectError as e:
+            self.logger.error(f"Connection error calling Ollama: {str(e)}")
+            raise Exception(f"Cannot connect to Ollama. Make sure Ollama is running on {self.base_url}: {str(e)}")
+        except httpx.RequestError as e:
+            self.logger.error(f"Request error calling Ollama: {str(e)}")
+            raise Exception(f"Network error connecting to Ollama: {str(e)}")
         except Exception as e:
-            self.logger.error(f"Error calling LLM: {e}")
+            self.logger.error(f"Exception in call_llm: {str(e)}")
+            self.logger.error(f"Exception type: {type(e)}")
+            import traceback
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
     async def cleanup(self):
