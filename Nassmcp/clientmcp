@@ -1,0 +1,37 @@
+import asyncio
+from mcp import Client
+
+async def main():
+    # Connexion au serveur MCP (remplace l'URL si nécessaire)
+    client = await Client.connect("http://localhost:8000", model="traffic.simulation")
+
+    print("✅ Connecté au serveur MCP")
+
+    # Exemple : Ajouter un véhicule
+    response = await client.send("add_vehicle", {
+        "id": "red_01",
+        "route": "route_1"
+    })
+    print("🚗 Ajout véhicule:", response)
+
+    # Exemple : Changer la vitesse du véhicule
+    response = await client.send("change_speed", {
+        "id": "red_01",
+        "speed": 1.0
+    })
+    print("⚡ Vitesse modifiée:", response)
+
+    # Exemple : récupérer l'état du véhicule (si ton modèle le supporte)
+    try:
+        state = await client.send("get_vehicle_state", {
+            "id": "red_01"
+        })
+        print("📍 État véhicule:", state)
+    except Exception as e:
+        print("ℹ️ Impossible d'obtenir l'état:", e)
+
+    await client.close()
+    print("❌ Déconnecté du serveur MCP")
+
+if __name__ == "__main__":
+    asyncio.run(main())
