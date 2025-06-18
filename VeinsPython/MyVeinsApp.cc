@@ -21,6 +21,11 @@
 //
 
 #include "veins/modules/application/traci/MyVeinsApp.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <sstream>
 
 using namespace veins;
 
@@ -30,6 +35,9 @@ void MyVeinsApp::initialize(int stage)
 {
     DemoBaseApplLayer::initialize(stage);
     if (stage == 0) {
+        // Initialize UDP socket
+        initializeUDPSocket();
+        
         // Initialize TraCI components
         try {
             mobility = TraCIMobilityAccess().get(getParentModule());
@@ -50,10 +58,57 @@ void MyVeinsApp::initialize(int stage)
     }
 }
 
+void MyVeinsApp::initializeUDPSocket()
+{
+    try {
+        // Create UDP socket
+        udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
+        if (udpSocket < 0) {
+            EV << "Error creating UDP socket" << endl;
+            udpSocket = -1;
+            return;
+        }
+
+        // Setup destination address (Python listener)
+        memset(&pythonAddr, 0, sizeof(pythonAddr));
+        pythonAddr.sin_family = AF_INET;
+        pythonAddr.sin_port = htons(5005);  // Python listening port
+        pythonAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+        EV << "UDP socket initialized for Python communication" << endl;
+    } catch (std::exception& e) {
+        EV << "Error initializing UDP socket: " << e.what() << endl;
+        udpSocket = -1;
+    }
+}
+
+void MyVeinsApp::sendToPython(const std::string& message)
+{
+    if (udpSocket < 0) {
+        return; // Socket not initialized
+    }
+
+    try {
+        int result = sendto(udpSocket, message.c_str(), message.length(), 0,
+                           (struct sockaddr*)&pythonAddr, sizeof(pythonAddr));
+        if (result < 0) {
+            EV << "Error sending to Python: " << strerror(errno) << endl;
+        }
+    } catch (std::exception& e) {
+        EV << "Exception sending to Python: " << e.what() << endl;
+    }
+}
+
 void MyVeinsApp::finish()
 {
     DemoBaseApplLayer::finish();
     try {
+        // Close UDP socket
+        if (udpSocket >= 0) {
+            close(udpSocket);
+            udpSocket = -1;
+        }
+
         EV << "\n=== VEHICLE FINISHED ===" << endl;
         EV << "ID: [" << getParentModule()->getFullName() << "]" << endl;
         EV << "TIME: " << simTime() << endl;
@@ -76,9 +131,11 @@ void MyVeinsApp::onBSM(DemoSafetyMessage* bsm)
         EV << "RECEIVER: [" << getParentModule()->getFullName() << "]" << endl;
         
         // Get sender info safely
+        std::string senderName = "Unknown";
         cModule* senderMod = bsm->getSenderModule();
         if (senderMod) {
-            EV << "SENDER: [" << senderMod->getFullName() << "]" << endl;
+            senderName = senderMod->getFullName();
+            EV << "SENDER: [" << senderName << "]" << endl;
         } else {
             EV << "SENDER: Unknown" << endl;
         }
@@ -87,13 +144,32 @@ void MyVeinsApp::onBSM(DemoSafetyMessage* bsm)
         Coord senderPos = bsm->getSenderPos();
         EV << "SENDER POS: (" << senderPos.x << ", " << senderPos.y << ")" << endl;
         
+        double distance = 0.0;
+        std::string receiverName = getParentModule()->getFullName();
+        
         // Only calculate distance if we have valid position
         if (mobility && mobility->getPositionAt(simTime()).length() > 0) {
             curPosition = mobility->getPositionAt(simTime());
-            EV << "DISTANCE: " << curPosition.distance(senderPos) << " m" << endl;
+            distance = curPosition.distance(senderPos);
+            EV << "DISTANCE: " << distance << " m" << endl;
         }
         
         EV << "===================" << endl;
+
+        // Send BSM data to Python
+        std::ostringstream pythonMsg;
+        pythonMsg << "BSM,"
+                  << simTime().dbl() << ","
+                  << receiverName << ","
+                  << senderName << ","
+                  << senderPos.x << ","
+                  << senderPos.y << ","
+                  << curPosition.x << ","
+                  << curPosition.y << ","
+                  << distance;
+        
+        sendToPython(pythonMsg.str());
+        
     } catch (std::exception& e) {
         EV << "Error in onBSM: " << e.what() << endl;
     }
@@ -113,14 +189,34 @@ void MyVeinsApp::onWSM(BaseFrame1609_4* wsm)
         EV << "MESSAGE: " << wsm->getName() << endl;
         EV << "TIME: " << simTime() << endl;
 
+        std::string receiverName = getParentModule()->getFullName();
+        std::string msgName = wsm->getName();
+        
         DemoSafetyMessage* bsm = dynamic_cast<DemoSafetyMessage*>(wsm);
         if (bsm) {
             Coord senderPos = bsm->getSenderPos();
             EV << "SENDER POS: (" << senderPos.x << ", " << senderPos.y << ")" << endl;
+            
+            double distance = 0.0;
             if (mobility) {
                 curPosition = mobility->getPositionAt(simTime());
-                EV << "DISTANCE: " << curPosition.distance(senderPos) << " m" << endl;
+                distance = curPosition.distance(senderPos);
+                EV << "DISTANCE: " << distance << " m" << endl;
             }
+
+            // Send WSM data to Python
+            std::ostringstream pythonMsg;
+            pythonMsg << "WSM,"
+                      << simTime().dbl() << ","
+                      << receiverName << ","
+                      << msgName << ","
+                      << senderPos.x << ","
+                      << senderPos.y << ","
+                      << curPosition.x << ","
+                      << curPosition.y << ","
+                      << distance;
+            
+            sendToPython(pythonMsg.str());
         }
         EV << "===================" << endl;
     } catch (std::exception& e) {
@@ -140,6 +236,19 @@ void MyVeinsApp::onWSA(DemoServiceAdvertisment* wsa)
         EV << "RECEIVER: [" << getParentModule()->getFullName() << "]" << endl;
         EV << "SERVICE INFO: " << wsa->getServiceDescription() << endl;
         EV << "===================" << endl;
+
+        // Send WSA data to Python
+        std::string receiverName = getParentModule()->getFullName();
+        std::string serviceDesc = wsa->getServiceDescription();
+        
+        std::ostringstream pythonMsg;
+        pythonMsg << "WSA,"
+                  << simTime().dbl() << ","
+                  << receiverName << ","
+                  << serviceDesc;
+        
+        sendToPython(pythonMsg.str());
+        
     } catch (std::exception& e) {
         EV << "Error in onWSA: " << e.what() << endl;
     }
