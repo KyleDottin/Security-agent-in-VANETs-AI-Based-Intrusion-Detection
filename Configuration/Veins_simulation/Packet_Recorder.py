@@ -58,14 +58,14 @@ def format_message(parsed_msg):
                 f"Receiver: {parsed_msg['receiver_id']} | Sender: {parsed_msg['sender_id']} | "
                 f"Sender Pos: ({parsed_msg['sender_pos_x']:.2f}, {parsed_msg['sender_pos_y']:.2f}) | "
                 f"Receiver Pos: ({parsed_msg['receiver_pos_x']:.2f}, {parsed_msg['receiver_pos_y']:.2f}) | "
-                f"Distance: {parsed_msg['distance']:.2f}")
+                f"Distance: {parsed_msg['distance']:.2f} m")
     
     elif "WSM" in msg_type:
         return (f"{msg_type} | Time: {parsed_msg['timestamp']:.2f} | "
                 f"Receiver: {parsed_msg['receiver_id']} | Message: {parsed_msg['message_name']} | "
                 f"Sender Pos: ({parsed_msg['sender_pos_x']:.2f}, {parsed_msg['sender_pos_y']:.2f}) | "
                 f"Receiver Pos: ({parsed_msg['receiver_pos_x']:.2f}, {parsed_msg['receiver_pos_y']:.2f}) | "
-                f"Distance: {parsed_msg['distance']:.2f}")
+                f"Distance: {parsed_msg['distance']:.2f} m")
     
     elif "WSA" in msg_type:
         return (f"{msg_type} | Time: {parsed_msg['timestamp']:.2f} | "
