@@ -5,7 +5,7 @@ import time
 import ollama
 import json
 from datetime import datetime
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_mcp import FastApiMCP
 from pydantic import BaseModel
@@ -525,6 +525,11 @@ def get_simulation_stats():
         "data_points": len(speed_data)
     }
 
+@app.post("/receive_message")
+async def receive_message(request: Request):
+    message = await request.json()
+    print("Received message:", message)
+    return {"status": "Message received"}
 @app.post("/clear")
 def clear_route_file():
     """Reset the route file to its basic version"""
