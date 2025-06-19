@@ -189,6 +189,7 @@ Please analyze this data and provide:
 6. Evaluation of traffic fluidity
 
 Respond in English with a structured analysis and concrete recommendations.
+Please provide your answer and then at the end, include the exact line of code or configuration that I should add to my SUMO simulation.
 """
 
         if custom_prompt:

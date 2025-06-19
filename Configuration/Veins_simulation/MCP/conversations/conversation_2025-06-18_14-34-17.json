@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "BSM (Basic Safety Message) | Time: 1.30 | Receiver: node[0] | Sender: mac1609 | Sender Pos: (30.10, 26.73) | Receiver Pos: (80.00, 53.65) | Distance: 56.69 m  BSM (Basic Safety Message) | Time: 1.42 | Receiver: node[1] | Sender: mac1609 | Sender Pos: (80.00, 53.65) | Receiver Pos: (30.10, 26.73) | Distance: 56.69 m  BSM (Basic Safety Message) | Time: 2.30 | Receiver: node[0] | Sender: mac1609 | Sender Pos: (31.54, 26.73) | Receiver Pos: (79.96, 52.19) | Distance: 54.70 m  BSM (Basic Safety Message) | Time: 2.42 | Receiver: node[1] | Sender: mac1609 | Sender Pos: (79.96, 52.19) | Receiver Pos: (31.54, 26.73) | Distance: 54.70 m  BSM (Basic Safety Message) | Time: 3.30 | Receiver: node[0] | Sender: mac1609 | Sender Pos: (34.35, 26.73) | Receiver Pos: (79.84, 48.14) | Distance: 50.28 m  BSM (Basic Safety Message) | Time: 3.42 | Receiver: node[1] | Sender: mac1609 | Sender Pos: (79.84, 48.14) | Receiver Pos: (34.35, 26.73) | Distance: 50.28 m  BSM (Basic Safety Message) | Time: 4.30 | Receiver: node[0] | Sender: mac1609 | Sender Pos: (39.33, 26.72) | Receiver Pos: (79.69, 42.75) | Distance: 43.43 m  BSM (Basic Safety Message) | Time: 4.42 | Receiver: node[1] | Sender: mac1609 | Sender Pos: (79.69, 42.75) | Receiver Pos: (39.33, 26.72) | Distance: 43.43 m  Tell me what you would ask to the car knowing those information"
+  },
+  {
+    "role": "assistant",
+    "content": ""
+  }
+]
