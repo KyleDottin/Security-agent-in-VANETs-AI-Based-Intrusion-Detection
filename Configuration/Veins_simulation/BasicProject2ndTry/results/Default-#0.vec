@@ -1,0 +1,134 @@
+version 3
+run Default-0-20250619-11:05:56-8812
+attr configname Default
+attr datetime 20250619-11:05:56
+attr datetimef 20250619-110556
+attr experiment Default
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network BasicProjectNetwork
+attr processid 8812
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../../../veins-veins-5.3.1/images
+config cmdenv-express-mode true
+config cmdenv-autoflush true
+config cmdenv-status-frequency 1s
+config **.cmdenv-log-level trace
+config image-path ../../images
+config network BasicProjectNetwork
+config debug-on-errors true
+config print-undisposed true
+config sim-time-limit 30s
+config **.scalar-recording true
+config **.vector-recording true
+config *.playgroundSizeX 2500m
+config *.playgroundSizeY 2500m
+config *.playgroundSizeZ 50m
+config *.annotations.draw true
+config *.obstacles.debug false
+config *.manager.updateInterval 1s
+config *.manager.host "\"localhost\""
+config *.manager.port 9999
+config *.manager.autoShutdown true
+config *.manager.launchConfig "xmldoc(\"launchd.xml\")"
+config *.manager.trafficLightModuleType "\"org.car2x.veins.nodes.TrafficLight\""
+config *.tls[*].mobility.x 0
+config *.tls[*].mobility.y 0
+config *.tls[*].mobility.z 3
+config *.tls[*].applType "\"org.car2x.veins.modules.application.traci.TraCIDemoTrafficLightApp\""
+config *.tls[*].logicType "\"org.car2x.veins.modules.world.traci.trafficLight.logics.TraCITrafficLightSimpleLogic\""
+config *.rsu[0].mobility.x 2000
+config *.rsu[0].mobility.y 2000
+config *.rsu[0].mobility.z 3
+config *.rsu[*].applType "\"TraCIDemoRSU11p\""
+config *.rsu[*].appl.headerLength "80 bit"
+config *.rsu[*].appl.sendBeacons true
+config *.rsu[*].appl.dataOnSch false
+config *.rsu[*].appl.beaconInterval 1s
+config *.rsu[*].appl.beaconUserPriority 7
+config *.rsu[*].appl.dataUserPriority 5
+config *.rsu[*].nic.phy80211p.antennaOffsetZ "0 m"
+config *.connectionManager.sendDirect true
+config *.connectionManager.maxInterfDist 2600m
+config *.connectionManager.drawMaxIntfDist false
+config *.**.nic.mac1609_4.useServiceChannel false
+config *.**.nic.mac16094.useServiceChannel false
+config *.**.nic.mac1609_4.txPower 20mW
+config *.**.nic.mac1609_4.bitrate 6Mbps
+config *.**.nic.phy80211p.minPowerLevel -110dBm
+config *.**.nic.phy80211p.useNoiseFloor true
+config *.**.nic.phy80211p.noiseFloor -98dBm
+config *.**.nic.phy80211p.decider "xmldoc(\"config.xml\")"
+config *.**.nic.phy80211p.analogueModels "xmldoc(\"config.xml\")"
+config *.**.nic.phy80211p.usePropagationDelay true
+config *.**.nic.phy80211p.antenna "xmldoc(\"antenna.xml\", \"/root/Antenna[@id='monopole']\")"
+config *.node[*].nic.phy80211p.antennaOffsetY "0 m"
+config *.node[*].nic.phy80211p.antennaOffsetZ "1.895 m"
+config *.node[*].applType "\"MyVeinsApp\""
+config *.node[*].appl.headerLength "80 bit"
+config *.node[*].appl.sendBeacons true
+config *.node[*].appl.dataOnSch false
+config *.node[*].appl.beaconInterval 1s
+config *.node[*].veinsmobility.x 0
+config *.node[*].veinsmobility.y 0
+config *.node[*].veinsmobility.z 0
+config *.node[*].veinsmobility.setHostSpeed false
+config *.node[*0].veinsmobility.accidentCount 0
+config *.node[*0].veinsmobility.accidentStart 5s
+config *.node[*0].veinsmobility.accidentDuration 50s
+config **.node[*].nic.mac1609_4.useAcks true
+config **.node[*].nic.mac1609_4.pcapRecording true
+config **.node[*].nic.mac1609_4.pcapFile "\"results/vehicle-network.pcap\""
+config *.node[*].veinsmobility.collectStatistics true
+config *.rsu[*].applLayer.collectStatistics true
+config *.node[*].applLayer.packetReceived.vector-recording true
+config *.node[*].applLayer.rssi.vector-recording true
+
+vector 0 BasicProjectNetwork.node[0].veinsmobility posx ETV
+vector 1 BasicProjectNetwork.node[0].veinsmobility posy ETV
+vector 2 BasicProjectNetwork.node[1].veinsmobility posx ETV
+vector 3 BasicProjectNetwork.node[1].veinsmobility posy ETV
+vector 4 BasicProjectNetwork.node[0].veinsmobility speed ETV
+vector 5 BasicProjectNetwork.node[1].veinsmobility speed ETV
+vector 6 BasicProjectNetwork.node[0].veinsmobility acceleration ETV
+vector 7 BasicProjectNetwork.node[0].veinsmobility co2emission ETV
+vector 8 BasicProjectNetwork.node[1].veinsmobility acceleration ETV
+vector 9 BasicProjectNetwork.node[1].veinsmobility co2emission ETV
+0	11	1	79.997315689981
+0	51	2	79.956341742385
+0	91	3	79.84303101178
+0	131	4	79.692205578707
+1	11	1	53.651928166352
+1	51	2	52.187940092776
+1	91	3	48.139378312779
+1	131	4	42.750426352714
+2	11	1	30.101047873433
+2	51	2	31.540625405299
+2	91	3	34.348765172507
+2	131	4	39.325776730465
+3	11	1	26.732664885967
+3	51	2	26.730594827889
+3	91	3	26.726556829045
+3	131	4	26.719400074545
+4	51	2	1.4645417755703
+4	91	3	4.0500930060865
+4	131	4	5.3909901415929
+5	51	2	1.4392818092834
+5	91	3	2.8075629102299
+5	131	4	4.9759891644586
+6	91	3	2.5855512305163
+6	131	4	1.3408971355064
+7	91	3	3.8351988822478
+7	131	4	3.1266669628555
+8	91	3	1.3682811009465
+8	131	4	2.1684262542287
+9	91	3	2.1732912127287
+9	131	4	3.9618293141696
+

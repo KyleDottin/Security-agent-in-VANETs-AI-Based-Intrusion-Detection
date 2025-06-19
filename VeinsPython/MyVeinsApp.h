@@ -7,11 +7,16 @@
 #include "veins/modules/messages/DemoSafetyMessage_m.h"
 
 #include "veins/modules/mobility/traci/TraCIMobility.h"
-#include "veins/modules/mobility/traci/TraCIMobilityAccess.h"
 #include "veins/modules/mobility/traci/TraCICommandInterface.h"
 
 #include <fstream>
-#include <netinet/in.h>  // for sockaddr_in
+#ifdef _WIN32
+    #include <winsock2.h> // For Windows
+    #include <ws2tcpip.h>
+#else
+    #include <netinet/in.h> // For linux
+    #include <arpa/inet.h>
+#endif
 #include <string>
 
 using namespace omnetpp;

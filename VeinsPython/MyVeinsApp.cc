@@ -21,11 +21,31 @@
 //
 
 #include "veins/modules/application/traci/MyVeinsApp.h"
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+
+#ifdef _WIN32
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib")
+    typedef SOCKET socket_t;
+    #define CLOSE_SOCKET(s) closesocket(s)
+    #define GET_SOCKET_ERROR() WSAGetLastError()
+    #define SOCKET_ERROR_VAL SOCKET_ERROR
+    #define INVALID_SOCKET_VAL INVALID_SOCKET
+#else
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+    #include <unistd.h>
+    #include <errno.h>
+    typedef int socket_t;
+    #define CLOSE_SOCKET(s) close(s)
+    #define GET_SOCKET_ERROR() errno
+    #define SOCKET_ERROR_VAL -1
+    #define INVALID_SOCKET_VAL -1
+#endif
+
 #include <sstream>
+#include <cstring>
 
 using namespace veins;
 
@@ -35,6 +55,16 @@ void MyVeinsApp::initialize(int stage)
 {
     DemoBaseApplLayer::initialize(stage);
     if (stage == 0) {
+        // Initialize Winsock on Windows
+        #ifdef _WIN32
+        WSADATA wsaData;
+        if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0) {
+            EV << "Error: WSAStartup failed" << endl;
+            udpSocket = INVALID_SOCKET_VAL;
+            return;
+        }
+        #endif
+
         // Initialize UDP socket
         initializeUDPSocket();
         
@@ -63,9 +93,9 @@ void MyVeinsApp::initializeUDPSocket()
     try {
         // Create UDP socket
         udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
-        if (udpSocket < 0) {
-            EV << "Error creating UDP socket" << endl;
-            udpSocket = -1;
+        if (udpSocket == INVALID_SOCKET_VAL) {
+            EV << "Error creating UDP socket. Error code: " << GET_SOCKET_ERROR() << endl;
+            udpSocket = INVALID_SOCKET_VAL;
             return;
         }
 
@@ -73,26 +103,35 @@ void MyVeinsApp::initializeUDPSocket()
         memset(&pythonAddr, 0, sizeof(pythonAddr));
         pythonAddr.sin_family = AF_INET;
         pythonAddr.sin_port = htons(5005);  // Python listening port
+
+        #ifdef _WIN32
+        pythonAddr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+        #else
         pythonAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        #endif
 
         EV << "UDP socket initialized for Python communication" << endl;
     } catch (std::exception& e) {
         EV << "Error initializing UDP socket: " << e.what() << endl;
-        udpSocket = -1;
+        udpSocket = INVALID_SOCKET_VAL;
     }
 }
 
 void MyVeinsApp::sendToPython(const std::string& message)
 {
-    if (udpSocket < 0) {
+    if (udpSocket == INVALID_SOCKET_VAL) {
         return; // Socket not initialized
     }
 
     try {
         int result = sendto(udpSocket, message.c_str(), message.length(), 0,
                            (struct sockaddr*)&pythonAddr, sizeof(pythonAddr));
-        if (result < 0) {
+        if (result == SOCKET_ERROR_VAL) {
+            #ifdef _WIN32
+            EV << "Error sending to Python. Error code: " << WSAGetLastError() << endl;
+            #else
             EV << "Error sending to Python: " << strerror(errno) << endl;
+            #endif
         }
     } catch (std::exception& e) {
         EV << "Exception sending to Python: " << e.what() << endl;
@@ -104,10 +143,14 @@ void MyVeinsApp::finish()
     DemoBaseApplLayer::finish();
     try {
         // Close UDP socket
-        if (udpSocket >= 0) {
-            close(udpSocket);
-            udpSocket = -1;
+        if (udpSocket != INVALID_SOCKET_VAL) {
+            CLOSE_SOCKET(udpSocket);
+            udpSocket = INVALID_SOCKET_VAL;
         }
+
+        #ifdef _WIN32
+        WSACleanup();
+        #endif
 
         EV << "\n=== VEHICLE FINISHED ===" << endl;
         EV << "ID: [" << getParentModule()->getFullName() << "]" << endl;
