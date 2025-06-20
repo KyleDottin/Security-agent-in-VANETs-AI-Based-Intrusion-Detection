@@ -1,0 +1,34 @@
+default_model: generic.qwen3:1.7b
+
+providers:
+  generic:
+    api_key: "ollama"
+    base_url: "http://localhost:11434/v1"
+
+logger:
+  level: "info"
+  type: "console"
+  progress_display: true
+  show_chat: true
+  show_tools: true
+  truncate_tools: true
+
+mcp:
+  servers:
+    mylocal:
+      transport: http
+      url: "http://localhost:8080/mcp"
+      timeout: 30
+
+agents:
+  blue_agent:
+    server: mylocal
+    capabilities:
+      - status_monitor
+  
+model:
+  provider: generic
+  name: qwen3
+  model_name: generic.qwen3:1.7b
+  temperature: 0.7
+  max_tokens: 2000
