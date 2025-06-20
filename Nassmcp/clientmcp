@@ -2,7 +2,7 @@ import asyncio
 from mcp import Client
 
 async def main():
-    # Connexion au serveur MCP (remplace l'URL si nécessaire)
+
     client = await Client.connect("http://localhost:8000", model="traffic.simulation")
 
     print("✅ Connecté au serveur MCP")
