@@ -193,6 +193,28 @@ def report_attack(attack_report: AttackReport):
 def simulate_attack(simulate_attack: SimulateAttack):
     return {"message": "Attack simulated successfully", "simulate_attack": simulate_attack}
 
+@mcp.tool("simulation_stats")
+def get_simulation_stats():
+    """Endpoint to get quick statistics on the simulation"""
+    if not simulation_data:
+        return {"message": "No data available"}
+
+    all_vehicles = set()
+    speed_data = []
+
+    for step_data in simulation_data:
+        for vehicle in step_data["vehicles"]:
+            all_vehicles.add(vehicle["id"])
+            speed_data.append(vehicle["speed"])
+
+    return {
+        "total_steps": len(simulation_data),
+        "unique_vehicles": len(all_vehicles),
+        "average_speed": sum(speed_data) / len(speed_data) if speed_data else 0,
+        "max_speed": max(speed_data) if speed_data else 0,
+        "data_points": len(speed_data)
+    }
+
 @mcp.tool("clear_simulation")
 def clear_route_file() -> dict:
     global traci_connection, running, simulation_data, simulation_thread
@@ -233,5 +255,5 @@ if __name__ == "__main__":
         transport="streamable-http",
         host="127.0.0.1",
         port=8000,
-        path="/mcp"  
+        path="/mcp"
     )
