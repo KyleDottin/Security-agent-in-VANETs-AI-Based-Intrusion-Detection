@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Can you start the SUMO simulation ?"
+  },
+  {
+    "role": "assistant",
+    "content": ""
+  }
+]
