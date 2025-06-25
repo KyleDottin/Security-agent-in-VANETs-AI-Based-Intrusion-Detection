@@ -225,6 +225,19 @@ def clear_route_file() -> dict:
     except Exception as e:
         return {"error": f"Failed to clear simulation: {str(e)}"}
 
+@mcp.tool("Green Light Estimation")
+def green_light_time_estimator(number_of_vehicles: list)-> float:
+    """
+    receive the number of vehicles form the required phase, then it select the max vehicle number, finally it estimate the adequate green light time.
+    """ 
+    maximum = max(number_of_vehicles)
+    green_light_time = 2 + (maximum * 2.8) if maximum!=0 else 0
+    return min(green_light_time,60)
+@mcp.tool
+def test_endpoint(params: dict = None) -> dict:
+    """A test endpoint that prints and returns a basic sentence."""
+    print("Test endpoint called: Hello from MCP server!")
+    return {"message": "Salut Nassim, MCP server is running!"}
 
 
 if __name__ == "__main__":
@@ -237,20 +250,9 @@ if __name__ == "__main__":
     )
 
 
-@mcp.tool
-def test_endpoint(params: dict = None) -> dict:
-    """A test endpoint that prints and returns a basic sentence."""
-    print("Test endpoint called: Hello from MCP server!")
-    return {"message": "Salut Nassim, MCP server is running!"}
 
-# Point d'entrée principal
-if __name__ == "__main__":
-    print("🚀 MCP running at http://127.0.0.1:8000/mcp")
-    mcp.run(
-        transport="streamable-http",
-        host="127.0.0.1",
-        port=8000,
-        path="/mcp"  
-    )
 #to start
 #fast-agent go --url=http://127.0.0.1:8000/mcp --auth=token
+
+#fast-agent go --config-path fastagent.config.yaml --name summarizer --prompt-file prompt.txt --url http://127.0.0.1:8000/mcp --auth token
+#fast-agent go --config-path fastagent.config.yaml --name basic_agent --url http://127.0.0.1:8000/mcp --auth token
