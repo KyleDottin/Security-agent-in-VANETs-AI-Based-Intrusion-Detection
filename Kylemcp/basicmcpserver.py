@@ -15,9 +15,9 @@ step_counter = 0
 simulation_data = []
 username = os.getlogin()
 path1 = r"C:\Users"
-path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
+path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\othma_simulation\osm.sumocfg"
 path_conf = path1 + f"\{username}" + path2
-path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
+path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\othma_simulation\osm.rou.xml"
 route_file_path = path1 + f"\{username}" + path2
 traci_connection = None
 # Read basic route file content
@@ -133,7 +133,7 @@ def reset_route_file_to_basic(route_file_path, basic_content):
     except Exception as e:
         raise Exception(f"Failed to reset route file: {str(e)}")
 
-@mcp.tool("launch_SUMO")
+@mcp.tool("launch_SUMO", description="launch SUMO simulation with TraCI connection")
 def start_sumo_and_connect() -> dict:
     global traci_connection
     sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
@@ -149,7 +149,7 @@ def start_sumo_and_connect() -> dict:
     traci_connection = traci.start(cmd, port=port)
     return {"status": "SUMO started and TraCI connected"}
 
-@mcp.tool("create_vehicle")
+@mcp.tool("create_vehicle", description="Creates a vehicle and adds it to the route file with specified departure time, start road, and end road.")
 def create_vehicle(vehicle: Vehicle) -> dict :
         add_vehicle_to_route_file(
             vehicle.vehicle_id,
@@ -159,7 +159,7 @@ def create_vehicle(vehicle: Vehicle) -> dict :
             route_file_path)
         return {"status": f"Vehicle {vehicle.vehicle_id} added to route file."}
 
-@mcp.tool("start_simulation")
+@mcp.tool("start_simulation", description= "Starts the simulation if SUMO is already launch.")
 def start_simulation():
     global running, simulation_thread, step_counter, simulation_data
 
