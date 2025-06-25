@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $0`
+../src/basicproject3rdtry -n .:../src $*
+# for shared lib, use: opp_run -l ../src/basicproject3rdtry -n .:../src $*
