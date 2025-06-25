@@ -1,8 +1,8 @@
 version 3
-run Default-0-20250619-11:47:27-15224
+run Default-0-20250624-16:46:35-22932
 attr configname Default
-attr datetime 20250619-11:47:27
-attr datetimef 20250619-114727
+attr datetime 20250624-16:46:35
+attr datetimef 20250624-164635
 attr experiment Default
 attr inifile omnetpp.ini
 attr iterationvars ""
@@ -10,7 +10,7 @@ attr iterationvarsd ""
 attr iterationvarsf ""
 attr measurement ""
 attr network BasicProjectNetwork
-attr processid 15224
+attr processid 22932
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -166,8 +166,8 @@ attr unit s
 par BasicProjectNetwork.node[0].appl appName "\"My first Veins App!\""
 scalar BasicProjectNetwork.node[0].appl generatedWSMs 0
 scalar BasicProjectNetwork.node[0].appl receivedWSMs 0
-scalar BasicProjectNetwork.node[0].appl generatedBSMs 3
-scalar BasicProjectNetwork.node[0].appl receivedBSMs 3
+scalar BasicProjectNetwork.node[0].appl generatedBSMs 11
+scalar BasicProjectNetwork.node[0].appl receivedBSMs 11
 scalar BasicProjectNetwork.node[0].appl generatedWSAs 0
 scalar BasicProjectNetwork.node[0].appl receivedWSAs 0
 par BasicProjectNetwork.node[0].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
@@ -210,7 +210,7 @@ par BasicProjectNetwork.node[0].nic.phy80211p ccaThreshold -65dBm
 attr unit dBm
 par BasicProjectNetwork.node[0].nic.phy80211p collectCollisionStatistics false
 par BasicProjectNetwork.node[0].nic.phy80211p allowTxDuringRx false
-scalar BasicProjectNetwork.node[0].nic.phy80211p busyTime 0.0001287309794773
+scalar BasicProjectNetwork.node[0].nic.phy80211p busyTime 0.00010975037281094
 par BasicProjectNetwork.node[0].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
 par BasicProjectNetwork.node[0].nic.mac1609_4 notAffectedByHostState false
 par BasicProjectNetwork.node[0].nic.mac1609_4 headerLength 0bit
@@ -235,8 +235,8 @@ par BasicProjectNetwork.node[0].nic.mac1609_4 useAcks true
 par BasicProjectNetwork.node[0].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.node[0].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 ReceivedUnicastPackets 0
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 ReceivedBroadcasts 3
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 SentPackets 3
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 ReceivedBroadcasts 11
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 SentPackets 10
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 SNIRLostPackets 0
@@ -244,23 +244,23 @@ scalar BasicProjectNetwork.node[0].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 TimesIntoBackoff 2
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 SlotsBackoff 3
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 TimesIntoBackoff 10
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 SlotsBackoff 19
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 totalBusyTime 0.000522
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 totalBusyTime 0.002194
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 sentPackets:count 3
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 sentPackets:count 10
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 channelBusy:timeavg 0.00021583585560163
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 channelBusy:timeavg 0.00021048279540839
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.node[0].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
@@ -284,12 +284,12 @@ attr unit s
 par BasicProjectNetwork.node[0].veinsmobility accidentInterval "uniform(30s, 60s)"
 attr unit s
 scalar BasicProjectNetwork.node[0].veinsmobility startTime 1
-scalar BasicProjectNetwork.node[0].veinsmobility totalTime 2
-scalar BasicProjectNetwork.node[0].veinsmobility stopTime 3.42365902339
-scalar BasicProjectNetwork.node[0].veinsmobility minSpeed 1.4645417755703
-scalar BasicProjectNetwork.node[0].veinsmobility maxSpeed 4.0500930060865
-scalar BasicProjectNetwork.node[0].veinsmobility totalDistance 5.5147084827809
-scalar BasicProjectNetwork.node[0].veinsmobility totalCO2Emission 3.8351988822478
+scalar BasicProjectNetwork.node[0].veinsmobility totalTime 10
+scalar BasicProjectNetwork.node[0].veinsmobility stopTime 11.423654796788
+scalar BasicProjectNetwork.node[0].veinsmobility minSpeed 0.086319760591712
+scalar BasicProjectNetwork.node[0].veinsmobility maxSpeed 7.1104160954133
+scalar BasicProjectNetwork.node[0].veinsmobility totalDistance 30.344431184828
+scalar BasicProjectNetwork.node[0].veinsmobility totalCO2Emission 22.791353594512
 par BasicProjectNetwork.node[0] typename "\"org.car2x.veins.nodes.Car\""
 par BasicProjectNetwork.node[0] applType "\"MyVeinsApp\""
 par BasicProjectNetwork.node[0] nicType "\"Nic80211p\""
@@ -316,8 +316,8 @@ attr unit s
 par BasicProjectNetwork.node[1].appl appName "\"My first Veins App!\""
 scalar BasicProjectNetwork.node[1].appl generatedWSMs 0
 scalar BasicProjectNetwork.node[1].appl receivedWSMs 0
-scalar BasicProjectNetwork.node[1].appl generatedBSMs 3
-scalar BasicProjectNetwork.node[1].appl receivedBSMs 2
+scalar BasicProjectNetwork.node[1].appl generatedBSMs 11
+scalar BasicProjectNetwork.node[1].appl receivedBSMs 10
 scalar BasicProjectNetwork.node[1].appl generatedWSAs 0
 scalar BasicProjectNetwork.node[1].appl receivedWSAs 0
 par BasicProjectNetwork.node[1].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
@@ -360,7 +360,7 @@ par BasicProjectNetwork.node[1].nic.phy80211p ccaThreshold -65dBm
 attr unit dBm
 par BasicProjectNetwork.node[1].nic.phy80211p collectCollisionStatistics false
 par BasicProjectNetwork.node[1].nic.phy80211p allowTxDuringRx false
-scalar BasicProjectNetwork.node[1].nic.phy80211p busyTime 8.5820652984869e-05
+scalar BasicProjectNetwork.node[1].nic.phy80211p busyTime 9.9773066191761e-05
 par BasicProjectNetwork.node[1].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
 par BasicProjectNetwork.node[1].nic.mac1609_4 notAffectedByHostState false
 par BasicProjectNetwork.node[1].nic.mac1609_4 headerLength 0bit
@@ -385,8 +385,8 @@ par BasicProjectNetwork.node[1].nic.mac1609_4 useAcks true
 par BasicProjectNetwork.node[1].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.node[1].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 ReceivedUnicastPackets 0
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 ReceivedBroadcasts 2
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 SentPackets 3
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 ReceivedBroadcasts 10
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 SentPackets 11
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 SNIRLostPackets 0
@@ -394,23 +394,23 @@ scalar BasicProjectNetwork.node[1].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 TimesIntoBackoff 3
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 SlotsBackoff 7
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 TimesIntoBackoff 11
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 SlotsBackoff 14
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 totalBusyTime 0.000523
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 totalBusyTime 0.002195
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 sentPackets:count 3
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 sentPackets:count 11
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 channelBusy:timeavg 0.00021578943034176
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 channelBusy:timeavg 0.00021057873104896
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.node[1].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
@@ -434,12 +434,12 @@ attr unit s
 par BasicProjectNetwork.node[1].veinsmobility accidentInterval "uniform(30s, 60s)"
 attr unit s
 scalar BasicProjectNetwork.node[1].veinsmobility startTime 1
-scalar BasicProjectNetwork.node[1].veinsmobility totalTime 2
-scalar BasicProjectNetwork.node[1].veinsmobility stopTime 3.42365902339
+scalar BasicProjectNetwork.node[1].veinsmobility totalTime 10
+scalar BasicProjectNetwork.node[1].veinsmobility stopTime 11.423654796788
 scalar BasicProjectNetwork.node[1].veinsmobility minSpeed 1.4392818092834
-scalar BasicProjectNetwork.node[1].veinsmobility maxSpeed 2.8075629102299
-scalar BasicProjectNetwork.node[1].veinsmobility totalDistance 4.2477216906487
-scalar BasicProjectNetwork.node[1].veinsmobility totalCO2Emission 2.1732912127287
+scalar BasicProjectNetwork.node[1].veinsmobility maxSpeed 14.463075221476
+scalar BasicProjectNetwork.node[1].veinsmobility totalDistance 93.198911945704
+scalar BasicProjectNetwork.node[1].veinsmobility totalCO2Emission 43.305223157183
 par BasicProjectNetwork.node[1] typename "\"org.car2x.veins.nodes.Car\""
 par BasicProjectNetwork.node[1] applType "\"MyVeinsApp\""
 par BasicProjectNetwork.node[1] nicType "\"Nic80211p\""
@@ -465,7 +465,7 @@ par BasicProjectNetwork.rsu[0].appl wsaInterval 1s
 attr unit s
 scalar BasicProjectNetwork.rsu[0].appl generatedWSMs 0
 scalar BasicProjectNetwork.rsu[0].appl receivedWSMs 0
-scalar BasicProjectNetwork.rsu[0].appl generatedBSMs 3
+scalar BasicProjectNetwork.rsu[0].appl generatedBSMs 11
 scalar BasicProjectNetwork.rsu[0].appl receivedBSMs 0
 scalar BasicProjectNetwork.rsu[0].appl generatedWSAs 0
 scalar BasicProjectNetwork.rsu[0].appl receivedWSAs 0
@@ -535,7 +535,7 @@ par BasicProjectNetwork.rsu[0].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.rsu[0].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 ReceivedUnicastPackets 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 ReceivedBroadcasts 0
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SentPackets 3
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SentPackets 11
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SNIRLostPackets 0
@@ -543,23 +543,23 @@ scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TimesIntoBackoff 3
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SlotsBackoff 6
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TimesIntoBackoff 11
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SlotsBackoff 23
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 totalBusyTime 0.000315
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 totalBusyTime 0.001155
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 sentPackets:count 3
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 sentPackets:count 11
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 channelBusy:timeavg 9.2006825985871e-05
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 channelBusy:timeavg 0.00010110599633357
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.rsu[0].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
