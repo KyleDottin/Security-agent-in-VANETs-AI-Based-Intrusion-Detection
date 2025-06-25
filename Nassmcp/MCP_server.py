@@ -135,6 +135,11 @@ def reset_route_file_to_basic(route_file_path, basic_content):
 
 @mcp.tool("launch_SUMO")
 def start_sumo_and_connect() -> dict:
+    """
+    Launches the SUMO traffic simulator and establishes a TraCI connection.
+    Returns a status message indicating whether the connection was successful.
+    Use this tool before starting any simulation steps or vehicle operations.
+    """
     global traci_connection
     sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
     port = 53517
@@ -151,16 +156,27 @@ def start_sumo_and_connect() -> dict:
 
 @mcp.tool("create_vehicle")
 def create_vehicle(vehicle: Vehicle) -> dict :
-        add_vehicle_to_route_file(
-            vehicle.vehicle_id,
-            vehicle.time_departure,
-            vehicle.road_depart,
-            vehicle.road_arrival,
-            route_file_path)
-        return {"status": f"Vehicle {vehicle.vehicle_id} added to route file."}
+    """
+    Adds a new vehicle to the simulation route file.
+    Parameters:
+        vehicle: Vehicle (vehicle_id, time_departure, road_depart, road_arrival)
+    Returns a status message confirming the vehicle was added.
+    """
+    add_vehicle_to_route_file(
+        vehicle.vehicle_id,
+        vehicle.time_departure,
+        vehicle.road_depart,
+        vehicle.road_arrival,
+        route_file_path)
+    return {"status": f"Vehicle {vehicle.vehicle_id} added to route file."}
 
 @mcp.tool("start_simulation")
 def start_simulation():
+    """
+    Starts the simulation loop in a background thread.
+    Returns a status message indicating if the simulation started or was already running.
+    Requires SUMO/TraCI to be connected first.
+    """
     global running, simulation_thread, step_counter, simulation_data
 
     if running:
@@ -180,21 +196,40 @@ def start_simulation():
 
 @mcp.tool("stop_simulation")
 def stop_simulation():
+    """
+    Stops the simulation loop if it is running.
+    Returns a status message indicating the simulation was stopped.
+    """
     global running
     running = False
     return {"status": "Simulation stopped"}
 
-
 @mcp.tool("report_attack")
 def report_attack(attack_report: AttackReport):
+    """
+    Reports an attack event in the simulation.
+    Parameters:
+        attack_report: AttackReport (attack_id, vehicle_id, agent_id, details)
+    Returns a confirmation message and the report data.
+    """
     return {"message": "Attack reported successfully", "attack_report": attack_report}
 
 @mcp.tool("simulate_attack")
 def simulate_attack(simulate_attack: SimulateAttack):
+    """
+    Simulates an attack scenario in the simulation.
+    Parameters:
+        simulate_attack: SimulateAttack (attack_id)
+    Returns a confirmation message and the attack simulation data.
+    """
     return {"message": "Attack simulated successfully", "simulate_attack": simulate_attack}
 
 @mcp.tool("clear_simulation")
 def clear_route_file() -> dict:
+    """
+    Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.
+    Returns a status message indicating the simulation was cleared and the route file reset.
+    """
     global traci_connection, running, simulation_data, simulation_thread
 
     try:
@@ -212,7 +247,6 @@ def clear_route_file() -> dict:
                 raise Exception(f"Failed to reset route file: {str(e)}")
         traci_connection = None
 
-
         # Reset route file
         reset_route_file_to_basic(route_file_path, basic_content)
 
@@ -228,17 +262,46 @@ def clear_route_file() -> dict:
 @mcp.tool("Green Light Estimation")
 def green_light_time_estimator(number_of_vehicles: list)-> float:
     """
-    receive the number of vehicles form the required phase, then it select the max vehicle number, finally it estimate the adequate green light time.
-    """ 
+    Estimates the optimal green light duration for a traffic phase based on the number of vehicles per lane/phase.
+    Parameters:
+        number_of_vehicles: list of vehicle counts per phase/lane.
+    Returns the estimated green light time in seconds (max 60s).
+    """
     maximum = max(number_of_vehicles)
     green_light_time = 2 + (maximum * 2.8) if maximum!=0 else 0
     return min(green_light_time,60)
+
 @mcp.tool
 def test_endpoint(params: dict = None) -> dict:
-    """A test endpoint that prints and returns a basic sentence."""
+    """
+    A test endpoint for health checks. Prints and returns a basic message to confirm the MCP server is running.
+    """
     print("Test endpoint called: Hello from MCP server!")
     return {"message": "Salut Nassim, MCP server is running!"}
 
+@mcp.tool("simulation_stats")
+def get_simulation_stats():
+    """
+    Returns quick statistics about the current simulation, including total steps, unique vehicles, average speed, max speed, and data points.
+    """
+    if not simulation_data:
+        return {"message": "No data available"}
+
+    all_vehicles = set()
+    speed_data = []
+
+    for step_data in simulation_data:
+        for vehicle in step_data["vehicles"]:
+            all_vehicles.add(vehicle["id"])
+            speed_data.append(vehicle["speed"])
+
+    return {
+        "total_steps": len(simulation_data),
+        "unique_vehicles": len(all_vehicles),
+        "average_speed": sum(speed_data) / len(speed_data) if speed_data else 0,
+        "max_speed": max(speed_data) if speed_data else 0,
+        "data_points": len(speed_data)
+    }
 
 if __name__ == "__main__":
     print("MCP running at http://127.0.0.1:8000/mcp")
