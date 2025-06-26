@@ -5,6 +5,7 @@ import traci
 from fastmcp import FastMCP
 from pydantic import BaseModel
 import xml.etree.ElementTree as ET
+import random
 
 #Variable
 latest_data = None
@@ -156,20 +157,37 @@ def start_sumo_and_connect() -> dict:
     return {"status": "SUMO started and TraCI connected"}
 
 @mcp.tool("create_vehicle")
-def create_vehicle(vehicle: Vehicle) -> dict :
+def create_vehicle(vehicle: Vehicle) -> dict:
     """
-    Adds a new vehicle to the simulation route file.
-    Parameters:
-        vehicle: Vehicle (vehicle_id, time_departure, road_depart, road_arrival)
-    Returns a status message confirming the vehicle was added.
+    Adds and immediately starts a new vehicle in the running SUMO simulation using TraCI.
+    The vehicle is added to a random available route in the simulation (the LLM/user does not provide the route).
+    Returns a status message confirming the vehicle was added to the simulation, and provides the list of all available routes and edges.
     """
-    add_vehicle_to_route_file(
-        vehicle.vehicle_id,
-        vehicle.time_departure,
-        vehicle.road_depart,
-        vehicle.road_arrival,
-        route_file_path)
-    return {"status": f"Vehicle {vehicle.vehicle_id} added to route file."}
+    global traci_connection
+    try:
+        if traci_connection is None:
+            return {"error": "TraCI connection is not active. Start the simulation first."}
+        # Get all available route IDs and edge IDs
+        route_ids = traci.route.getIDList()
+        edge_ids = traci.edge.getIDList()
+        print("All edges in the network:", edge_ids)
+        if not route_ids:
+            return {"error": "No routes available in the simulation."}
+        # Pick a random route
+        route_id = random.choice(route_ids)
+        # Add the vehicle to the simulation on the random route
+        traci.vehicle.add(vehID=vehicle.vehicle_id, routeID=route_id, typeID="bus", depart=vehicle.time_departure)
+        # Set initial speed to 5 m/s so the vehicle starts moving immediately
+        traci.vehicle.setSpeed(vehicle.vehicle_id, 5.0)
+        return {
+            "status": f"Vehicle {vehicle.vehicle_id} added to simulation on route {route_id} and started at 5 m/s.",
+            "all_routes": route_ids,
+            "all_edges": edge_ids
+        }
+    except traci.TraCIException as e:
+        return {"error": f"TraCI error: {e}"}
+    except Exception as e:
+        return {"error": str(e)}
 
 @mcp.tool("start_simulation")
 def start_simulation():
@@ -312,11 +330,8 @@ def fuel_consumption():
             energy += 0.25
     return energy
 
-@mcp.tool("simulation_stats")
+@mcp.tool("simulation_stats",description="Returns quick statistics about the current simulation, including total steps, unique vehicles, average speed, max speed, data points, and total fuel consumption (liters).")
 def get_simulation_stats() -> dict:
-    """
-    Returns quick statistics about the current simulation, including total steps, unique vehicles, average speed, max speed, data points, and total fuel consumption (liters).
-    """
     global energy
     if not simulation_data:
         return {"message": "No data available"}
@@ -340,26 +355,6 @@ def get_simulation_stats() -> dict:
         "data_points": len(speed_data),
         "total_fuel_consumption_liters": total_fuel
     }
-
-@mcp.tool("sumo_test", description="Launches SUMO GUI with the current simulation config in a subprocess for testing.")
-def sumo_test(params: dict = None) -> dict:
-    """
-    Launches SUMO GUI with the current Othma simulation config (osm.sumocfg) in a subprocess.
-    This tool is for testing the SUMO scenario visually, outside of TraCI control.
-    Adds a delay of 1000ms to the simulation.
-    """
-    import subprocess
-    sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
-    config_file = path_conf  # Should point to the Othma simulation config
-    try:
-        subprocess.Popen([
-            sumo_binary,
-            "-c", config_file,
-            "--delay", "1000"
-        ], shell=False)
-        return {"status": f"SUMO GUI launched with config: {config_file} and delay 1000ms"}
-    except Exception as e:
-        return {"error": str(e)}
 
 if __name__ == "__main__":
     print("MCP running at http://127.0.0.1:8000/mcp")
