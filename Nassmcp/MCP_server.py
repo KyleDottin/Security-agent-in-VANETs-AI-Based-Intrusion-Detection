@@ -15,9 +15,10 @@ step_counter = 0
 simulation_data = []
 username = os.getlogin()
 path1 = r"C:\Users"
-path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.sumocfg"
+# Use Othma simulation config and route files in Nassmcp
+path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Nassmcp\othma_simulation\osm.sumocfg"
 path_conf = path1 + f"\{username}" + path2
-path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\basic_network_simulation\traci.rou.xml"
+path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Nassmcp\othma_simulation\osm.rou.xml"
 route_file_path = path1 + f"\{username}" + path2
 traci_connection = None
 # Read basic route file content
@@ -204,6 +205,7 @@ def stop_simulation():
     running = False
     return {"status": "Simulation stopped"}
 
+
 @mcp.tool("report_attack")
 def report_attack(attack_report: AttackReport):
     """
@@ -215,14 +217,27 @@ def report_attack(attack_report: AttackReport):
     return {"message": "Attack reported successfully", "attack_report": attack_report}
 
 @mcp.tool("simulate_attack")
-def simulate_attack(simulate_attack: SimulateAttack):
+def simulate_attack(params: dict = None) -> dict:
     """
-    Simulates an attack scenario in the simulation.
-    Parameters:
-        simulate_attack: SimulateAttack (attack_id)
-    Returns a confirmation message and the attack simulation data.
+    Simulates an attack by forcing all lights of TL1 to red for a short period, then all green.
+    Assumes the simulation is already running and TraCI is connected.
     """
-    return {"message": "Attack simulated successfully", "simulate_attack": simulate_attack}
+    global traci_connection
+    import time
+    try:
+        if traci_connection is None:
+            return {"error": "TraCI connection is not active. Start the simulation first."}
+        # Set all lights to red
+        traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
+        # Wait for 2 seconds (simulation time: run a few steps)
+        for _ in range(500):
+            traci.simulationStep()
+            time.sleep(0.05)
+        # Set all lights to green
+        traci.trafficlight.setRedYellowGreenState("TL1", "GGGGGGGGGGGGGGG")
+        return {"status": "Attack simulated: TL1 all red, then all green."}
+    except Exception as e:
+        return {"error": str(e)}
 
 @mcp.tool("clear_simulation")
 def clear_route_file() -> dict:
@@ -279,11 +294,30 @@ def test_endpoint(params: dict = None) -> dict:
     print("Test endpoint called: Hello from MCP server!")
     return {"message": "Salut Nassim, MCP server is running!"}
 
+energy = 0.0
+
+def fuel_consumption():
+    """
+    Computes the total fuel consumption (in liters) for all moving vehicles in the current simulation step.
+    Adds a small penalty (0.25) for stopped vehicles.
+    Updates the global 'energy' variable.
+    """
+    global energy
+    if traci.vehicle.getIDCount() == 0:
+        return energy
+    for vid in traci.vehicle.getIDList():
+        if traci.vehicle.getSpeed(vid) > 0:
+            energy += traci.vehicle.getFuelConsumption(vid) / 1000.0
+        else:
+            energy += 0.25
+    return energy
+
 @mcp.tool("simulation_stats")
-def get_simulation_stats():
+def get_simulation_stats() -> dict:
     """
-    Returns quick statistics about the current simulation, including total steps, unique vehicles, average speed, max speed, and data points.
+    Returns quick statistics about the current simulation, including total steps, unique vehicles, average speed, max speed, data points, and total fuel consumption (liters).
     """
+    global energy
     if not simulation_data:
         return {"message": "No data available"}
 
@@ -295,13 +329,37 @@ def get_simulation_stats():
             all_vehicles.add(vehicle["id"])
             speed_data.append(vehicle["speed"])
 
+    # Call fuel_consumption to update and get the total
+    total_fuel = fuel_consumption()
+
     return {
         "total_steps": len(simulation_data),
         "unique_vehicles": len(all_vehicles),
         "average_speed": sum(speed_data) / len(speed_data) if speed_data else 0,
         "max_speed": max(speed_data) if speed_data else 0,
-        "data_points": len(speed_data)
+        "data_points": len(speed_data),
+        "total_fuel_consumption_liters": total_fuel
     }
+
+@mcp.tool("sumo_test", description="Launches SUMO GUI with the current simulation config in a subprocess for testing.")
+def sumo_test(params: dict = None) -> dict:
+    """
+    Launches SUMO GUI with the current Othma simulation config (osm.sumocfg) in a subprocess.
+    This tool is for testing the SUMO scenario visually, outside of TraCI control.
+    Adds a delay of 1000ms to the simulation.
+    """
+    import subprocess
+    sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
+    config_file = path_conf  # Should point to the Othma simulation config
+    try:
+        subprocess.Popen([
+            sumo_binary,
+            "-c", config_file,
+            "--delay", "1000"
+        ], shell=False)
+        return {"status": f"SUMO GUI launched with config: {config_file} and delay 1000ms"}
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     print("MCP running at http://127.0.0.1:8000/mcp")
