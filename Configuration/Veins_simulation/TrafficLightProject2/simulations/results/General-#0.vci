@@ -1,0 +1,283 @@
+file 50720 1750923848                                           
+version 3
+run General-0-20250626-09:43:12-8060
+attr configname General
+attr datetime 20250626-09:43:12
+attr datetimef 20250626-094312
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network BasicProjectNetwork
+attr processid 8060
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../../../../veins-veins-5.3.1/images
+config cmdenv-express-mode true
+config cmdenv-autoflush true
+config cmdenv-status-frequency 1s
+config **.cmdenv-log-level trace
+config image-path ../../images
+config network BasicProjectNetwork
+config debug-on-errors true
+config print-undisposed true
+config sim-time-limit 30s
+config **.scalar-recording true
+config **.vector-recording true
+config *.playgroundSizeX 8000m
+config *.playgroundSizeY 10000m
+config *.playgroundSizeZ 50m
+config *.annotations.draw true
+config *.obstacles.debug false
+config *.manager.updateInterval 1s
+config *.manager.host "\"localhost\""
+config *.manager.port 9999
+config *.manager.autoShutdown true
+config *.manager.launchConfig "xmldoc(\"launchd.xml\")"
+config *.manager.trafficLightModuleType "\"org.car2x.veins.nodes.TrafficLight\""
+config *.manager.trafficLightFilter "\"gneJ1\""
+config *.tls[*].mobility.x 0
+config *.tls[*].mobility.y 0
+config *.tls[*].mobility.z 3
+config *.tls[*].@display "\"p=1000,1000;i=misc/trafficlight\""
+config *.tls[*].applType "\"org.car2x.veins.modules.application.traci.TraCIDemoTrafficLightApp\""
+config *.tls[*].logicType "\"org.car2x.veins.modules.world.traci.trafficLight.logics.TraCITrafficLightSimpleLogic\""
+config *.rsu[0].mobility.x 2000
+config *.rsu[0].mobility.y 2000
+config *.rsu[0].mobility.z 3
+config *.rsu[*].applType "\"TraCIDemoRSU11p\""
+config *.rsu[*].appl.headerLength "80 bit"
+config *.rsu[*].appl.sendBeacons true
+config *.rsu[*].appl.dataOnSch false
+config *.rsu[*].appl.beaconInterval 1s
+config *.rsu[*].appl.beaconUserPriority 7
+config *.rsu[*].appl.dataUserPriority 5
+config *.rsu[*].nic.phy80211p.antennaOffsetZ "0 m"
+config *.connectionManager.sendDirect true
+config *.connectionManager.maxInterfDist 2600m
+config *.connectionManager.drawMaxIntfDist false
+config *.**.nic.mac1609_4.useServiceChannel false
+config *.**.nic.mac16094.useServiceChannel false
+config *.**.nic.mac1609_4.txPower 20mW
+config *.**.nic.mac1609_4.bitrate 6Mbps
+config *.**.nic.phy80211p.minPowerLevel -110dBm
+config *.**.nic.phy80211p.useNoiseFloor true
+config *.**.nic.phy80211p.noiseFloor -98dBm
+config *.**.nic.phy80211p.decider "xmldoc(\"config.xml\")"
+config *.**.nic.phy80211p.analogueModels "xmldoc(\"config.xml\")"
+config *.**.nic.phy80211p.usePropagationDelay true
+config *.**.nic.phy80211p.antenna "xmldoc(\"antenna.xml\", \"/root/Antenna[@id='monopole']\")"
+config *.node[*].nic.phy80211p.antennaOffsetY "0 m"
+config *.node[*].nic.phy80211p.antennaOffsetZ "1.895 m"
+config *.node[*].applType "\"MyVeinsApp\""
+config *.node[*].appl.headerLength "80 bit"
+config *.node[*].appl.sendBeacons true
+config *.node[*].appl.dataOnSch false
+config *.node[*].appl.beaconInterval 1s
+config *.node[*].veinsmobility.x 0
+config *.node[*].veinsmobility.y 0
+config *.node[*].veinsmobility.z 0
+config *.node[*].veinsmobility.setHostSpeed false
+config *.node[*0].veinsmobility.accidentCount 0
+config *.node[*0].veinsmobility.accidentStart 5s
+config *.node[*0].veinsmobility.accidentDuration 50s
+config **.node[*].nic.mac1609_4.useAcks true
+config **.node[*].nic.mac1609_4.pcapRecording true
+config **.node[*].nic.mac1609_4.pcapFile "\"results/vehicle-network.pcap\""
+config *.node[*].veinsmobility.collectStatistics true
+config *.rsu[*].applLayer.collectStatistics true
+config *.node[*].applLayer.packetReceived.vector-recording true
+config *.node[*].applLayer.rssi.vector-recording true
+
+vector 0 BasicProjectNetwork.node[0].veinsmobility posx ETV
+vector 1 BasicProjectNetwork.node[0].veinsmobility posy ETV
+vector 2 BasicProjectNetwork.node[1].veinsmobility posx ETV
+vector 3 BasicProjectNetwork.node[1].veinsmobility posy ETV
+vector 4 BasicProjectNetwork.node[2].veinsmobility posx ETV
+vector 5 BasicProjectNetwork.node[2].veinsmobility posy ETV
+vector 6 BasicProjectNetwork.node[0].veinsmobility speed ETV
+vector 7 BasicProjectNetwork.node[1].veinsmobility speed ETV
+vector 8 BasicProjectNetwork.node[2].veinsmobility speed ETV
+vector 9 BasicProjectNetwork.node[0].veinsmobility acceleration ETV
+vector 10 BasicProjectNetwork.node[0].veinsmobility co2emission ETV
+vector 11 BasicProjectNetwork.node[1].veinsmobility acceleration ETV
+vector 12 BasicProjectNetwork.node[1].veinsmobility co2emission ETV
+vector 13 BasicProjectNetwork.node[2].veinsmobility acceleration ETV
+vector 14 BasicProjectNetwork.node[2].veinsmobility co2emission ETV
+vector 15 BasicProjectNetwork.node[3].veinsmobility posx ETV
+vector 16 BasicProjectNetwork.node[3].veinsmobility posy ETV
+vector 17 BasicProjectNetwork.node[4].veinsmobility posx ETV
+vector 18 BasicProjectNetwork.node[4].veinsmobility posy ETV
+vector 19 BasicProjectNetwork.node[3].veinsmobility speed ETV
+vector 20 BasicProjectNetwork.node[3].veinsmobility acceleration ETV
+vector 21 BasicProjectNetwork.node[3].veinsmobility co2emission ETV
+vector 22 BasicProjectNetwork.node[4].veinsmobility speed ETV
+vector 23 BasicProjectNetwork.node[5].veinsmobility posx ETV
+vector 24 BasicProjectNetwork.node[5].veinsmobility posy ETV
+vector 25 BasicProjectNetwork.node[4].veinsmobility acceleration ETV
+vector 26 BasicProjectNetwork.node[4].veinsmobility co2emission ETV
+vector 27 BasicProjectNetwork.node[5].veinsmobility speed ETV
+vector 28 BasicProjectNetwork.node[6].veinsmobility posx ETV
+vector 29 BasicProjectNetwork.node[6].veinsmobility posy ETV
+vector 30 BasicProjectNetwork.node[5].veinsmobility acceleration ETV
+vector 31 BasicProjectNetwork.node[5].veinsmobility co2emission ETV
+vector 32 BasicProjectNetwork.node[7].veinsmobility posx ETV
+vector 33 BasicProjectNetwork.node[7].veinsmobility posy ETV
+vector 34 BasicProjectNetwork.node[6].veinsmobility speed ETV
+vector 35 BasicProjectNetwork.node[6].veinsmobility acceleration ETV
+vector 36 BasicProjectNetwork.node[6].veinsmobility co2emission ETV
+vector 37 BasicProjectNetwork.node[7].veinsmobility speed ETV
+vector 38 BasicProjectNetwork.node[7].veinsmobility acceleration ETV
+vector 39 BasicProjectNetwork.node[7].veinsmobility co2emission ETV
+vector 40 BasicProjectNetwork.node[8].veinsmobility posx ETV
+vector 41 BasicProjectNetwork.node[8].veinsmobility posy ETV
+vector 42 BasicProjectNetwork.node[9].veinsmobility posx ETV
+vector 43 BasicProjectNetwork.node[9].veinsmobility posy ETV
+vector 44 BasicProjectNetwork.node[8].veinsmobility speed ETV
+vector 45 BasicProjectNetwork.node[9].veinsmobility speed ETV
+vector 46 BasicProjectNetwork.node[8].veinsmobility acceleration ETV
+vector 47 BasicProjectNetwork.node[8].veinsmobility co2emission ETV
+vector 48 BasicProjectNetwork.node[9].veinsmobility acceleration ETV
+vector 49 BasicProjectNetwork.node[9].veinsmobility co2emission ETV
+vector 50 BasicProjectNetwork.node[10].veinsmobility posx ETV
+vector 51 BasicProjectNetwork.node[10].veinsmobility posy ETV
+vector 52 BasicProjectNetwork.node[11].veinsmobility posx ETV
+vector 53 BasicProjectNetwork.node[11].veinsmobility posy ETV
+vector 54 BasicProjectNetwork.node[10].veinsmobility speed ETV
+vector 55 BasicProjectNetwork.node[10].veinsmobility acceleration ETV
+vector 56 BasicProjectNetwork.node[10].veinsmobility co2emission ETV
+vector 57 BasicProjectNetwork.node[11].veinsmobility speed ETV
+vector 58 BasicProjectNetwork.node[12].veinsmobility posx ETV
+vector 59 BasicProjectNetwork.node[12].veinsmobility posy ETV
+vector 60 BasicProjectNetwork.node[11].veinsmobility acceleration ETV
+vector 61 BasicProjectNetwork.node[11].veinsmobility co2emission ETV
+vector 62 BasicProjectNetwork.node[12].veinsmobility speed ETV
+vector 63 BasicProjectNetwork.node[13].veinsmobility posx ETV
+vector 64 BasicProjectNetwork.node[13].veinsmobility posy ETV
+vector 65 BasicProjectNetwork.node[12].veinsmobility acceleration ETV
+vector 66 BasicProjectNetwork.node[12].veinsmobility co2emission ETV
+vector 67 BasicProjectNetwork.node[14].veinsmobility posx ETV
+vector 68 BasicProjectNetwork.node[14].veinsmobility posy ETV
+vector 69 BasicProjectNetwork.node[13].veinsmobility speed ETV
+vector 70 BasicProjectNetwork.node[13].veinsmobility acceleration ETV
+vector 71 BasicProjectNetwork.node[13].veinsmobility co2emission ETV
+vector 72 BasicProjectNetwork.node[14].veinsmobility speed ETV
+vector 73 BasicProjectNetwork.node[14].veinsmobility acceleration ETV
+vector 74 BasicProjectNetwork.node[14].veinsmobility co2emission ETV
+12	8821 607 157 13438 3 24 22 -0.35434738523709 17.073765460302 172.95686199843 1889.0530490501
+11	9428 618 157 13438 3 24 22 -0.71312689585611 2.5819418966537 25.285274151402 54.241016452081
+7	10046 605 84 13438 2 24 23 2.5498698164476 28.599913594398 470.62976066763 11333.238283558
+3	10651 629 11 13438 1 24 24 3531.8428342596 3728.8599856705 86581.380303314 312443329.5042
+2	11280 629 11 13438 1 24 24 6658.3305918536 7084.9204319683 163837.32527728 1118906537.1441
+vector 75 BasicProjectNetwork.node[15].veinsmobility posx ETV
+vector 76 BasicProjectNetwork.node[15].veinsmobility posy ETV
+vector 77 BasicProjectNetwork.node[16].veinsmobility posx ETV
+vector 78 BasicProjectNetwork.node[16].veinsmobility posy ETV
+vector 79 BasicProjectNetwork.node[15].veinsmobility speed ETV
+vector 80 BasicProjectNetwork.node[16].veinsmobility speed ETV
+vector 81 BasicProjectNetwork.node[15].veinsmobility acceleration ETV
+vector 82 BasicProjectNetwork.node[15].veinsmobility co2emission ETV
+vector 83 BasicProjectNetwork.node[16].veinsmobility acceleration ETV
+vector 84 BasicProjectNetwork.node[16].veinsmobility co2emission ETV
+vector 85 BasicProjectNetwork.node[17].veinsmobility posx ETV
+vector 86 BasicProjectNetwork.node[17].veinsmobility posy ETV
+10	12697 681 157 19625 3 28 26 0.973 24.353848721858 209.9862829676 2657.1443183521
+9	13378 705 157 19625 3 28 26 -2.7271707510647 2.5967283024685 28.251184649169 71.02329509929
+6	14083 716 84 19625 2 28 27 2.4524649926694 30.770474308552 471.39889042193 10208.361122208
+1	14799 742 11 19625 1 28 28 3523.4594209307 3713.5235541713 102012.0772653 371754400.95834
+0	15541 743 11 19625 1 28 28 6667.2504010282 7097.6464535605 194306.34196206 1348864740.8059
+26	16284 615 698 19625 7 28 22 3.294290562412 21.103982733786 207.52750019552 2368.9132127132
+25	16899 623 698 19625 7 28 22 0.05445870226249 2.4680079158628 29.97603514544 53.561115318676
+22	17522 642 523 19625 6 28 23 2.0565801601624 32.032615305603 475.92237642216 12045.299193101
+18	18164 667 348 19625 5 28 24 3531.8428342596 3731.8378023845 86505.503218445 311894550.83231
+17	18831 667 348 19625 5 28 24 6658.3305918536 7089.2880327355 163668.76370341 1116597519.9092
+vector 87 BasicProjectNetwork.node[18].veinsmobility posx ETV
+vector 88 BasicProjectNetwork.node[18].veinsmobility posy ETV
+vector 89 BasicProjectNetwork.node[17].veinsmobility speed ETV
+vector 90 BasicProjectNetwork.node[17].veinsmobility acceleration ETV
+vector 91 BasicProjectNetwork.node[17].veinsmobility co2emission ETV
+vector 92 BasicProjectNetwork.node[18].veinsmobility speed ETV
+4	19893 800 11 23014 1 30 30 6721.5588132752 6878.1434829464 204538.48875949 1394637061.6779
+5	20693 798 11 23014 1 30 30 3639.2668885678 3792.796493463 110947.64050643 410412323.98104
+8	21491 730 84 23014 2 30 29 0 13.836102737296 219.3889973484 2628.5701340339
+13	22221 792 157 23014 3 30 28 -3.6714678269436 2.558692760556 -1.5147052048706 70.729667550117
+14	23013 659 157 23014 3 30 28 0.973 7.4011257101627 71.309450555777 305.9125775612
+15	23672 753 230 23014 4 30 27 6895.4733873491 7097.6464535605 188454.44051057 1315530243.7437
+16	24425 752 230 23014 4 30 27 3627.6618499107 3713.5235541713 98945.459244855 362629976.45083
+19	25177 723 348 23014 5 30 26 0 17.439499595971 220.23888211395 2824.3612334344
+20	25900 719 523 23014 6 30 25 -4.5 2.5772626519203 -1.6526449820027 112.49372048286
+21	26619 620 523 23014 6 30 25 0.973 11.91290348424 88.468770552677 567.85807660728
+23	27239 673 698 23014 7 30 24 6836.2057973096 7097.6464535605 167760.37301345 1172800140.9661
+24	27912 676 698 23014 7 30 24 3596.1958876903 3713.5235541713 87972.693973092 322498605.29667
+27	28588 646 942 23014 8 30 23 1.3868953013094 22.54892314362 287.4751304182 4183.7719628644
+28	29234 623 1186 23014 9 30 22 6658.3305918536 6967.9081263832 149298.7719415 1013410682.0518
+29	29857 622 1186 23014 9 30 22 3531.8428342596 3672.5187071145 78959.051346327 283433525.77376
+30	30479 630 1186 23014 9 30 22 -3.2777142801881 2.5329000208527 21.162027842311 75.627084363619
+31	31109 572 1186 23014 9 30 22 0.973 14.861547613564 134.37665488718 1241.8582895221
+32	31681 597 1511 23014 10 30 21 6875.1763612173 7097.6464535605 146944.65982085 1028332635.2371
+33	32278 595 1511 23014 10 30 21 3616.7567176215 3713.5235541713 77094.965955457 283051248.62907
+34	32873 592 1511 23014 10 30 21 2.2709876091918 21.163056146822 340.31945686688 6241.2070846921
+35	33465 582 1929 23014 11 30 20 -1.0540531400591 2.5825532079209 18.530223196096 37.897533598087
+36	34047 546 1929 23014 11 30 20 0.973 10.750275222199 109.85208386529 756.92808395807
+37	34593 567 1929 23014 11 30 20 2.2793558065081 17.965280637564 243.49693151791 3256.1584590598
+38	35160 539 2347 23014 12 30 19 -4.5 2.5687852374278 11.953803746555 91.203272588856
+39	35699 490 2347 23014 12 30 19 0.973 12.45124481716 103.33175822121 848.33426680904
+40	36189 509 2765 23014 13 30 18 6917.8753083815 7097.6464535605 126395.71905204 887611487.25099
+41	36698 512 2765 23014 13 30 18 3631.2757157012 3713.5235541713 66243.91117259 243805390.70595
+42	37210 509 2765 23014 13 30 18 6658.3305918536 6913.0995539868 121462.71209741 819742612.54809
+43	37719 508 2765 23014 13 30 18 3531.8428342596 3646.330359838 64289.166563057 229640812.04101
+44	38227 483 3405 23014 14 30 17 2.1392306727823 17.569316764455 198.47205254592 2638.1383031353
+45	38710 485 3405 23014 14 30 17 1.4965580292046 29.311777965198 279.45876946909 6006.6347984443
+46	39195 462 4045 23014 15 30 16 -3.1179972749781 2.4347510638414 14.171019923955 47.596691883131
+47	39657 425 4045 23014 15 30 16 0.973 11.5251917386 80.765475746386 619.90305141422
+48	40082 455 4045 23014 15 30 16 -2.1108474337219 2.4138745184522 24.81941532586 61.697665894496
+49	40537 437 4045 23014 15 30 16 0.973 19.234463521074 147.76343048368 1936.9241356335
+50	40974 426 4685 23014 16 30 15 6944.8005999527 7097.6464535605 105572.99875638 743082294.82318
+51	41400 429 4685 23014 16 30 15 3647.5662696067 3713.5235541713 55344.816492143 204210309.08467
+52	41829 401 5454 23014 17 30 14 6658.3305918536 6821.8662528702 94038.026173667 631692350.62162
+53	42230 399 5454 23014 17 30 14 3531.8428342596 3604.482907659 49807.362574365 177205716.59702
+54	42629 400 5454 23014 17 30 14 1.4076483884361 17.342655503953 166.87399666637 2394.9104892966
+55	43029 380 6364 23014 18 30 13 -0.70986183094792 2.5931906580226 15.092174992471 31.318678077265
+56	43409 363 6364 23014 18 30 13 0.973 11.211358359947 63.637743722894 415.19389862538
+57	43772 372 6364 23014 18 30 13 1.5732332607731 24.810522146359 179.10015948166 3163.7654099467
+58	44144 345 7274 23014 19 30 12 6996.7455482159 7097.6464535605 84714.511171568 598059472.55986
+59	44489 342 7274 23014 19 30 12 3669.1871229947 3713.5235541713 44372.160739231 164076762.43078
+60	44831 344 7274 23014 19 30 12 0.9269392571868 2.4814004011219 23.237288885586 47.550258668553
+61	45175 342 7274 23014 19 30 12 3.3465845681276 17.803496379822 107.25223826455 1143.8498323582
+62	45517 316 8337 23014 20 30 11 1.5523065976566 17.353437165202 110.66249220848 1399.4143681216
+63	45833 287 9400 23014 21 30 10 6658.3305918536 6735.1568072012 66858.134711486 447007448.03327
+64	46120 289 9400 23014 21 30 10 3531.8428342596 3565.5810048596 35438.318503628 125588679.65496
+65	46409 276 9400 23014 21 30 10 -4.5 2.4324184277793 11.301130567546 49.59953989703
+66	46685 278 9400 23014 21 30 10 0.973 10.624113279464 56.746491950912 394.47803656479
+67	46963 261 10628 23014 22 30 9 7037.2752216301 7097.6464535605 63683.554407393 450625190.50593
+68	47224 261 10628 23014 22 30 9 3691.6240410751 3713.5235541713 33349.127205437 123574334.18268
+69	47485 260 10628 23014 22 30 9 1.4800900661852 17.152537868056 83.925306052365 1022.1237107511
+70	47745 232 12033 23014 23 30 8 1.3765093427384 2.5854557731654 15.67244780187 32.417666708153
+71	47977 231 12033 23014 23 30 8 3.0041689158793 11.034529289627 53.248918243992 414.91096620988
+72	48208 232 12033 23014 23 30 8 1.6952569337795 15.265378031065 64.349472433887 672.83197483806
+73	48440 201 13438 23014 24 30 7 1.3841934642522 2.5862173344009 13.570121097285 27.431247717775
+74	48641 201 13438 23014 24 30 7 2.9080273401061 10.126271420551 42.575674532606 317.17689683416
+75	48842 173 14843 23014 25 30 6 7068.9011200225 7097.6464535605 42518.463192651 301303906.04599
+76	49015 174 14843 23014 25 30 6 3702.5045992051 3713.5235541713 22257.45207791 82565785.804866
+77	49189 174 14843 23014 25 30 6 6658.3305918536 6686.0151300971 40012.848006741 266838576.73858
+78	49363 173 14843 23014 25 30 6 3531.8428342596 3543.8073964713 21218.225444617 75035622.715541
+79	49536 141 16437 23014 26 30 5 1.9740248624468 10.19744253559 30.9373205713 235.78480657068
+80	49677 145 16437 23014 26 30 5 1.6850906823296 10.335622526705 30.165233256225 230.43788138387
+81	49822 116 18031 23014 27 30 4 1.7466661596904 2.5628781177569 8.2234176731436 17.284409125129
+82	49938 116 18031 23014 27 30 4 3.0791664637234 5.9924623107079 20.164686592487 106.94968440456
+83	50054 115 18031 23014 27 30 4 1.930762531911 2.3728988956427 8.6505318443757 18.851631864043
+84	50169 116 18031 23014 27 30 4 3.1008805746724 6.5198937917936 20.797591237121 115.82813572034
+85	50285 87 19625 23014 28 30 3 7093.4236166173 7097.6464535605 21287.332740772 151050187.67459
+86	50372 87 19625 23014 28 30 3 3712.2329284031 3713.5235541713 11138.857111121 41358046.779816
+87	50459 58 21420 23014 29 30 2 6658.3305918536 6659.6703173398 13318.000909193 88684575.006071
+88	50517 58 21420 23014 29 30 2 3531.8428342596 3532.4218299714 7064.264664231 24951917.79077
+89	50575 58 21420 23014 29 30 2 1.4510590608465 2.9770817369223 4.4281407977687 10.968588066381
+90	50633 29 23014 23014 30 30 1 1.5260226760758 1.5260226760758 1.5260226760758 2.3287452078976
+91	50662 29 23014 23014 30 30 1 2.3509376365356 2.3509376365356 2.3509376365356 5.5269077708797
+92	50691 27 23014 23014 30 30 1 1.45977265127 1.45977265127 1.45977265127 2.1309361933959
+
