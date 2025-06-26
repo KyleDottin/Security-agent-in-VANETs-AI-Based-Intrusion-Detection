@@ -4,7 +4,7 @@ from datetime import datetime
 import traci
 from fastmcp import FastMCP
 from pydantic import BaseModel
-import xml.etree.ElementTree as ET
+import time
 
 #Variable
 latest_data = None
@@ -17,12 +17,7 @@ username = os.getlogin()
 path1 = r"C:\Users"
 path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\othma_simulation\osm.sumocfg"
 path_conf = path1 + f"\{username}" + path2
-path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\othma_simulation\osm.rou.xml"
-route_file_path = path1 + f"\{username}" + path2
 traci_connection = None
-# Read basic route file content
-with open(route_file_path, "r", encoding="utf-8") as file:
-    basic_content = file.read()
 
 # Initialization of the MCP server
 mcp = FastMCP("Demo")
@@ -30,9 +25,8 @@ mcp = FastMCP("Demo")
 # Class
 class Vehicle(BaseModel):
     vehicle_id: str
-    time_departure: float
-    road_depart: str
-    road_arrival: str
+    type_id: str
+    route_id: str
 
 class AttackReport(BaseModel):
     attack_id: str
@@ -44,25 +38,17 @@ class SimulateAttack(BaseModel):
     attack_id: str
 
 # Function
-def add_vehicle_to_route_file(vehicle_id, depart_time, from_edge, to_edge, route_file_path):
-    if not os.path.exists(route_file_path):
-        root = ET.Element("routes")
-        tree = ET.ElementTree(root)
-        tree.write(route_file_path)
-
-    tree = ET.parse(route_file_path)
-    root = tree.getroot()
-
-    trip_attribs = {
-        "id": vehicle_id,
-        "depart": str(depart_time),
-        "from": from_edge,
-        "to": to_edge
-    }
-    trip = ET.Element("trip", trip_attribs)
-    root.append(trip)
-
-    tree.write(route_file_path, encoding="UTF-8", xml_declaration=True)
+def add_vehicle_to_route_file(vehicle_id, type_id, route_id):
+    # Add vehicle via TraCI
+    traci.vehicle.add(
+        vehID=vehicle_id,
+        routeID=route_id,
+        typeID=type_id,
+        depart="now",
+        departLane="first",
+        departPos="base",
+        departSpeed="0"
+    )
 
 def collect_vehicle_data(step):
     """Collect vehicle data for a given step"""
@@ -124,14 +110,6 @@ def simulation_loop():
             print("Error in simulation loop:", e)
             running = False
 
-def reset_route_file_to_basic(route_file_path, basic_content):
-    """Reset the route file to its basic version"""
-    try:
-        with open(route_file_path, 'w', encoding='utf-8') as file:
-            file.write(basic_content)
-        return True
-    except Exception as e:
-        raise Exception(f"Failed to reset route file: {str(e)}")
 
 @mcp.tool("launch_SUMO", description="launch SUMO simulation with TraCI connection")
 def start_sumo_and_connect() -> dict:
@@ -149,14 +127,12 @@ def start_sumo_and_connect() -> dict:
     traci_connection = traci.start(cmd, port=port)
     return {"status": "SUMO started and TraCI connected"}
 
-@mcp.tool("create_vehicle", description="Creates a vehicle and adds it to the route file with specified departure time, start road, and end road.")
+@mcp.tool("create_vehicle", description="Creates a vehicle and adds it to the route file with specified the ID of the vehicle, its type and the road ID.")
 def create_vehicle(vehicle: Vehicle) -> dict :
         add_vehicle_to_route_file(
             vehicle.vehicle_id,
-            vehicle.time_departure,
-            vehicle.road_depart,
-            vehicle.road_arrival,
-            route_file_path)
+            vehicle.type_id,
+            vehicle.route_id)
         return {"status": f"Vehicle {vehicle.vehicle_id} added to route file."}
 
 @mcp.tool("start_simulation", description= "Starts the simulation if SUMO is already launch.")
@@ -178,23 +154,37 @@ def start_simulation():
 
     return {"status": "Simulation started"}
 
-@mcp.tool("stop_simulation")
+@mcp.tool("stop_simulation", description="Stops the simulation loop if it is running.Returns a status message indicating the simulation was stopped.")
 def stop_simulation():
     global running
     running = False
     return {"status": "Simulation stopped"}
 
 
-@mcp.tool("report_attack")
+@mcp.tool("report_attack", description="Reports an attack event in the simulation.")
 def report_attack(attack_report: AttackReport):
     return {"message": "Attack reported successfully", "attack_report": attack_report}
 
-@mcp.tool("simulate_attack")
-def simulate_attack(simulate_attack: SimulateAttack):
-    return {"message": "Attack simulated successfully", "simulate_attack": simulate_attack}
+@mcp.tool("simulate_attack", description= "Simulates an attack by forcing all lights of TL1 to red for a short period, then all green. Assumes the simulation is already running and TraCI is connected.")
+def simulate_attack(params: dict = None) -> dict:
+    global traci_connection
+    try:
+        if traci_connection is None:
+            return {"error": "TraCI connection is not active. Start the simulation first."}
+        # Set all lights to red
+        traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
+        # Wait for 2 seconds (simulation time: run a few steps)
+        for _ in range(500):
+            traci.simulationStep()
+            time.sleep(0.05)
+        # Set all lights to green
+        traci.trafficlight.setRedYellowGreenState("TL1", "GGGGGGGGGGGGGGG")
+        return {"status": "Attack simulated: TL1 all red, then all green."}
+    except Exception as e:
+        return {"error": str(e)}
 
-@mcp.tool("simulation_stats")
-def get_simulation_stats():
+@mcp.tool("simulation_stats", description="Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
+def get_simulation_stats() -> dict:
     """Endpoint to get quick statistics on the simulation"""
     if not simulation_data:
         return {"message": "No data available"}
@@ -233,10 +223,6 @@ def clear_route_file() -> dict:
             except Exception as e:
                 raise Exception(f"Failed to reset route file: {str(e)}")
         traci_connection = None
-
-
-        # Reset route file
-        reset_route_file_to_basic(route_file_path, basic_content)
 
         # Clear simulation data
         simulation_data = []

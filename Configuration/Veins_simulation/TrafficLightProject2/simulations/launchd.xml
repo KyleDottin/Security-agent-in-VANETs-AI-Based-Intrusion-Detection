@@ -3,5 +3,6 @@
     <!-- Copy necessary files -->
     <copy file="traci.net.xml"/>
     <copy file="traci.rou.xml"/>
+    <copy file="traci.view.xml"/>
     <copy file="traci.sumocfg" type="config"/>
 </launch>
