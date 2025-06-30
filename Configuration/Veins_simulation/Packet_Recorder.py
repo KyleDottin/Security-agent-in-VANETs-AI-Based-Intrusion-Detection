@@ -1,5 +1,3 @@
-# This code requires the 'requests' library. Install it with 'pip install requests'
-
 import socket
 import datetime
 import requests
@@ -80,6 +78,33 @@ def format_message(parsed_msg):
         return f"Unknown message type | Raw: {parsed_msg.get('raw_message', str(parsed_msg))}"
 
 
+def send_to_veins(parsed_msg):
+    """Send the parsed message back to Veins on port 5006."""
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            if parsed_msg["type"] == "BSM (Basic Safety Message)":
+                message = (f"BSM,{parsed_msg['timestamp']},{parsed_msg['receiver_id']},"
+                          f"{parsed_msg['sender_id']},{parsed_msg['sender_pos_x']},"
+                          f"{parsed_msg['sender_pos_y']},{parsed_msg['receiver_pos_x']},"
+                          f"{parsed_msg['receiver_pos_y']},{parsed_msg['distance']}")
+            elif parsed_msg["type"] == "WSM (Wave Short Message)":
+                message = (f"WSM,{parsed_msg['timestamp']},{parsed_msg['receiver_id']},"
+                          f"{parsed_msg['message_name']},{parsed_msg['sender_pos_x']},"
+                          f"{parsed_msg['sender_pos_y']},{parsed_msg['receiver_pos_x']},"
+                          f"{parsed_msg['receiver_pos_y']},{parsed_msg['distance']}")
+            elif parsed_msg["type"] == "WSA (Service Advertisement)":
+                message = (f"WSA,{parsed_msg['timestamp']},{parsed_msg['receiver_id']},"
+                          f"{parsed_msg['service_description']}")
+            else:
+                print(f"Skipping send: Unknown message type {parsed_msg['type']}")
+                return
+
+            sock.sendto(message.encode(), ('127.0.0.1', 5006))
+            print(f"Sent to Veins: {message}")
+    except Exception as e:
+        print(f"Error sending to Veins: {e}")
+
+
 def main():
     HOST = '127.0.0.1'
     PORT = 5005
@@ -102,9 +127,12 @@ def main():
                     try:
                         response = requests.post("http://localhost:8000/receive_message", json=parsed, timeout=5)
                         if response.status_code != 200:
-                            print(f"Failed to send message: {response.status_code}")
+                            print(f"Failed to send message to server: {response.status_code}")
                     except requests.exceptions.RequestException as e:
-                        print(f"Error sending message: {e}")
+                        print(f"Error sending message to server: {e}")
+
+                    # Send the parsed message back to Veins
+                    send_to_veins(parsed)
 
                 formatted_output = format_message(parsed)
                 print(formatted_output, flush=True)

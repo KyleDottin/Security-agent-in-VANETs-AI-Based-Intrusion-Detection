@@ -127,7 +127,7 @@ def start_sumo_and_connect() -> dict:
     traci_connection = traci.start(cmd, port=port)
     return {"status": "SUMO started and TraCI connected"}
 
-@mcp.tool("create_vehicle", description="Creates a vehicle and adds it to the route file with specified the ID of the vehicle, its type and the road ID.")
+@mcp.tool("create_vehicle", description="Creates a vehicle ( car or bus ) and adds it to the route file with specified the ID of the vehicle, its type and the road ID.")
 def create_vehicle(vehicle: Vehicle) -> dict :
         add_vehicle_to_route_file(
             vehicle.vehicle_id,
@@ -171,17 +171,33 @@ def simulate_attack(params: dict = None) -> dict:
     try:
         if traci_connection is None:
             return {"error": "TraCI connection is not active. Start the simulation first."}
-        # Set all lights to red
-        traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
-        # Wait for 2 seconds (simulation time: run a few steps)
-        for _ in range(500):
+
+        # Duration of the blinking effect (in seconds)
+        attack_duration = 10
+        # Blinking period (red ↔ yellow) in seconds
+        blink_period = 0.5
+        # How many blinking steps
+        num_blinks = int(attack_duration / blink_period / 2)
+
+        for i in range(num_blinks):
+            # Set all lights to red
+            traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
             traci.simulationStep()
-            time.sleep(0.05)
-        # Set all lights to green
+            time.sleep(blink_period)
+
+            # Set all lights to yellow
+            traci.trafficlight.setRedYellowGreenState("TL1", "yyyyyyyyyyyyyyy")
+            traci.simulationStep()
+            time.sleep(blink_period)
+
+        # Finally, set all lights to green
         traci.trafficlight.setRedYellowGreenState("TL1", "GGGGGGGGGGGGGGG")
-        return {"status": "Attack simulated: TL1 all red, then all green."}
+
+        return {"status": "Attack simulated: TL1 blinking red/orange, then all green."}
+
     except Exception as e:
         return {"error": str(e)}
+
 
 @mcp.tool("simulation_stats", description="Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
 def get_simulation_stats() -> dict:
