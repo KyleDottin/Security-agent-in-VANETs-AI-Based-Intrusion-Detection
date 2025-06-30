@@ -165,38 +165,48 @@ def stop_simulation():
 def report_attack(attack_report: AttackReport):
     return {"message": "Attack reported successfully", "attack_report": attack_report}
 
-@mcp.tool("simulate_attack", description= "Simulates an attack by forcing all lights of TL1 to red for a short period, then all green. Assumes the simulation is already running and TraCI is connected.")
+import time
+
+@mcp.tool("simulate_attack", description="Simulates an attack by blinking all TL1 lights red/yellow, then all green. Assumes the simulation is running and TraCI is connected.")
 def simulate_attack(params: dict = None) -> dict:
-    global traci_connection
+    global traci_connection, attack_override
     try:
         if traci_connection is None:
             return {"error": "TraCI connection is not active. Start the simulation first."}
 
+        attack_override = True
+
         # Duration of the blinking effect (in seconds)
         attack_duration = 10
-        # Blinking period (red ↔ yellow) in seconds
+        # Blinking period in seconds
         blink_period = 0.5
-        # How many blinking steps
+        # Number of red/yellow cycles
         num_blinks = int(attack_duration / blink_period / 2)
 
         for i in range(num_blinks):
-            # Set all lights to red
             traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
             traci.simulationStep()
             time.sleep(blink_period)
 
-            # Set all lights to yellow
             traci.trafficlight.setRedYellowGreenState("TL1", "yyyyyyyyyyyyyyy")
             traci.simulationStep()
             time.sleep(blink_period)
 
         # Finally, set all lights to green
         traci.trafficlight.setRedYellowGreenState("TL1", "GGGGGGGGGGGGGGG")
+        for _ in range(500):
+            traci.simulationStep()
+            time.sleep(0.05)
 
-        return {"status": "Attack simulated: TL1 blinking red/orange, then all green."}
+        return {"status": "Attack simulated: TL1 blinking red/yellow, then all green."}
 
     except Exception as e:
         return {"error": str(e)}
+
+    finally:
+        attack_override = False
+
+
 
 
 @mcp.tool("simulation_stats", description="Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
