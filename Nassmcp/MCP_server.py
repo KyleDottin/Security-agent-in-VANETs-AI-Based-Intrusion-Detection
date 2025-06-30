@@ -291,6 +291,39 @@ def clear_route_file() -> dict:
         return {"status": "Simulation cleared and route file reset to basic version"}
     except Exception as e:
         return {"error": f"Failed to clear simulation: {str(e)}"}
+first_time = 0
+def check():
+    global first_time
+    if first_time == 0:
+        for traffic_light_id in traci.trafficlight.getIDList():
+            traci.trafficlight.setPhaseDuration(traffic_light_id,0)
+        first_time = 1
+    for traffic_light_id in traci.trafficlight.getIDList():
+        if traci.trafficlight.getPhaseDuration(traffic_light_id) == 2 and traci.trafficlight.getSpentDuration(traffic_light_id)==2:
+            num_phases = len(traci.trafficlight.getCompleteRedYellowGreenDefinition(traffic_light_id)[0].phases)
+            next_phase = traci.trafficlight.getPhase(traffic_light_id)+1 if traci.trafficlight.getPhase(traffic_light_id)<num_phases-1 else 0
+            traci.trafficlight.setPhase(traffic_light_id,next_phase)
+            vehicle_count_by_route = {}
+            for vehicle_id in traci.vehicle.getIDList():
+                tls_data = traci.vehicle.getNextTLS(vehicle_id)
+                if len(tls_data) != 0 and tls_data[0][0] == traffic_light_id and tls_data[0][2] <= 150 and tls_data[0][3].upper() == 'G':
+                    route_id = traci.vehicle.getRouteID(vehicle_id)
+                    if route_id in vehicle_count_by_route:
+                         vehicle_count_by_route[route_id] += 1
+                    else:
+                        vehicle_count_by_route[route_id] = 1
+            max_vehicle_count = max(vehicle_count_by_route.values()) if vehicle_count_by_route else 0
+            green_light_time = min(2 + (max_vehicle_count * 2.8), 60) if max_vehicle_count!=0 else 0
+            traci.trafficlight.setPhaseDuration(traffic_light_id, green_light_time)
+traffic = 0
+@mcp.tool("Adaptive traffic lights")
+def Adaptive_Traffic_lights(action: str)-> str:
+    """
+    this tool launch the adaptive traffic light algorithm.
+    """
+    global traffic
+    traffic = 1
+    return "launched"
 
 @mcp.tool("Green Light Estimation")
 def green_light_time_estimator(number_of_vehicles: list)-> float:
@@ -355,6 +388,19 @@ def get_simulation_stats() -> dict:
         "data_points": len(speed_data),
         "total_fuel_consumption_liters": total_fuel
     }
+
+@mcp.tool("adversarial_attack")
+def adversarial_attack(params: dict = None) -> dict:
+    """
+    Simulates an adversarial attack in the SUMO simulation by randomly manipulating traffic lights and/or vehicle speeds.
+    Parameters (optional in params):
+        target_tl: str (traffic light ID to attack, default random)
+        duration: float (attack duration in seconds, default 5)
+        mode: str ("lights" to manipulate traffic lights, "speed" to manipulate vehicle speeds, "both" for both)
+    Returns a status message describing the attack performed.
+    """
+
+    return {"error": str(e)}
 
 if __name__ == "__main__":
     print("MCP running at http://127.0.0.1:8000/mcp")
