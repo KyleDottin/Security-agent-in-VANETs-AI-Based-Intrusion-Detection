@@ -9,6 +9,7 @@ import time
 #Variable
 latest_data = None
 running = False
+attack_override = False
 simulation_thread = None
 traci_connection = None
 step_counter = 0
@@ -94,6 +95,35 @@ def collect_vehicle_data(step):
 
     return step_data
 
+first_time = 0
+def check():
+    global first_time
+    global attack_override
+    if attack_override:
+        return
+    if first_time == 0:
+        for traffic_light_id in traci.trafficlight.getIDList():
+            traci.trafficlight.setPhaseDuration(traffic_light_id,0)
+        first_time = 1
+    for traffic_light_id in traci.trafficlight.getIDList():
+        if traci.trafficlight.getPhaseDuration(traffic_light_id) == 2 and traci.trafficlight.getSpentDuration(traffic_light_id)==2:
+            num_phases = len(traci.trafficlight.getCompleteRedYellowGreenDefinition(traffic_light_id)[0].phases)
+            next_phase = traci.trafficlight.getPhase(traffic_light_id)+1 if traci.trafficlight.getPhase(traffic_light_id)<num_phases-1 else 0
+            traci.trafficlight.setPhase(traffic_light_id,next_phase)
+            vehicle_count_by_route = {}
+            for vehicle_id in traci.vehicle.getIDList():
+                tls_data = traci.vehicle.getNextTLS(vehicle_id)
+                if len(tls_data) != 0 and tls_data[0][0] == traffic_light_id and tls_data[0][2] <= 150 and tls_data[0][3].upper() == 'G':
+                    route_id = traci.vehicle.getRouteID(vehicle_id)
+                    if route_id in vehicle_count_by_route:
+                         vehicle_count_by_route[route_id] += 1
+                    else:
+                        vehicle_count_by_route[route_id] = 1
+            max_vehicle_count = max(vehicle_count_by_route.values()) if vehicle_count_by_route else 0
+            green_light_time = min(2 + (max_vehicle_count * 2.8), 60) if max_vehicle_count!=0 else 0
+            traci.trafficlight.setPhaseDuration(traffic_light_id, green_light_time)
+traffic = 0
+
 def simulation_loop():
     global running, step_counter, simulation_data, latest_data
 
@@ -101,7 +131,8 @@ def simulation_loop():
         try:
             traci.simulationStep()
             step_counter += 1
-
+            if traffic == 1:
+                check()
             step_data = collect_vehicle_data(step_counter)
             simulation_data.append(step_data)
             latest_data = step_data
@@ -165,7 +196,11 @@ def stop_simulation():
 def report_attack(attack_report: AttackReport):
     return {"message": "Attack reported successfully", "attack_report": attack_report}
 
-import time
+@mcp.tool("Adaptive traffic lights", description="launch the adaptative traffic lights algorithm.")
+def Adaptive_Traffic_lights(action: str)-> str:
+    global traffic
+    traffic = 1
+    return "launched"
 
 @mcp.tool("simulate_attack", description="Simulates an attack by blinking all TL1 lights red/yellow, then all green. Assumes the simulation is running and TraCI is connected.")
 def simulate_attack(params: dict = None) -> dict:
