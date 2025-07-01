@@ -19,6 +19,7 @@ path1 = r"C:\Users"
 path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\Traci simulation\othma_simulation\osm.sumocfg"
 path_conf = path1 + f"\{username}" + path2
 traci_connection = None
+energy = 0.0
 
 # Initialization of the MCP server
 mcp = FastMCP("Demo")
@@ -123,6 +124,22 @@ def check():
             green_light_time = min(2 + (max_vehicle_count * 2.8), 60) if max_vehicle_count!=0 else 0
             traci.trafficlight.setPhaseDuration(traffic_light_id, green_light_time)
 traffic = 0
+
+def fuel_consumption():
+    """
+    Computes the total fuel consumption (in liters) for all moving vehicles in the current simulation step.
+    Adds a small penalty (0.25) for stopped vehicles.
+    Updates the global 'energy' variable.
+    """
+    global energy
+    if traci.vehicle.getIDCount() == 0:
+        return energy
+    for vid in traci.vehicle.getIDList():
+        if traci.vehicle.getSpeed(vid) > 0:
+            energy += traci.vehicle.getFuelConsumption(vid) / 1000.0
+        else:
+            energy += 0.25
+    return energy
 
 def simulation_loop():
     global running, step_counter, simulation_data, latest_data
@@ -246,7 +263,7 @@ def simulate_attack(params: dict = None) -> dict:
 
 @mcp.tool("simulation_stats", description="Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
 def get_simulation_stats() -> dict:
-    """Endpoint to get quick statistics on the simulation"""
+    global energy
     if not simulation_data:
         return {"message": "No data available"}
 
@@ -258,16 +275,20 @@ def get_simulation_stats() -> dict:
             all_vehicles.add(vehicle["id"])
             speed_data.append(vehicle["speed"])
 
+    # Call fuel_consumption to update and get the total
+    total_fuel = fuel_consumption()
+
     return {
         "total_steps": len(simulation_data),
         "unique_vehicles": len(all_vehicles),
         "average_speed": sum(speed_data) / len(speed_data) if speed_data else 0,
         "max_speed": max(speed_data) if speed_data else 0,
-        "data_points": len(speed_data)
+        "data_points": len(speed_data),
+        "total_fuel_consumption_liters": total_fuel
     }
 
 @mcp.tool("clear_simulation")
-def clear_route_file() -> dict:
+def clear_simulation() -> dict:
     global traci_connection, running, simulation_data, simulation_thread
 
     try:
