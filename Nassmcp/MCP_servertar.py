@@ -221,59 +221,66 @@ def stop_simulation():
     return {"status": "Simulation stopped"}
 
 
-@mcp.tool("report_attack")
-def report_attack(attack_report: AttackReport):
-    """
-    Reports an attack event in the simulation.
-    Parameters:
-        attack_report: AttackReport (attack_id, vehicle_id, agent_id, details)
-    Returns a confirmation message and the report data.
-    """
-    return {"message": "Attack reported successfully", "attack_report": attack_report}
+# @mcp.tool("report_attack")
+# def report_attack(attack_report: AttackReport):
+#     """
+#     Reports an attack event in the simulation.
+#     Parameters:
+#         attack_report: AttackReport (attack_id, vehicle_id, agent_id, details)
+#     Returns a confirmation message and the report data.
+#     """
+#     return {"message": "Attack reported successfully", "attack_report": attack_report}
 
-@mcp.tool("simulate_attack")
+@mcp.tool("simulate_attack", description="Simulates an attack by forcing all lights of TL1 to red and yellow (blinking) for a short period, then all green. Assumes the simulation is already running and TraCI is connected.")
 def simulate_attack(params: dict = None) -> dict:
     global traci_connection, attack_override
     import time
-
     try:
         if traci_connection is None:
             return {"error": "TraCI connection is not active. Start the simulation first."}
 
-        attack_override = True  # Désactiver la logique de check()
+        attack_override = True  # Disable adaptive logic during attack
 
-        # Forcer tous les feux au rouge
-        traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
-        for _ in range(500):
+        # Duration of the blinking effect (in seconds)
+        attack_duration = 10
+        # Blinking period (red ↔ yellow) in seconds
+        blink_period = 0.5
+        # How many blinking steps
+        num_blinks = int(attack_duration / blink_period / 2)
+
+        for i in range(num_blinks):
+            # Set all lights to red
+            traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
             traci.simulationStep()
-            time.sleep(0.05)
+            time.sleep(blink_period)
 
-        # Forcer tous les feux au vert
+            # Set all lights to yellow
+            traci.trafficlight.setRedYellowGreenState("TL1", "yyyyyyyyyyyyyyy")
+            traci.simulationStep()
+            time.sleep(blink_period)
+
+        # Finally, set all lights to green
         traci.trafficlight.setRedYellowGreenState("TL1", "GGGGGGGGGGGGGGG")
-        for _ in range(500):
-            traci.simulationStep()
-            time.sleep(0.05)
 
-        return {"status": "Attack simulated: TL1 all red, then all green."}
+        return {"status": "Attack simulated: TL1 blinking red/yellow, then all green."}
 
     except Exception as e:
         return {"error": str(e)}
-
     finally:
         attack_override = False
 
 
-@mcp.tool("Green Light Estimation")
-def green_light_time_estimator(number_of_vehicles: list)-> float:
-    """
-    Estimates the optimal green light duration for a traffic phase based on the number of vehicles per lane/phase.
-    Parameters:
-        number_of_vehicles: list of vehicle counts per phase/lane.
-    Returns the estimated green light time in seconds (max 60s).
-    """
-    maximum = max(number_of_vehicles)
-    green_light_time = 2 + (maximum * 2.8) if maximum!=0 else 0
-    return min(green_light_time,60)
+# @mcp.tool("Green Light Estimation")
+# def green_light_time_estimator(number_of_vehicles: list)-> float:
+#     """
+#     Estimates the optimal green light duration for a traffic phase based on the number of vehicles per lane/phase.
+#     Parameters:
+#         number_of_vehicles: list of vehicle counts per phase/lane.
+#     Returns the estimated green light time in seconds (max 60s).
+#     """
+#     maximum = max(number_of_vehicles)
+#     green_light_time = 2 + (maximum * 2.8) if maximum!=0 else 0
+#     return min(green_light_time,60)
 
 first_time = 0
 def check():

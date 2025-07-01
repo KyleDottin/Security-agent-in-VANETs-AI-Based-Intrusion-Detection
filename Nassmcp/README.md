@@ -39,3 +39,32 @@ Easily connect your LLM agent to a SUMO traffic simulation using this MCP server
 - Make sure your simulation files (network, routes, config) are correctly referenced in `MCP_server.py`.
 - The server exposes endpoints for launching SUMO, creating vehicles, simulating attacks, and more.
 - For best results, always activate your Python virtual environment before running the server or agent.
+
+---
+
+**How to Generate Random Vehicle Trips for the Map**
+
+To change the number of vehicles in your map scenario, use the following command (adjust parameters as needed):
+
+```bash
+python "C:\Program Files (x86)\Eclipse\Sumo\tools\randomTrips.py" \
+  -n map.net.xml \
+  -r map.rou.xml \
+  -b 0 \
+  -e 1000 \
+  -p 0.5 \
+  --seed 42 \
+  --validate \
+  --vehicle-class passenger
+```
+
+- `-n map.net.xml` : Network file
+- `-r map.rou.xml` : Output route file
+- `-b 0` : Begin time (seconds)
+- `-e 1000` : End time (seconds)
+- `-p 0.5` : Probability of vehicle departure (lower = fewer vehicles)
+- `--seed 42` : Random seed for reproducibility
+- `--validate` : Validate generated trips
+- `--vehicle-class passenger` : Type of vehicles
+
+Adjust `-e` and `-p` to control the number and frequency of vehicles.
