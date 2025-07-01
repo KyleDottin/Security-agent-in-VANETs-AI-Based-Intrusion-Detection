@@ -13,6 +13,11 @@ Easily connect your LLM agent to a SUMO traffic simulation using this MCP server
    ```
    The server will be available at: [http://127.0.0.1:8000/mcp](http://127.0.0.1:8000/mcp)
 
+   > **Tip:** For interactive debugging and inspection of your MCP server, use:
+   > ```bash
+   > npx @modelcontextprotocol/inspector
+   > ```
+
 3. **Activate Your Virtual Environment**
    ```bash
    # On Windows
@@ -68,3 +73,4 @@ python "C:\Program Files (x86)\Eclipse\Sumo\tools\randomTrips.py" \
 - `--vehicle-class passenger` : Type of vehicles
 
 Adjust `-e` and `-p` to control the number and frequency of vehicles.
+
