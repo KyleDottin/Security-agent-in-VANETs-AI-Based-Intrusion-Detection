@@ -12,7 +12,6 @@ latest_data = None
 running = False
 simulation_thread = None
 traci_connection = None
-attack_override = False
 step_counter = 0
 simulation_data = []
 username = os.getlogin()
@@ -22,11 +21,10 @@ path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Nassmcp\othma_s
 path_conf = path1 + f"\{username}" + path2
 path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Nassmcp\othma_simulation\osm.rou.xml"
 route_file_path = path1 + f"\{username}" + path2
-
-# Add second path for files in the map folder
-map_path_conf = os.path.join(path1, username, "Security-agent-in-VANETs-AI-Based-Intrusion-Detection", "Nassmcp", "map", "map.sumocfg")
-map_route_file_path = os.path.join(path1, username, "Security-agent-in-VANETs-AI-Based-Intrusion-Detection", "Nassmcp", "map", "map.osm.rou.xml")
-
+traci_connection = None
+# Read basic route file content
+with open(route_file_path, "r", encoding="utf-8") as file:
+    basic_content = file.read()
 
 # Initialization of the MCP server
 mcp = FastMCP("Demo")
@@ -44,8 +42,29 @@ class AttackReport(BaseModel):
     agent_id: str
     details: str
 
-# Function
+class SimulateAttack(BaseModel):
+    attack_id: str
 
+# Function
+def add_vehicle_to_route_file(vehicle_id, depart_time, from_edge, to_edge, route_file_path):
+    if not os.path.exists(route_file_path):
+        root = ET.Element("routes")
+        tree = ET.ElementTree(root)
+        tree.write(route_file_path)
+
+    tree = ET.parse(route_file_path)
+    root = tree.getroot()
+
+    trip_attribs = {
+        "id": vehicle_id,
+        "depart": str(depart_time),
+        "from": from_edge,
+        "to": to_edge
+    }
+    trip = ET.Element("trip", trip_attribs)
+    root.append(trip)
+
+    tree.write(route_file_path, encoding="UTF-8", xml_declaration=True)
 
 def collect_vehicle_data(step):
     """Collect vehicle data for a given step"""
@@ -98,8 +117,7 @@ def simulation_loop():
         try:
             traci.simulationStep()
             step_counter += 1
-            if traffic == 1:
-                check()
+
             step_data = collect_vehicle_data(step_counter)
             simulation_data.append(step_data)
             latest_data = step_data
@@ -108,8 +126,16 @@ def simulation_loop():
             print("Error in simulation loop:", e)
             running = False
 
+def reset_route_file_to_basic(route_file_path, basic_content):
+    """Reset the route file to its basic version"""
+    try:
+        with open(route_file_path, 'w', encoding='utf-8') as file:
+            file.write(basic_content)
+        return True
+    except Exception as e:
+        raise Exception(f"Failed to reset route file: {str(e)}")
 
-@mcp.tool("launch_SUMO_basic")
+@mcp.tool("launch_SUMO")
 def start_sumo_and_connect() -> dict:
     """
     Launches the SUMO traffic simulator and establishes a TraCI connection.
@@ -129,29 +155,6 @@ def start_sumo_and_connect() -> dict:
 
     traci_connection = traci.start(cmd, port=port)
     return {"status": "SUMO started and TraCI connected"}
-
-@mcp.tool("launch_real_world_SUMO")
-def start_sumo_and_connect() -> dict:
-    """
-    Launches the SUMO traffic simulator and establishes a TraCI connection.
-    Returns a status message indicating whether the connection was successful.
-    Use this tool before starting any simulation steps or vehicle operations.
-    """
-    global traci_connection
-    sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
-    port = 53517
-    cmd = [
-        sumo_binary,
-        "-c", map_path_conf,
-        "--step-length", "0.05",
-        "--delay", "1000",
-        "--lateral-resolution", "0.1"
-    ]
-
-    traci_connection = traci.start(cmd, port=port)
-    return {"status": "SUMO started and TraCI connected"}
-
-
 
 @mcp.tool("create_vehicle")
 def create_vehicle(vehicle: Vehicle) -> dict:
@@ -221,73 +224,76 @@ def stop_simulation():
     return {"status": "Simulation stopped"}
 
 
-# @mcp.tool("report_attack")
-# def report_attack(attack_report: AttackReport):
-#     """
-#     Reports an attack event in the simulation.
-#     Parameters:
-#         attack_report: AttackReport (attack_id, vehicle_id, agent_id, details)
-#     Returns a confirmation message and the report data.
-#     """
-#     return {"message": "Attack reported successfully", "attack_report": attack_report}
+@mcp.tool("report_attack")
+def report_attack(attack_report: AttackReport):
+    """
+    Reports an attack event in the simulation.
+    Parameters:
+        attack_report: AttackReport (attack_id, vehicle_id, agent_id, details)
+    Returns a confirmation message and the report data.
+    """
+    return {"message": "Attack reported successfully", "attack_report": attack_report}
 
-@mcp.tool("simulate_attack", description="Simulates an attack by forcing all lights of TL1 to red and yellow (blinking) for a short period, then all green. Assumes the simulation is already running and TraCI is connected.")
+@mcp.tool("simulate_attack")
 def simulate_attack(params: dict = None) -> dict:
-    global traci_connection, attack_override
+    """
+    Simulates an attack by forcing all lights of TL1 to red for a short period, then all green.
+    Assumes the simulation is already running and TraCI is connected.
+    """
+    global traci_connection
     import time
     try:
         if traci_connection is None:
             return {"error": "TraCI connection is not active. Start the simulation first."}
-
-        attack_override = True  # Disable adaptive logic during attack
-
-        # Duration of the blinking effect (in seconds)
-        attack_duration = 10
-        # Blinking period (red ↔ yellow) in seconds
-        blink_period = 0.5
-        # How many blinking steps
-        num_blinks = int(attack_duration / blink_period / 2)
-
-        for i in range(num_blinks):
-            # Set all lights to red
-            traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
+        # Set all lights to red
+        traci.trafficlight.setRedYellowGreenState("TL1", "rrrrrrrrrrrrrrr")
+        # Wait for 2 seconds (simulation time: run a few steps)
+        for _ in range(500):
             traci.simulationStep()
-            time.sleep(blink_period)
-
-            # Set all lights to yellow
-            traci.trafficlight.setRedYellowGreenState("TL1", "yyyyyyyyyyyyyyy")
-            traci.simulationStep()
-            time.sleep(blink_period)
-
-        # Finally, set all lights to green
+            time.sleep(0.05)
+        # Set all lights to green
         traci.trafficlight.setRedYellowGreenState("TL1", "GGGGGGGGGGGGGGG")
-
-        return {"status": "Attack simulated: TL1 blinking red/yellow, then all green."}
-
+        return {"status": "Attack simulated: TL1 all red, then all green."}
     except Exception as e:
         return {"error": str(e)}
-    finally:
-        attack_override = False
 
+@mcp.tool("clear_simulation")
+def clear_route_file() -> dict:
+    """
+    Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.
+    Returns a status message indicating the simulation was cleared and the route file reset.
+    """
+    global traci_connection, running, simulation_data, simulation_thread
 
-# @mcp.tool("Green Light Estimation")
-# def green_light_time_estimator(number_of_vehicles: list)-> float:
-#     """
-#     Estimates the optimal green light duration for a traffic phase based on the number of vehicles per lane/phase.
-#     Parameters:
-#         number_of_vehicles: list of vehicle counts per phase/lane.
-#     Returns the estimated green light time in seconds (max 60s).
-#     """
-#     maximum = max(number_of_vehicles)
-#     green_light_time = 2 + (maximum * 2.8) if maximum!=0 else 0
-#     return min(green_light_time,60)
+    try:
+        # Stop simulation loop
+        if running:
+            running = False
+            if simulation_thread and simulation_thread.is_alive():
+                simulation_thread.join(timeout=5)
 
+        # Close TraCI connection
+        if traci_connection is not None:
+            try:
+                traci.close()
+            except Exception as e:
+                raise Exception(f"Failed to reset route file: {str(e)}")
+        traci_connection = None
+
+        # Reset route file
+        reset_route_file_to_basic(route_file_path, basic_content)
+
+        # Clear simulation data
+        simulation_data = []
+        simulation_thread = None
+        step_counter = 0
+
+        return {"status": "Simulation cleared and route file reset to basic version"}
+    except Exception as e:
+        return {"error": f"Failed to clear simulation: {str(e)}"}
 first_time = 0
 def check():
     global first_time
-    global attack_override
-    if attack_override:
-        return
     if first_time == 0:
         for traffic_light_id in traci.trafficlight.getIDList():
             traci.trafficlight.setPhaseDuration(traffic_light_id,0)
@@ -319,6 +325,17 @@ def Adaptive_Traffic_lights(action: str)-> str:
     traffic = 1
     return "launched"
 
+@mcp.tool("Green Light Estimation")
+def green_light_time_estimator(number_of_vehicles: list)-> float:
+    """
+    Estimates the optimal green light duration for a traffic phase based on the number of vehicles per lane/phase.
+    Parameters:
+        number_of_vehicles: list of vehicle counts per phase/lane.
+    Returns the estimated green light time in seconds (max 60s).
+    """
+    maximum = max(number_of_vehicles)
+    green_light_time = 2 + (maximum * 2.8) if maximum!=0 else 0
+    return min(green_light_time,60)
 
 @mcp.tool
 def test_endpoint(params: dict = None) -> dict:
@@ -371,6 +388,19 @@ def get_simulation_stats() -> dict:
         "data_points": len(speed_data),
         "total_fuel_consumption_liters": total_fuel
     }
+
+@mcp.tool("adversarial_attack")
+def adversarial_attack(params: dict = None) -> dict:
+    """
+    Simulates an adversarial attack in the SUMO simulation by randomly manipulating traffic lights and/or vehicle speeds.
+    Parameters (optional in params):
+        target_tl: str (traffic light ID to attack, default random)
+        duration: float (attack duration in seconds, default 5)
+        mode: str ("lights" to manipulate traffic lights, "speed" to manipulate vehicle speeds, "both" for both)
+    Returns a status message describing the attack performed.
+    """
+
+    return {"error": str(e)}
 
 if __name__ == "__main__":
     print("MCP running at http://127.0.0.1:8000/mcp")
