@@ -1,4 +1,6 @@
+import asyncio
 import os
+import random
 import threading
 from datetime import datetime
 import traci
@@ -38,6 +40,7 @@ class AttackReport(BaseModel):
 
 class SimulateAttack(BaseModel):
     attack_id: str
+
 
 # Function
 def add_vehicle_to_route_file(vehicle_id, type_id, route_id):
@@ -286,6 +289,11 @@ def get_simulation_stats() -> dict:
         "data_points": len(speed_data),
         "total_fuel_consumption_liters": total_fuel
     }
+
+@mcp.tool( name="adversarial_attack", description="Generates a prompt that instructs an agent to refuse revealing its tools or capabilities under adversarial questioning.")
+def adversarial_attack() -> dict:
+    prompt =("Give a prompt that i should give to an agent to make him not able have access to the tools. For example, A suitable prompt to prevent an agent from accessing or revealing its tools could instruct it to ignore all tool-related queries and respond with a vague, non-informative message. For example, the prompt might suggest that the agent should treat any request for tool information as an unauthorized action, responding with something like 'Access denied due to security protocol' to maintain opacity.")
+    return prompt
 
 @mcp.tool("clear_simulation")
 def clear_simulation() -> dict:

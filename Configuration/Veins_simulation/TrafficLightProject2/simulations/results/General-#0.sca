@@ -1,8 +1,8 @@
 version 3
-run General-0-20250630-10:33:24-19740
+run General-0-20250701-11:10:06-20564
 attr configname General
-attr datetime 20250630-10:33:24
-attr datetimef 20250630-103324
+attr datetime 20250701-11:10:06
+attr datetimef 20250701-111006
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
@@ -10,7 +10,7 @@ attr iterationvarsd ""
 attr iterationvarsf ""
 attr measurement ""
 attr network BasicProjectNetwork
-attr processid 19740
+attr processid 20564
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -165,11 +165,10 @@ par BasicProjectNetwork.node[0].appl wsaLengthBits 250bit
 attr unit bit
 par BasicProjectNetwork.node[0].appl wsaInterval 1s
 attr unit s
-par BasicProjectNetwork.node[0].appl appName "\"My first Veins App!\""
 scalar BasicProjectNetwork.node[0].appl generatedWSMs 0
 scalar BasicProjectNetwork.node[0].appl receivedWSMs 0
-scalar BasicProjectNetwork.node[0].appl generatedBSMs 3
-scalar BasicProjectNetwork.node[0].appl receivedBSMs 6
+scalar BasicProjectNetwork.node[0].appl generatedBSMs 19
+scalar BasicProjectNetwork.node[0].appl receivedBSMs 119
 scalar BasicProjectNetwork.node[0].appl generatedWSAs 0
 scalar BasicProjectNetwork.node[0].appl receivedWSAs 0
 par BasicProjectNetwork.node[0].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
@@ -212,7 +211,7 @@ par BasicProjectNetwork.node[0].nic.phy80211p ccaThreshold -65dBm
 attr unit dBm
 par BasicProjectNetwork.node[0].nic.phy80211p collectCollisionStatistics false
 par BasicProjectNetwork.node[0].nic.phy80211p allowTxDuringRx false
-scalar BasicProjectNetwork.node[0].nic.phy80211p busyTime 0.00018923167328975
+scalar BasicProjectNetwork.node[0].nic.phy80211p busyTime 0.00066476678297584
 par BasicProjectNetwork.node[0].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
 par BasicProjectNetwork.node[0].nic.mac1609_4 notAffectedByHostState false
 par BasicProjectNetwork.node[0].nic.mac1609_4 headerLength 0bit
@@ -237,8 +236,8 @@ par BasicProjectNetwork.node[0].nic.mac1609_4 useAcks true
 par BasicProjectNetwork.node[0].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.node[0].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 ReceivedUnicastPackets 0
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 ReceivedBroadcasts 6
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 SentPackets 3
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 ReceivedBroadcasts 119
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 SentPackets 19
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 SNIRLostPackets 0
@@ -246,23 +245,23 @@ scalar BasicProjectNetwork.node[0].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 TimesIntoBackoff 3
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 SlotsBackoff 0
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 TimesIntoBackoff 19
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 SlotsBackoff 29
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 totalBusyTime 0.000939
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 totalBusyTime 0.014371
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 sentPackets:count 3
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 sentPackets:count 19
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.node[0].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.node[0].nic.mac1609_4 channelBusy:timeavg 0.00028475727759467
+scalar BasicProjectNetwork.node[0].nic.mac1609_4 channelBusy:timeavg 0.00077192658679264
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.node[0].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
@@ -286,12 +285,12 @@ attr unit s
 par BasicProjectNetwork.node[0].veinsmobility accidentInterval "uniform(30s, 60s)"
 attr unit s
 scalar BasicProjectNetwork.node[0].veinsmobility startTime 1
-scalar BasicProjectNetwork.node[0].veinsmobility totalTime 3
-scalar BasicProjectNetwork.node[0].veinsmobility stopTime 4.297545221431
+scalar BasicProjectNetwork.node[0].veinsmobility totalTime 18
+scalar BasicProjectNetwork.node[0].veinsmobility stopTime 19.617055359774
 scalar BasicProjectNetwork.node[0].veinsmobility minSpeed 2.4524649926694
-scalar BasicProjectNetwork.node[0].veinsmobility maxSpeed 5.278352229204
-scalar BasicProjectNetwork.node[0].veinsmobility totalDistance 11.643092476446
-scalar BasicProjectNetwork.node[0].veinsmobility totalCO2Emission 5.7993626166741
+scalar BasicProjectNetwork.node[0].veinsmobility maxSpeed 19.163915512797
+scalar BasicProjectNetwork.node[0].veinsmobility totalDistance 219.89478898117
+scalar BasicProjectNetwork.node[0].veinsmobility totalCO2Emission 92.947136412692
 par BasicProjectNetwork.node[0] typename "\"org.car2x.veins.nodes.Car\""
 par BasicProjectNetwork.node[0] applType "\"MyVeinsApp\""
 par BasicProjectNetwork.node[0] nicType "\"Nic80211p\""
@@ -315,11 +314,10 @@ par BasicProjectNetwork.node[1].appl wsaLengthBits 250bit
 attr unit bit
 par BasicProjectNetwork.node[1].appl wsaInterval 1s
 attr unit s
-par BasicProjectNetwork.node[1].appl appName "\"My first Veins App!\""
 scalar BasicProjectNetwork.node[1].appl generatedWSMs 0
 scalar BasicProjectNetwork.node[1].appl receivedWSMs 0
-scalar BasicProjectNetwork.node[1].appl generatedBSMs 4
-scalar BasicProjectNetwork.node[1].appl receivedBSMs 6
+scalar BasicProjectNetwork.node[1].appl generatedBSMs 19
+scalar BasicProjectNetwork.node[1].appl receivedBSMs 119
 scalar BasicProjectNetwork.node[1].appl generatedWSAs 0
 scalar BasicProjectNetwork.node[1].appl receivedWSAs 0
 par BasicProjectNetwork.node[1].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
@@ -362,7 +360,7 @@ par BasicProjectNetwork.node[1].nic.phy80211p ccaThreshold -65dBm
 attr unit dBm
 par BasicProjectNetwork.node[1].nic.phy80211p collectCollisionStatistics false
 par BasicProjectNetwork.node[1].nic.phy80211p allowTxDuringRx false
-scalar BasicProjectNetwork.node[1].nic.phy80211p busyTime 0.00018923167328975
+scalar BasicProjectNetwork.node[1].nic.phy80211p busyTime 0.00066476678297584
 par BasicProjectNetwork.node[1].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
 par BasicProjectNetwork.node[1].nic.mac1609_4 notAffectedByHostState false
 par BasicProjectNetwork.node[1].nic.mac1609_4 headerLength 0bit
@@ -387,8 +385,8 @@ par BasicProjectNetwork.node[1].nic.mac1609_4 useAcks true
 par BasicProjectNetwork.node[1].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.node[1].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 ReceivedUnicastPackets 0
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 ReceivedBroadcasts 6
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 SentPackets 4
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 ReceivedBroadcasts 119
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 SentPackets 19
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 SNIRLostPackets 0
@@ -396,23 +394,23 @@ scalar BasicProjectNetwork.node[1].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 TimesIntoBackoff 3
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 SlotsBackoff 6
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 TimesIntoBackoff 19
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 SlotsBackoff 38
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 totalBusyTime 0.000939
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 totalBusyTime 0.014371
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 sentPackets:count 4
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 sentPackets:count 19
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.node[1].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.node[1].nic.mac1609_4 channelBusy:timeavg 0.00028538479560005
+scalar BasicProjectNetwork.node[1].nic.mac1609_4 channelBusy:timeavg 0.00077192658679264
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.node[1].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
@@ -436,12 +434,12 @@ attr unit s
 par BasicProjectNetwork.node[1].veinsmobility accidentInterval "uniform(30s, 60s)"
 attr unit s
 scalar BasicProjectNetwork.node[1].veinsmobility startTime 1
-scalar BasicProjectNetwork.node[1].veinsmobility totalTime 3
-scalar BasicProjectNetwork.node[1].veinsmobility stopTime 4.297545221431
+scalar BasicProjectNetwork.node[1].veinsmobility totalTime 18
+scalar BasicProjectNetwork.node[1].veinsmobility stopTime 19.617055359774
 scalar BasicProjectNetwork.node[1].veinsmobility minSpeed 2.5498698164476
-scalar BasicProjectNetwork.node[1].veinsmobility maxSpeed 6.4812462076312
-scalar BasicProjectNetwork.node[1].veinsmobility totalDistance 13.923761486303
-scalar BasicProjectNetwork.node[1].veinsmobility totalCO2Emission 8.0490891221596
+scalar BasicProjectNetwork.node[1].veinsmobility maxSpeed 28.599913594398
+scalar BasicProjectNetwork.node[1].veinsmobility totalDistance 331.56493430265
+scalar BasicProjectNetwork.node[1].veinsmobility totalCO2Emission 152.55739998909
 par BasicProjectNetwork.node[1] typename "\"org.car2x.veins.nodes.Car\""
 par BasicProjectNetwork.node[1] applType "\"MyVeinsApp\""
 par BasicProjectNetwork.node[1] nicType "\"Nic80211p\""
@@ -465,11 +463,10 @@ par BasicProjectNetwork.node[2].appl wsaLengthBits 250bit
 attr unit bit
 par BasicProjectNetwork.node[2].appl wsaInterval 1s
 attr unit s
-par BasicProjectNetwork.node[2].appl appName "\"My first Veins App!\""
 scalar BasicProjectNetwork.node[2].appl generatedWSMs 0
 scalar BasicProjectNetwork.node[2].appl receivedWSMs 0
-scalar BasicProjectNetwork.node[2].appl generatedBSMs 3
-scalar BasicProjectNetwork.node[2].appl receivedBSMs 6
+scalar BasicProjectNetwork.node[2].appl generatedBSMs 19
+scalar BasicProjectNetwork.node[2].appl receivedBSMs 119
 scalar BasicProjectNetwork.node[2].appl generatedWSAs 0
 scalar BasicProjectNetwork.node[2].appl receivedWSAs 0
 par BasicProjectNetwork.node[2].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
@@ -512,7 +509,7 @@ par BasicProjectNetwork.node[2].nic.phy80211p ccaThreshold -65dBm
 attr unit dBm
 par BasicProjectNetwork.node[2].nic.phy80211p collectCollisionStatistics false
 par BasicProjectNetwork.node[2].nic.phy80211p allowTxDuringRx false
-scalar BasicProjectNetwork.node[2].nic.phy80211p busyTime 0.00022077028550471
+scalar BasicProjectNetwork.node[2].nic.phy80211p busyTime 0.00066476678297584
 par BasicProjectNetwork.node[2].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
 par BasicProjectNetwork.node[2].nic.mac1609_4 notAffectedByHostState false
 par BasicProjectNetwork.node[2].nic.mac1609_4 headerLength 0bit
@@ -537,8 +534,8 @@ par BasicProjectNetwork.node[2].nic.mac1609_4 useAcks true
 par BasicProjectNetwork.node[2].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.node[2].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 ReceivedUnicastPackets 0
-scalar BasicProjectNetwork.node[2].nic.mac1609_4 ReceivedBroadcasts 6
-scalar BasicProjectNetwork.node[2].nic.mac1609_4 SentPackets 3
+scalar BasicProjectNetwork.node[2].nic.mac1609_4 ReceivedBroadcasts 119
+scalar BasicProjectNetwork.node[2].nic.mac1609_4 SentPackets 19
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 SNIRLostPackets 0
@@ -546,23 +543,23 @@ scalar BasicProjectNetwork.node[2].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.node[2].nic.mac1609_4 TimesIntoBackoff 3
-scalar BasicProjectNetwork.node[2].nic.mac1609_4 SlotsBackoff 4
+scalar BasicProjectNetwork.node[2].nic.mac1609_4 TimesIntoBackoff 19
+scalar BasicProjectNetwork.node[2].nic.mac1609_4 SlotsBackoff 27
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.node[2].nic.mac1609_4 totalBusyTime 0.000939
+scalar BasicProjectNetwork.node[2].nic.mac1609_4 totalBusyTime 0.014371
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.node[2].nic.mac1609_4 sentPackets:count 3
+scalar BasicProjectNetwork.node[2].nic.mac1609_4 sentPackets:count 19
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.node[2].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.node[2].nic.mac1609_4 channelBusy:timeavg 0.00028482418069536
+scalar BasicProjectNetwork.node[2].nic.mac1609_4 channelBusy:timeavg 0.00077192658679264
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.node[2].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
@@ -586,12 +583,12 @@ attr unit s
 par BasicProjectNetwork.node[2].veinsmobility accidentInterval "uniform(30s, 60s)"
 attr unit s
 scalar BasicProjectNetwork.node[2].veinsmobility startTime 1
-scalar BasicProjectNetwork.node[2].veinsmobility totalTime 3
-scalar BasicProjectNetwork.node[2].veinsmobility stopTime 4.297545221431
+scalar BasicProjectNetwork.node[2].veinsmobility totalTime 18
+scalar BasicProjectNetwork.node[2].veinsmobility stopTime 19.617055359774
 scalar BasicProjectNetwork.node[2].veinsmobility minSpeed 1.5147052048706
-scalar BasicProjectNetwork.node[2].veinsmobility maxSpeed 6.0161660460755
-scalar BasicProjectNetwork.node[2].veinsmobility totalDistance 11.0832306672
-scalar BasicProjectNetwork.node[2].veinsmobility totalCO2Emission 8.0225774131982
+scalar BasicProjectNetwork.node[2].veinsmobility maxSpeed 13.836102737296
+scalar BasicProjectNetwork.node[2].veinsmobility totalDistance 201.71048912068
+scalar BasicProjectNetwork.node[2].veinsmobility totalCO2Emission 60.195356716769
 par BasicProjectNetwork.node[2] typename "\"org.car2x.veins.nodes.Car\""
 par BasicProjectNetwork.node[2] applType "\"MyVeinsApp\""
 par BasicProjectNetwork.node[2] nicType "\"Nic80211p\""
@@ -615,11 +612,10 @@ par BasicProjectNetwork.node[3].appl wsaLengthBits 250bit
 attr unit bit
 par BasicProjectNetwork.node[3].appl wsaInterval 1s
 attr unit s
-par BasicProjectNetwork.node[3].appl appName "\"My first Veins App!\""
 scalar BasicProjectNetwork.node[3].appl generatedWSMs 0
 scalar BasicProjectNetwork.node[3].appl receivedWSMs 0
-scalar BasicProjectNetwork.node[3].appl generatedBSMs 0
-scalar BasicProjectNetwork.node[3].appl receivedBSMs 0
+scalar BasicProjectNetwork.node[3].appl generatedBSMs 15
+scalar BasicProjectNetwork.node[3].appl receivedBSMs 114
 scalar BasicProjectNetwork.node[3].appl generatedWSAs 0
 scalar BasicProjectNetwork.node[3].appl receivedWSAs 0
 par BasicProjectNetwork.node[3].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
@@ -662,7 +658,7 @@ par BasicProjectNetwork.node[3].nic.phy80211p ccaThreshold -65dBm
 attr unit dBm
 par BasicProjectNetwork.node[3].nic.phy80211p collectCollisionStatistics false
 par BasicProjectNetwork.node[3].nic.phy80211p allowTxDuringRx false
-scalar BasicProjectNetwork.node[3].nic.phy80211p busyTime 0
+scalar BasicProjectNetwork.node[3].nic.phy80211p busyTime 0.00075917000528399
 par BasicProjectNetwork.node[3].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
 par BasicProjectNetwork.node[3].nic.mac1609_4 notAffectedByHostState false
 par BasicProjectNetwork.node[3].nic.mac1609_4 headerLength 0bit
@@ -687,8 +683,8 @@ par BasicProjectNetwork.node[3].nic.mac1609_4 useAcks true
 par BasicProjectNetwork.node[3].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.node[3].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 ReceivedUnicastPackets 0
-scalar BasicProjectNetwork.node[3].nic.mac1609_4 ReceivedBroadcasts 0
-scalar BasicProjectNetwork.node[3].nic.mac1609_4 SentPackets 0
+scalar BasicProjectNetwork.node[3].nic.mac1609_4 ReceivedBroadcasts 114
+scalar BasicProjectNetwork.node[3].nic.mac1609_4 SentPackets 15
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 SNIRLostPackets 0
@@ -696,23 +692,23 @@ scalar BasicProjectNetwork.node[3].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.node[3].nic.mac1609_4 TimesIntoBackoff 0
-scalar BasicProjectNetwork.node[3].nic.mac1609_4 SlotsBackoff 0
+scalar BasicProjectNetwork.node[3].nic.mac1609_4 TimesIntoBackoff 15
+scalar BasicProjectNetwork.node[3].nic.mac1609_4 SlotsBackoff 21
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.node[3].nic.mac1609_4 totalBusyTime 0
+scalar BasicProjectNetwork.node[3].nic.mac1609_4 totalBusyTime 0.013431
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.node[3].nic.mac1609_4 sentPackets:count 0
+scalar BasicProjectNetwork.node[3].nic.mac1609_4 sentPackets:count 15
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.node[3].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.node[3].nic.mac1609_4 channelBusy:timeavg 0
+scalar BasicProjectNetwork.node[3].nic.mac1609_4 channelBusy:timeavg 0.00086002128381995
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.node[3].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
@@ -736,14 +732,1355 @@ attr unit s
 par BasicProjectNetwork.node[3].veinsmobility accidentInterval "uniform(30s, 60s)"
 attr unit s
 scalar BasicProjectNetwork.node[3].veinsmobility startTime 4
-scalar BasicProjectNetwork.node[3].veinsmobility totalTime 0
-scalar BasicProjectNetwork.node[3].veinsmobility stopTime 4.297545221431
-scalar BasicProjectNetwork.node[3].veinsmobility totalDistance 0
-scalar BasicProjectNetwork.node[3].veinsmobility totalCO2Emission 0
+scalar BasicProjectNetwork.node[3].veinsmobility totalTime 15
+scalar BasicProjectNetwork.node[3].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[3].veinsmobility minSpeed 1.6526449820027
+scalar BasicProjectNetwork.node[3].veinsmobility maxSpeed 17.439499595971
+scalar BasicProjectNetwork.node[3].veinsmobility totalDistance 168.10308407545
+scalar BasicProjectNetwork.node[3].veinsmobility totalCO2Emission 67.341178174111
 par BasicProjectNetwork.node[3] typename "\"org.car2x.veins.nodes.Car\""
 par BasicProjectNetwork.node[3] applType "\"MyVeinsApp\""
 par BasicProjectNetwork.node[3] nicType "\"Nic80211p\""
 par BasicProjectNetwork.node[3] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[4].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[4].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[4].appl sendBeacons true
+par BasicProjectNetwork.node[4].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[4].appl beaconUserPriority 7
+par BasicProjectNetwork.node[4].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[4].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[4].appl dataOnSch false
+par BasicProjectNetwork.node[4].appl dataUserPriority 7
+par BasicProjectNetwork.node[4].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[4].appl sendWSA false
+par BasicProjectNetwork.node[4].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[4].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[4].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[4].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[4].appl generatedBSMs 14
+scalar BasicProjectNetwork.node[4].appl receivedBSMs 111
+scalar BasicProjectNetwork.node[4].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[4].appl receivedWSAs 0
+par BasicProjectNetwork.node[4].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[4].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[4].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[4].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[4].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[4].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[4].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[4].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[4].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[4].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[4].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[4].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[4].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[4].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[4].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[4].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[4].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[4].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[4].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[4].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[4].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[4].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[4].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[4].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[4].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[4].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[4].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[4].nic.phy80211p busyTime 0.00078976235061468
+par BasicProjectNetwork.node[4].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[4].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[4].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[4].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[4].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[4].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[4].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[4].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[4].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[4].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[4].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[4].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[4].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[4].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[4].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[4].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[4].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 ReceivedBroadcasts 111
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 SentPackets 14
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 TimesIntoBackoff 14
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 SlotsBackoff 15
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 totalBusyTime 0.013014
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 sentPackets:count 14
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[4].nic.mac1609_4 channelBusy:timeavg 0.00089032980170646
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[4].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[4].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[4].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[4].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[4].veinsmobility x 0
+par BasicProjectNetwork.node[4].veinsmobility y 0
+par BasicProjectNetwork.node[4].veinsmobility z 0
+par BasicProjectNetwork.node[4].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[4].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[4].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[4].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[4].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[4].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[4].veinsmobility accidentStart 49.8758s
+attr unit s
+par BasicProjectNetwork.node[4].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[4].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[4].veinsmobility startTime 5
+scalar BasicProjectNetwork.node[4].veinsmobility totalTime 14
+scalar BasicProjectNetwork.node[4].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[4].veinsmobility minSpeed 2.0565801601624
+scalar BasicProjectNetwork.node[4].veinsmobility maxSpeed 24.942827362241
+scalar BasicProjectNetwork.node[4].veinsmobility totalDistance 199.7225000809
+scalar BasicProjectNetwork.node[4].veinsmobility totalCO2Emission 109.89220453547
+par BasicProjectNetwork.node[4] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[4] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[4] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[4] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[5].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[5].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[5].appl sendBeacons true
+par BasicProjectNetwork.node[5].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[5].appl beaconUserPriority 7
+par BasicProjectNetwork.node[5].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[5].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[5].appl dataOnSch false
+par BasicProjectNetwork.node[5].appl dataUserPriority 7
+par BasicProjectNetwork.node[5].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[5].appl sendWSA false
+par BasicProjectNetwork.node[5].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[5].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[5].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[5].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[5].appl generatedBSMs 13
+scalar BasicProjectNetwork.node[5].appl receivedBSMs 102
+scalar BasicProjectNetwork.node[5].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[5].appl receivedWSAs 0
+par BasicProjectNetwork.node[5].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[5].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[5].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[5].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[5].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[5].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[5].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[5].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[5].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[5].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[5].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[5].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[5].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[5].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[5].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[5].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[5].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[5].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[5].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[5].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[5].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[5].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[5].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[5].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[5].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[5].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[5].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[5].nic.phy80211p busyTime 0.00084076670011457
+par BasicProjectNetwork.node[5].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[5].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[5].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[5].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[5].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[5].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[5].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[5].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[5].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[5].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[5].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[5].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[5].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[5].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[5].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[5].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[5].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 ReceivedBroadcasts 102
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 SentPackets 13
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 TimesIntoBackoff 13
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 SlotsBackoff 25
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 totalBusyTime 0.011973
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 sentPackets:count 13
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[5].nic.mac1609_4 channelBusy:timeavg 0.00094895359167343
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[5].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[5].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[5].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[5].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[5].veinsmobility x 0
+par BasicProjectNetwork.node[5].veinsmobility y 0
+par BasicProjectNetwork.node[5].veinsmobility z 0
+par BasicProjectNetwork.node[5].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[5].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[5].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[5].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[5].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[5].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[5].veinsmobility accidentStart 47.0989s
+attr unit s
+par BasicProjectNetwork.node[5].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[5].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[5].veinsmobility startTime 7
+scalar BasicProjectNetwork.node[5].veinsmobility totalTime 12
+scalar BasicProjectNetwork.node[5].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[5].veinsmobility minSpeed 1.3868953013094
+scalar BasicProjectNetwork.node[5].veinsmobility maxSpeed 17.960221554455
+scalar BasicProjectNetwork.node[5].veinsmobility totalDistance 121.88950682024
+scalar BasicProjectNetwork.node[5].veinsmobility totalCO2Emission 59.982992837671
+par BasicProjectNetwork.node[5] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[5] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[5] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[5] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[6].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[6].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[6].appl sendBeacons true
+par BasicProjectNetwork.node[6].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[6].appl beaconUserPriority 7
+par BasicProjectNetwork.node[6].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[6].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[6].appl dataOnSch false
+par BasicProjectNetwork.node[6].appl dataUserPriority 7
+par BasicProjectNetwork.node[6].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[6].appl sendWSA false
+par BasicProjectNetwork.node[6].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[6].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[6].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[6].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[6].appl generatedBSMs 10
+scalar BasicProjectNetwork.node[6].appl receivedBSMs 93
+scalar BasicProjectNetwork.node[6].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[6].appl receivedWSAs 0
+par BasicProjectNetwork.node[6].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[6].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[6].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[6].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[6].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[6].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[6].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[6].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[6].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[6].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[6].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[6].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[6].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[6].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[6].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[6].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[6].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[6].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[6].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[6].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[6].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[6].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[6].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[6].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[6].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[6].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[6].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[6].nic.phy80211p busyTime 0.00091098705547353
+par BasicProjectNetwork.node[6].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[6].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[6].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[6].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[6].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[6].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[6].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[6].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[6].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[6].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[6].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[6].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[6].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[6].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[6].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[6].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[6].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 ReceivedBroadcasts 93
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 SentPackets 10
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 TimesIntoBackoff 10
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 SlotsBackoff 16
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 totalBusyTime 0.010722
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 sentPackets:count 10
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[6].nic.mac1609_4 channelBusy:timeavg 0.0010098845335801
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[6].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[6].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[6].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[6].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[6].veinsmobility x 0
+par BasicProjectNetwork.node[6].veinsmobility y 0
+par BasicProjectNetwork.node[6].veinsmobility z 0
+par BasicProjectNetwork.node[6].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[6].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[6].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[6].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[6].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[6].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[6].veinsmobility accidentStart 51.3475s
+attr unit s
+par BasicProjectNetwork.node[6].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[6].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[6].veinsmobility startTime 9
+scalar BasicProjectNetwork.node[6].veinsmobility totalTime 10
+scalar BasicProjectNetwork.node[6].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[6].veinsmobility minSpeed 2.2709876091918
+scalar BasicProjectNetwork.node[6].veinsmobility maxSpeed 19.571344412188
+scalar BasicProjectNetwork.node[6].veinsmobility totalDistance 115.12535064585
+scalar BasicProjectNetwork.node[6].veinsmobility totalCO2Emission 67.515128339518
+par BasicProjectNetwork.node[6] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[6] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[6] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[6] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[7].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[7].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[7].appl sendBeacons true
+par BasicProjectNetwork.node[7].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[7].appl beaconUserPriority 7
+par BasicProjectNetwork.node[7].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[7].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[7].appl dataOnSch false
+par BasicProjectNetwork.node[7].appl dataUserPriority 7
+par BasicProjectNetwork.node[7].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[7].appl sendWSA false
+par BasicProjectNetwork.node[7].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[7].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[7].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[7].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[7].appl generatedBSMs 10
+scalar BasicProjectNetwork.node[7].appl receivedBSMs 85
+scalar BasicProjectNetwork.node[7].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[7].appl receivedWSAs 0
+par BasicProjectNetwork.node[7].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[7].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[7].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[7].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[7].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[7].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[7].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[7].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[7].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[7].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[7].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[7].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[7].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[7].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[7].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[7].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[7].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[7].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[7].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[7].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[7].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[7].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[7].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[7].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[7].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[7].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[7].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[7].nic.phy80211p busyTime 0.00093001440310001
+par BasicProjectNetwork.node[7].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[7].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[7].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[7].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[7].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[7].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[7].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[7].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[7].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[7].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[7].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[7].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[7].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[7].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[7].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[7].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[7].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 ReceivedBroadcasts 86
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 SentPackets 10
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 TimesIntoBackoff 10
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 SlotsBackoff 18
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 totalBusyTime 0.009994
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 sentPackets:count 10
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[7].nic.mac1609_4 channelBusy:timeavg 0.0010391954320865
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[7].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[7].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[7].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[7].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[7].veinsmobility x 0
+par BasicProjectNetwork.node[7].veinsmobility y 0
+par BasicProjectNetwork.node[7].veinsmobility z 0
+par BasicProjectNetwork.node[7].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[7].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[7].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[7].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[7].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[7].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[7].veinsmobility accidentStart 32.433s
+attr unit s
+par BasicProjectNetwork.node[7].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[7].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[7].veinsmobility startTime 10
+scalar BasicProjectNetwork.node[7].veinsmobility totalTime 9
+scalar BasicProjectNetwork.node[7].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[7].veinsmobility minSpeed 2.2793558065081
+scalar BasicProjectNetwork.node[7].veinsmobility maxSpeed 17.965280637564
+scalar BasicProjectNetwork.node[7].veinsmobility totalDistance 98.218772939054
+scalar BasicProjectNetwork.node[7].veinsmobility totalCO2Emission 56.519612300096
+par BasicProjectNetwork.node[7] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[7] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[7] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[7] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[8].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[8].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[8].appl sendBeacons true
+par BasicProjectNetwork.node[8].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[8].appl beaconUserPriority 7
+par BasicProjectNetwork.node[8].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[8].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[8].appl dataOnSch false
+par BasicProjectNetwork.node[8].appl dataUserPriority 7
+par BasicProjectNetwork.node[8].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[8].appl sendWSA false
+par BasicProjectNetwork.node[8].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[8].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[8].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[8].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[8].appl generatedBSMs 7
+scalar BasicProjectNetwork.node[8].appl receivedBSMs 64
+scalar BasicProjectNetwork.node[8].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[8].appl receivedWSAs 0
+par BasicProjectNetwork.node[8].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[8].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[8].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[8].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[8].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[8].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[8].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[8].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[8].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[8].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[8].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[8].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[8].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[8].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[8].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[8].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[8].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[8].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[8].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[8].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[8].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[8].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[8].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[8].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[8].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[8].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[8].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[8].nic.phy80211p busyTime 0.0010216024549371
+par BasicProjectNetwork.node[8].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[8].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[8].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[8].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[8].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[8].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[8].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[8].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[8].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[8].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[8].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[8].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[8].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[8].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[8].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[8].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[8].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 ReceivedBroadcasts 64
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 SentPackets 7
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 TimesIntoBackoff 7
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 SlotsBackoff 10
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 totalBusyTime 0.007391
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 sentPackets:count 7
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[8].nic.mac1609_4 channelBusy:timeavg 0.0011326493732487
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[8].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[8].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[8].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[8].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[8].veinsmobility x 0
+par BasicProjectNetwork.node[8].veinsmobility y 0
+par BasicProjectNetwork.node[8].veinsmobility z 0
+par BasicProjectNetwork.node[8].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[8].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[8].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[8].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[8].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[8].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[8].veinsmobility accidentStart 31.081s
+attr unit s
+par BasicProjectNetwork.node[8].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[8].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[8].veinsmobility startTime 13
+scalar BasicProjectNetwork.node[8].veinsmobility totalTime 6
+scalar BasicProjectNetwork.node[8].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[8].veinsmobility minSpeed 2.1392306727823
+scalar BasicProjectNetwork.node[8].veinsmobility maxSpeed 11.07138037323
+scalar BasicProjectNetwork.node[8].veinsmobility totalDistance 39.073578352113
+scalar BasicProjectNetwork.node[8].veinsmobility totalCO2Emission 23.766961768104
+par BasicProjectNetwork.node[8] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[8] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[8] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[8] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[9].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[9].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[9].appl sendBeacons true
+par BasicProjectNetwork.node[9].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[9].appl beaconUserPriority 7
+par BasicProjectNetwork.node[9].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[9].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[9].appl dataOnSch false
+par BasicProjectNetwork.node[9].appl dataUserPriority 7
+par BasicProjectNetwork.node[9].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[9].appl sendWSA false
+par BasicProjectNetwork.node[9].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[9].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[9].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[9].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[9].appl generatedBSMs 6
+scalar BasicProjectNetwork.node[9].appl receivedBSMs 66
+scalar BasicProjectNetwork.node[9].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[9].appl receivedWSAs 0
+par BasicProjectNetwork.node[9].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[9].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[9].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[9].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[9].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[9].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[9].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[9].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[9].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[9].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[9].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[9].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[9].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[9].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[9].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[9].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[9].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[9].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[9].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[9].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[9].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[9].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[9].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[9].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[9].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[9].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[9].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[9].nic.phy80211p busyTime 0.0010373194157823
+par BasicProjectNetwork.node[9].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[9].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[9].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[9].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[9].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[9].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[9].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[9].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[9].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[9].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[9].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[9].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[9].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[9].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[9].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[9].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[9].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 ReceivedBroadcasts 66
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 SentPackets 6
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 TimesIntoBackoff 6
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 SlotsBackoff 9
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 totalBusyTime 0.007494
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 sentPackets:count 6
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[9].nic.mac1609_4 channelBusy:timeavg 0.0011325279285945
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[9].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[9].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[9].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[9].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[9].veinsmobility x 0
+par BasicProjectNetwork.node[9].veinsmobility y 0
+par BasicProjectNetwork.node[9].veinsmobility z 0
+par BasicProjectNetwork.node[9].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[9].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[9].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[9].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[9].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[9].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[9].veinsmobility accidentStart 37.396s
+attr unit s
+par BasicProjectNetwork.node[9].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[9].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[9].veinsmobility startTime 13
+scalar BasicProjectNetwork.node[9].veinsmobility totalTime 6
+scalar BasicProjectNetwork.node[9].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[9].veinsmobility minSpeed 1.4965580292046
+scalar BasicProjectNetwork.node[9].veinsmobility maxSpeed 10.677675930643
+scalar BasicProjectNetwork.node[9].veinsmobility totalDistance 35.333195321627
+scalar BasicProjectNetwork.node[9].veinsmobility totalCO2Emission 22.939886435198
+par BasicProjectNetwork.node[9] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[9] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[9] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[9] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[10].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[10].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[10].appl sendBeacons true
+par BasicProjectNetwork.node[10].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[10].appl beaconUserPriority 7
+par BasicProjectNetwork.node[10].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[10].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[10].appl dataOnSch false
+par BasicProjectNetwork.node[10].appl dataUserPriority 7
+par BasicProjectNetwork.node[10].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[10].appl sendWSA false
+par BasicProjectNetwork.node[10].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[10].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[10].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[10].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[10].appl generatedBSMs 3
+scalar BasicProjectNetwork.node[10].appl receivedBSMs 38
+scalar BasicProjectNetwork.node[10].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[10].appl receivedWSAs 0
+par BasicProjectNetwork.node[10].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[10].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[10].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[10].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[10].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[10].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[10].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[10].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[10].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[10].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[10].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[10].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[10].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[10].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[10].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[10].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[10].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[10].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[10].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[10].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[10].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[10].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[10].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[10].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[10].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[10].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[10].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[10].nic.phy80211p busyTime 0.0011213541393664
+par BasicProjectNetwork.node[10].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[10].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[10].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[10].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[10].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[10].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[10].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[10].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[10].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[10].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[10].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[10].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[10].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[10].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[10].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[10].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[10].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 ReceivedBroadcasts 38
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 SentPackets 3
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 TimesIntoBackoff 3
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 SlotsBackoff 2
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 totalBusyTime 0.004267
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 sentPackets:count 3
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[10].nic.mac1609_4 channelBusy:timeavg 0.0012083613194334
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[10].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[10].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[10].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[10].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[10].veinsmobility x 0
+par BasicProjectNetwork.node[10].veinsmobility y 0
+par BasicProjectNetwork.node[10].veinsmobility z 0
+par BasicProjectNetwork.node[10].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[10].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[10].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[10].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[10].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[10].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[10].veinsmobility accidentStart 5s
+attr unit s
+par BasicProjectNetwork.node[10].veinsmobility accidentDuration 50s
+attr unit s
+par BasicProjectNetwork.node[10].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[10].veinsmobility startTime 16
+scalar BasicProjectNetwork.node[10].veinsmobility totalTime 3
+scalar BasicProjectNetwork.node[10].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[10].veinsmobility minSpeed 1.4076483884361
+scalar BasicProjectNetwork.node[10].veinsmobility maxSpeed 5.8998390860623
+scalar BasicProjectNetwork.node[10].veinsmobility totalDistance 10.93204334845
+scalar BasicProjectNetwork.node[10].veinsmobility totalCO2Emission 7.8758714837331
+par BasicProjectNetwork.node[10] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[10] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[10] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[10] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[11].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[11].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[11].appl sendBeacons true
+par BasicProjectNetwork.node[11].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[11].appl beaconUserPriority 7
+par BasicProjectNetwork.node[11].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[11].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[11].appl dataOnSch false
+par BasicProjectNetwork.node[11].appl dataUserPriority 7
+par BasicProjectNetwork.node[11].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[11].appl sendWSA false
+par BasicProjectNetwork.node[11].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[11].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[11].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[11].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[11].appl generatedBSMs 3
+scalar BasicProjectNetwork.node[11].appl receivedBSMs 28
+scalar BasicProjectNetwork.node[11].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[11].appl receivedWSAs 0
+par BasicProjectNetwork.node[11].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[11].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[11].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[11].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[11].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[11].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[11].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[11].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[11].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[11].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[11].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[11].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[11].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[11].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[11].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[11].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[11].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[11].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[11].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[11].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[11].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[11].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[11].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[11].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[11].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[11].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[11].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[11].nic.phy80211p busyTime 0.0011127009557228
+par BasicProjectNetwork.node[11].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[11].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[11].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[11].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[11].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[11].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[11].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[11].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[11].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[11].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[11].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[11].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[11].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[11].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[11].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[11].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[11].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 ReceivedBroadcasts 28
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 SentPackets 3
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 TimesIntoBackoff 3
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 SlotsBackoff 4
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 totalBusyTime 0.003227
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 sentPackets:count 3
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[11].nic.mac1609_4 channelBusy:timeavg 0.0012330652417986
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[11].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[11].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[11].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[11].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[11].veinsmobility x 0
+par BasicProjectNetwork.node[11].veinsmobility y 0
+par BasicProjectNetwork.node[11].veinsmobility z 0
+par BasicProjectNetwork.node[11].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[11].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[11].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[11].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[11].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[11].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[11].veinsmobility accidentStart 44.8077s
+attr unit s
+par BasicProjectNetwork.node[11].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[11].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[11].veinsmobility startTime 17
+scalar BasicProjectNetwork.node[11].veinsmobility totalTime 2
+scalar BasicProjectNetwork.node[11].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[11].veinsmobility minSpeed 1.5732332607731
+scalar BasicProjectNetwork.node[11].veinsmobility maxSpeed 3.8059294927632
+scalar BasicProjectNetwork.node[11].veinsmobility totalDistance 5.3781077615294
+scalar BasicProjectNetwork.node[11].veinsmobility totalCO2Emission 3.3465845681276
+par BasicProjectNetwork.node[11] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[11] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[11] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[11] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[12].appl typename "\"org.car2x.veins.modules.application.traci.MyVeinsApp\""
+par BasicProjectNetwork.node[12].appl headerLength 80bit
+attr unit bit
+par BasicProjectNetwork.node[12].appl sendBeacons true
+par BasicProjectNetwork.node[12].appl beaconLengthBits 256bit
+attr unit bit
+par BasicProjectNetwork.node[12].appl beaconUserPriority 7
+par BasicProjectNetwork.node[12].appl beaconInterval 1s
+attr unit s
+par BasicProjectNetwork.node[12].appl dataLengthBits 1024bit
+attr unit bit
+par BasicProjectNetwork.node[12].appl dataOnSch false
+par BasicProjectNetwork.node[12].appl dataUserPriority 7
+par BasicProjectNetwork.node[12].appl avoidBeaconSynchronization true
+par BasicProjectNetwork.node[12].appl sendWSA false
+par BasicProjectNetwork.node[12].appl wsaLengthBits 250bit
+attr unit bit
+par BasicProjectNetwork.node[12].appl wsaInterval 1s
+attr unit s
+scalar BasicProjectNetwork.node[12].appl generatedWSMs 0
+scalar BasicProjectNetwork.node[12].appl receivedWSMs 0
+scalar BasicProjectNetwork.node[12].appl generatedBSMs 0
+scalar BasicProjectNetwork.node[12].appl receivedBSMs 6
+scalar BasicProjectNetwork.node[12].appl generatedWSAs 0
+scalar BasicProjectNetwork.node[12].appl receivedWSAs 0
+par BasicProjectNetwork.node[12].nic.phy80211p typename "\"org.car2x.veins.modules.phy.PhyLayer80211p\""
+par BasicProjectNetwork.node[12].nic.phy80211p recordStats false
+par BasicProjectNetwork.node[12].nic.phy80211p usePropagationDelay true
+par BasicProjectNetwork.node[12].nic.phy80211p noiseFloor -98dBm
+attr unit dBm
+par BasicProjectNetwork.node[12].nic.phy80211p useNoiseFloor true
+par BasicProjectNetwork.node[12].nic.phy80211p antenna "<Antenna type=\"SampledAntenna1D\" id=\"monopole\">...</Antenna> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\antenna.xml:35"
+par BasicProjectNetwork.node[12].nic.phy80211p antennaOffsetX 0m
+attr unit m
+par BasicProjectNetwork.node[12].nic.phy80211p antennaOffsetY 0m
+attr unit m
+par BasicProjectNetwork.node[12].nic.phy80211p antennaOffsetZ 1.895m
+attr unit m
+par BasicProjectNetwork.node[12].nic.phy80211p antennaOffsetYaw 0rad
+attr unit rad
+par BasicProjectNetwork.node[12].nic.phy80211p analogueModels "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[12].nic.phy80211p decider "<root>...</root> at C:/Users/tru89/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/Configuration/Veins_simulation/TrafficLightProject2/simulations/\\config.xml:34"
+par BasicProjectNetwork.node[12].nic.phy80211p minPowerLevel -110dBm
+attr unit dBm
+par BasicProjectNetwork.node[12].nic.phy80211p timeRXToTX 0s
+attr unit s
+par BasicProjectNetwork.node[12].nic.phy80211p timeRXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[12].nic.phy80211p timeTXToRX 0s
+attr unit s
+par BasicProjectNetwork.node[12].nic.phy80211p timeTXToSleep 0s
+attr unit s
+par BasicProjectNetwork.node[12].nic.phy80211p timeSleepToRX 0s
+attr unit s
+par BasicProjectNetwork.node[12].nic.phy80211p timeSleepToTX 0s
+attr unit s
+par BasicProjectNetwork.node[12].nic.phy80211p initialRadioState 0
+par BasicProjectNetwork.node[12].nic.phy80211p radioMinAtt 1
+par BasicProjectNetwork.node[12].nic.phy80211p radioMaxAtt 0
+par BasicProjectNetwork.node[12].nic.phy80211p nbRadioChannels 1
+par BasicProjectNetwork.node[12].nic.phy80211p initialRadioChannel 0
+par BasicProjectNetwork.node[12].nic.phy80211p ccaThreshold -65dBm
+attr unit dBm
+par BasicProjectNetwork.node[12].nic.phy80211p collectCollisionStatistics false
+par BasicProjectNetwork.node[12].nic.phy80211p allowTxDuringRx false
+scalar BasicProjectNetwork.node[12].nic.phy80211p busyTime 0.0011797968990443
+par BasicProjectNetwork.node[12].nic.mac1609_4 typename "\"org.car2x.veins.modules.mac.ieee80211p.Mac1609_4\""
+par BasicProjectNetwork.node[12].nic.mac1609_4 notAffectedByHostState false
+par BasicProjectNetwork.node[12].nic.mac1609_4 headerLength 0bit
+attr unit bit
+par BasicProjectNetwork.node[12].nic.mac1609_4 address "\"auto\""
+par BasicProjectNetwork.node[12].nic.mac1609_4 useServiceChannel false
+par BasicProjectNetwork.node[12].nic.mac1609_4 serviceChannel 1
+par BasicProjectNetwork.node[12].nic.mac1609_4 bitrate 6000000bps
+attr unit bps
+par BasicProjectNetwork.node[12].nic.mac1609_4 syncOffset 0.0003s
+attr unit s
+par BasicProjectNetwork.node[12].nic.mac1609_4 txPower 20mW
+attr unit mW
+par BasicProjectNetwork.node[12].nic.mac1609_4 queueSize 0
+par BasicProjectNetwork.node[12].nic.mac1609_4 dot11RTSThreshold 12000bit
+attr unit bit
+par BasicProjectNetwork.node[12].nic.mac1609_4 dot11ShortRetryLimit 7
+par BasicProjectNetwork.node[12].nic.mac1609_4 dot11LongRetryLimit 4
+par BasicProjectNetwork.node[12].nic.mac1609_4 ackLength 112bit
+attr unit bit
+par BasicProjectNetwork.node[12].nic.mac1609_4 useAcks true
+par BasicProjectNetwork.node[12].nic.mac1609_4 frameErrorRate 0
+par BasicProjectNetwork.node[12].nic.mac1609_4 ackErrorRate 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 ReceivedBroadcasts 6
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 SentPackets 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 SentAcknowledgements 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 RetriesExceeded 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 SNIRLostPackets 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 RXTXLostPackets 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 TotalLostPackets 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 DroppedPacketsInMac 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 TooLittleTime 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 TimesIntoBackoff 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 SlotsBackoff 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 NumInternalContention 0
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 totalBusyTime 0.000624
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 retriesExceeded:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigRetriesExceeded
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 sentAcks:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentAck
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 sentPackets:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigSentPacket
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 collisions:count 0
+attr recordingmode count
+attr source org_car2x_veins_modules_mac_sigCollision
+scalar BasicProjectNetwork.node[12].nic.mac1609_4 channelBusy:timeavg 0.0011792677585144
+attr recordingmode timeavg
+attr source org_car2x_veins_modules_mac_sigChannelBusy
+par BasicProjectNetwork.node[12].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
+par BasicProjectNetwork.node[12].nic connectionManagerName "\"connectionManager\""
+par BasicProjectNetwork.node[12].veinsmobility typename "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+par BasicProjectNetwork.node[12].veinsmobility notAffectedByHostState true
+par BasicProjectNetwork.node[12].veinsmobility x 0
+par BasicProjectNetwork.node[12].veinsmobility y 0
+par BasicProjectNetwork.node[12].veinsmobility z 0
+par BasicProjectNetwork.node[12].veinsmobility xOrientation 1
+par BasicProjectNetwork.node[12].veinsmobility yOrientation 0
+par BasicProjectNetwork.node[12].veinsmobility zOrientation 0
+par BasicProjectNetwork.node[12].veinsmobility hostPositionOffset 0m
+attr unit m
+par BasicProjectNetwork.node[12].veinsmobility setHostSpeed false
+par BasicProjectNetwork.node[12].veinsmobility accidentCount 0
+par BasicProjectNetwork.node[12].veinsmobility accidentStart 51.6096s
+attr unit s
+par BasicProjectNetwork.node[12].veinsmobility accidentDuration "uniform(30s, 60s)"
+attr unit s
+par BasicProjectNetwork.node[12].veinsmobility accidentInterval "uniform(30s, 60s)"
+attr unit s
+scalar BasicProjectNetwork.node[12].veinsmobility startTime 19
+scalar BasicProjectNetwork.node[12].veinsmobility totalTime 0
+scalar BasicProjectNetwork.node[12].veinsmobility stopTime 19.617055359774
+scalar BasicProjectNetwork.node[12].veinsmobility totalDistance 0
+scalar BasicProjectNetwork.node[12].veinsmobility totalCO2Emission 0
+par BasicProjectNetwork.node[12] typename "\"org.car2x.veins.nodes.Car\""
+par BasicProjectNetwork.node[12] applType "\"MyVeinsApp\""
+par BasicProjectNetwork.node[12] nicType "\"Nic80211p\""
+par BasicProjectNetwork.node[12] veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
 par BasicProjectNetwork.rsu[0].appl typename "\"org.car2x.veins.modules.application.traci.TraCIDemoRSU11p\""
 par BasicProjectNetwork.rsu[0].appl headerLength 80bit
 attr unit bit
@@ -765,7 +2102,7 @@ par BasicProjectNetwork.rsu[0].appl wsaInterval 1s
 attr unit s
 scalar BasicProjectNetwork.rsu[0].appl generatedWSMs 0
 scalar BasicProjectNetwork.rsu[0].appl receivedWSMs 0
-scalar BasicProjectNetwork.rsu[0].appl generatedBSMs 4
+scalar BasicProjectNetwork.rsu[0].appl generatedBSMs 19
 scalar BasicProjectNetwork.rsu[0].appl receivedBSMs 0
 scalar BasicProjectNetwork.rsu[0].appl generatedWSAs 0
 scalar BasicProjectNetwork.rsu[0].appl receivedWSAs 0
@@ -835,7 +2172,7 @@ par BasicProjectNetwork.rsu[0].nic.mac1609_4 frameErrorRate 0
 par BasicProjectNetwork.rsu[0].nic.mac1609_4 ackErrorRate 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 ReceivedUnicastPackets 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 ReceivedBroadcasts 0
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SentPackets 4
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SentPackets 19
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SentAcknowledgements 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 RetriesExceeded 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SNIRLostPackets 0
@@ -843,23 +2180,23 @@ scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 RXTXLostPackets 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TotalLostPackets 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 DroppedPacketsInMac 0
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TooLittleTime 0
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TimesIntoBackoff 4
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SlotsBackoff 9
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 TimesIntoBackoff 19
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 SlotsBackoff 35
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 NumInternalContention 0
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 totalBusyTime 0.00042
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 totalBusyTime 0.001995
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 retriesExceeded:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigRetriesExceeded
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 sentAcks:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentAck
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 sentPackets:count 4
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 sentPackets:count 19
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigSentPacket
 scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 collisions:count 0
 attr recordingmode count
 attr source org_car2x_veins_modules_mac_sigCollision
-scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 channelBusy:timeavg 9.7730210703902e-05
+scalar BasicProjectNetwork.rsu[0].nic.mac1609_4 channelBusy:timeavg 0.00010169722027144
 attr recordingmode timeavg
 attr source org_car2x_veins_modules_mac_sigChannelBusy
 par BasicProjectNetwork.rsu[0].nic typename "\"org.car2x.veins.modules.nic.Nic80211p\""
