@@ -20,6 +20,8 @@ Easily connect your LLM agent to a SUMO traffic simulation using this MCP server
 
 3. **Activate Your Virtual Environment**
    ```bash
+   # On Powershell
+   .\.venv\Scripts\Activate.ps1
    # On Windows
    .venv\Scripts\activate
    # On Linux/Mac
