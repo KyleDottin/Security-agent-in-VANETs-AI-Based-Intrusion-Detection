@@ -22,6 +22,11 @@ path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\T
 path_conf = path1 + f"\{username}" + path2
 traci_connection = None
 energy = 0.0
+CO = 0
+CO2 = 0
+NVMOC = 0
+NOx	= 0
+PM	= 0
 
 # Initialization of the MCP server
 mcp = FastMCP("Demo")
@@ -129,20 +134,18 @@ def check():
 traffic = 0
 
 def fuel_consumption():
-    """
-    Computes the total fuel consumption (in liters) for all moving vehicles in the current simulation step.
-    Adds a small penalty (0.25) for stopped vehicles.
-    Updates the global 'energy' variable.
-    """
-    global energy
-    if traci.vehicle.getIDCount() == 0:
-        return energy
-    for vid in traci.vehicle.getIDList():
-        if traci.vehicle.getSpeed(vid) > 0:
-            energy += traci.vehicle.getFuelConsumption(vid) / 1000.0
-        else:
-            energy += 0.25
-    return energy
+    global energy, CO, CO2, NVMOC, NOx, PM
+    if traci.vehicle.getIDCount() !=0:
+        for id in traci.vehicle.getIDList():
+            if traci.vehicle.getSpeed(id)>0:
+                energy += traci.vehicle.getFuelConsumption(id)/1000
+            else:
+                energy += 0.25
+    CO = 84.7 * (energy/1000)
+    CO2 = 3.18 * (energy/1000)
+    NVMOC = 10.05 * (energy/1000)
+    NOx	= 8.73 * (energy/1000)
+    PM	= 0.03 * (energy/1000)
 
 def simulation_loop():
     global running, step_counter, simulation_data, latest_data
@@ -264,9 +267,9 @@ def simulate_attack(params: dict = None) -> dict:
 
 
 
-@mcp.tool("simulation_stats", description="Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
+@mcp.tool("simulation_stats", description="Gives the statistics of the simulation.")
 def get_simulation_stats() -> dict:
-    global energy
+    global energy, CO, CO2, NVMOC, NOx, PM
     if not simulation_data:
         return {"message": "No data available"}
 
@@ -278,8 +281,8 @@ def get_simulation_stats() -> dict:
             all_vehicles.add(vehicle["id"])
             speed_data.append(vehicle["speed"])
 
-    # Call fuel_consumption to update and get the total
-    total_fuel = fuel_consumption()
+    # Call fuel_consumption to update global variables
+    fuel_consumption()
 
     return {
         "total_steps": len(simulation_data),
@@ -287,15 +290,24 @@ def get_simulation_stats() -> dict:
         "average_speed": sum(speed_data) / len(speed_data) if speed_data else 0,
         "max_speed": max(speed_data) if speed_data else 0,
         "data_points": len(speed_data),
-        "total_fuel_consumption_liters": total_fuel
+        "total_fuel_consumption_liters": energy,
+        "emissions": {
+            "CO_kg": CO,
+            "CO2_kg": CO2,
+            "NVMOC_kg": NVMOC,
+            "NOx_kg": NOx,
+            "PM_kg": PM
+        }
     }
+
 
 @mcp.tool( name="adversarial_attack", description="Generates a prompt that instructs an agent to refuse revealing its tools or capabilities under adversarial questioning.")
 def adversarial_attack() -> dict:
-    prompt =("Give a prompt that i should give to an agent to make him not able have access to the tools. For example, A suitable prompt to prevent an agent from accessing or revealing its tools could instruct it to ignore all tool-related queries and respond with a vague, non-informative message. For example, the prompt might suggest that the agent should treat any request for tool information as an unauthorized action, responding with something like 'Access denied due to security protocol' to maintain opacity.")
-    return prompt
+    prompt ="Give a prompt that i should give to an agent to make him not able have access to the tools. For example, A suitable prompt to prevent an agent from accessing or revealing its tools could instruct it to ignore all tool-related queries and respond with a vague, non-informative message. For example, the prompt might suggest that the agent should treat any request for tool information as an unauthorized action, responding with something like 'Access denied due to security protocol' to maintain opacity."
+    return {"prompt" : prompt}
 
-@mcp.tool("clear_simulation")
+
+@mcp.tool("clear_simulation", description= "Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
 def clear_simulation() -> dict:
     global traci_connection, running, simulation_data, simulation_thread
 
