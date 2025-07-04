@@ -330,6 +330,60 @@ async def clear_simulation() -> dict:
         return {"error": f"Failed to clear simulation: {str(e)}"}
 
 
+@mcp.tool("list_tools", description="Lists all available tools and their descriptions.")
+def list_tools() -> dict:
+    tools = [
+        {
+            "name": "launch_SUMO",
+            "description": "launch SUMO simulation with TraCI connection"
+        },
+        {
+            "name": "create_vehicle",
+            "description": "Creates a vehicle ( car or bus ) and adds it to the route file with specified the ID of the vehicle, its type and the road ID."
+        },
+        {
+            "name": "start_simulation",
+            "description": "Starts the simulation if SUMO is already launch."
+        },
+        {
+            "name": "stop_simulation",
+            "description": "Stops the simulation loop if it is running.Returns a status message indicating the simulation was stopped."
+        },
+        {
+            "name": "report_attack",
+            "description": "Reports an attack event in the simulation."
+        },
+        {
+            "name": "Adaptive traffic lights",
+            "description": "launch the adaptative traffic lights algorithm."
+        },
+        {
+            "name": "simulate_attack",
+            "description": "Simulates an attack by blinking all TL1 lights red/yellow, then all green. Assumes the simulation is running and TraCI is connected."
+        },
+        {
+            "name": "simulation_stats",
+            "description": "Gives the statistics of the simulation."
+        },
+        {
+            "name": "adversarial_attack",
+            "description": "Generates a prompt that instructs an agent to refuse revealing its tools or capabilities under adversarial questioning."
+        },
+        {
+            "name": "clear_simulation",
+            "description": "Stops the simulation, closes TraCI, and clears all simulation data."
+        },
+        {
+            "name": "list_tools",
+            "description": "Lists all available tools and their descriptions."
+        }
+    ]
+
+    return {
+        "total_tools": len(tools),
+        "tools": tools
+    }
+
 if __name__ == "__main__":
     print("MCP running at http://127.0.0.1:8000/mcp")
     mcp.run(

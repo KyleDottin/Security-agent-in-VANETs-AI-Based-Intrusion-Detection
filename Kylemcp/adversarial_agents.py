@@ -14,7 +14,7 @@ fast = FastAgent("StateTransfer")
             )
 # Define a chain workflow
 @fast.chain(
-    name="Adversarial agent",
+    name="Adversarial Agent",
     sequence=["Red Agent", "Blue Agent"],
     instruction="Execute Red Agent to generate a prompt and pass it to Blue Agent for response.",
     cumulative=False
