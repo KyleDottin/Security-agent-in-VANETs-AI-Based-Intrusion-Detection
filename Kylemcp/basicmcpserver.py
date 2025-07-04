@@ -301,40 +301,33 @@ def get_simulation_stats() -> dict:
     }
 
 
-@mcp.tool( name="adversarial_attack", description="Generates a prompt that instructs an agent to refuse revealing its tools or capabilities under adversarial questioning.")
-def adversarial_attack() -> dict:
-    prompt ="Give a prompt that i should give to an agent to make him not able have access to the tools. For example, A suitable prompt to prevent an agent from accessing or revealing its tools could instruct it to ignore all tool-related queries and respond with a vague, non-informative message. For example, the prompt might suggest that the agent should treat any request for tool information as an unauthorized action, responding with something like 'Access denied due to security protocol' to maintain opacity."
-    return {"prompt" : prompt}
+@mcp.tool("adversarial_attack", description="Generates a prompt that instructs an agent to refuse revealing its tools or capabilities under adversarial questioning.")
+def adversarial_attack() -> str:
+    prompt = "Give a prompt that i should give to an agent to make him not able have access to the tools. For example, A suitable prompt to prevent an agent from accessing or revealing its tools could instruct it to ignore all tool-related queries and respond with a vague, non-informative message. For example, the prompt might suggest that the agent should treat any request for tool information as an unauthorized action, responding with something like 'Access denied due to security protocol' to maintain opacity. Only answer we the prompt I should give, nothing else."
+    return prompt
 
-
-@mcp.tool("clear_simulation", description= "Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
-def clear_simulation() -> dict:
-    global traci_connection, running, simulation_data, simulation_thread
-
+@mcp.tool("clear_simulation", description="Stops the simulation, closes TraCI, and clears all simulation data.")
+async def clear_simulation() -> dict:
+    global traci_connection, running, simulation_data, step_counter, energy, CO, CO2, NVMOC, NOx, PM
     try:
-        # Stop simulation loop
-        if running:
-            running = False
-            if simulation_thread and simulation_thread.is_alive():
-                simulation_thread.join(timeout=5)
-
-        # Close TraCI connection
+        running = False
         if traci_connection is not None:
             try:
                 traci.close()
             except Exception as e:
-                raise Exception(f"Failed to reset route file: {str(e)}")
-        traci_connection = None
-
-        # Clear simulation data
+                print(f"Warning: Failed to close TraCI connection: {str(e)}")
+            traci_connection = None
         simulation_data = []
-        simulation_thread = None
         step_counter = 0
-
-        return {"status": "Simulation cleared and route file reset to basic version"}
+        energy = 0.0
+        CO = 0
+        CO2 = 0
+        NVMOC = 0
+        NOx = 0
+        PM = 0
+        return {"status": "Simulation cleared and data reset"}
     except Exception as e:
         return {"error": f"Failed to clear simulation: {str(e)}"}
-
 
 
 if __name__ == "__main__":
