@@ -144,7 +144,7 @@ def start_sumo_and_connect() -> dict:
     """
     global traci_connection
     sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
-    port = 53517
+    port = 55000
     cmd = [
         sumo_binary,
         "-c", path_conf,

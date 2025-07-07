@@ -6,6 +6,7 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
     <!-- VTypes -->
     <vType id="car" length="5.00" maxSpeed="70.00" emissionClass="HBEFA4/PC_petrol_ltECE" accel="2.6" decel="4.5" sigma="0.5" startupDelay="2" carFollowModel="CACC"/>
+    <vType id="ghost" vClass="passenger" guiShape="none" color="255,255,255"/>
     <vType id="bus" length="12.0" width="2.5" maxSpeed="80.00" emissionClass="HBEFA4/UBus_Std_gt15-18t_Euro-VI_A-C" accel="1.5" decel="4.0" sigma="0.5" startupDelay="3" mass="12000" minGap="2.5" personCapacity="80" color="blue"/>  
     <!-- Routes -->
     <route id="d_l" edges="657488633#0 657488633#0.77 E0 657488633#0.174.4 657488635 -192004921#11 -192004921#8"/>
