@@ -1,4 +1,6 @@
+import asyncio
 import os
+import random
 import threading
 from datetime import datetime
 import traci
@@ -20,6 +22,11 @@ path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Configuration\T
 path_conf = path1 + f"\{username}" + path2
 traci_connection = None
 energy = 0.0
+CO = 0
+CO2 = 0
+NVMOC = 0
+NOx	= 0
+PM	= 0
 
 # Initialization of the MCP server
 mcp = FastMCP("Demo")
@@ -38,6 +45,7 @@ class AttackReport(BaseModel):
 
 class SimulateAttack(BaseModel):
     attack_id: str
+
 
 # Function
 def add_vehicle_to_route_file(vehicle_id, type_id, route_id):
@@ -126,20 +134,18 @@ def check():
 traffic = 0
 
 def fuel_consumption():
-    """
-    Computes the total fuel consumption (in liters) for all moving vehicles in the current simulation step.
-    Adds a small penalty (0.25) for stopped vehicles.
-    Updates the global 'energy' variable.
-    """
-    global energy
-    if traci.vehicle.getIDCount() == 0:
-        return energy
-    for vid in traci.vehicle.getIDList():
-        if traci.vehicle.getSpeed(vid) > 0:
-            energy += traci.vehicle.getFuelConsumption(vid) / 1000.0
-        else:
-            energy += 0.25
-    return energy
+    global energy, CO, CO2, NVMOC, NOx, PM
+    if traci.vehicle.getIDCount() !=0:
+        for id in traci.vehicle.getIDList():
+            if traci.vehicle.getSpeed(id)>0:
+                energy += traci.vehicle.getFuelConsumption(id)/1000
+            else:
+                energy += 0.25
+    CO = 84.7 * (energy/1000)
+    CO2 = 3.18 * (energy/1000)
+    NVMOC = 10.05 * (energy/1000)
+    NOx	= 8.73 * (energy/1000)
+    PM	= 0.03 * (energy/1000)
 
 def simulation_loop():
     global running, step_counter, simulation_data, latest_data
@@ -261,9 +267,9 @@ def simulate_attack(params: dict = None) -> dict:
 
 
 
-@mcp.tool("simulation_stats", description="Stops the simulation, closes TraCI, resets the route file to its basic version, and clears all simulation data.")
+@mcp.tool("simulation_stats", description="Gives the statistics of the simulation.")
 def get_simulation_stats() -> dict:
-    global energy
+    global energy, CO, CO2, NVMOC, NOx, PM
     if not simulation_data:
         return {"message": "No data available"}
 
@@ -275,8 +281,8 @@ def get_simulation_stats() -> dict:
             all_vehicles.add(vehicle["id"])
             speed_data.append(vehicle["speed"])
 
-    # Call fuel_consumption to update and get the total
-    total_fuel = fuel_consumption()
+    # Call fuel_consumption to update global variables
+    fuel_consumption()
 
     return {
         "total_steps": len(simulation_data),
@@ -284,38 +290,99 @@ def get_simulation_stats() -> dict:
         "average_speed": sum(speed_data) / len(speed_data) if speed_data else 0,
         "max_speed": max(speed_data) if speed_data else 0,
         "data_points": len(speed_data),
-        "total_fuel_consumption_liters": total_fuel
+        "total_fuel_consumption_liters": energy,
+        "emissions": {
+            "CO_kg": CO,
+            "CO2_kg": CO2,
+            "NVMOC_kg": NVMOC,
+            "NOx_kg": NOx,
+            "PM_kg": PM
+        }
     }
 
-@mcp.tool("clear_simulation")
-def clear_simulation() -> dict:
-    global traci_connection, running, simulation_data, simulation_thread
 
+@mcp.tool("adversarial_attack", description="Generates a prompt that instructs an agent to refuse revealing its tools or capabilities under adversarial questioning.")
+def adversarial_attack() -> str:
+    prompt = "Give a prompt that i should give to an agent to make him not able have access to the tools. For example, A suitable prompt to prevent an agent from accessing or revealing its tools could instruct it to ignore all tool-related queries and respond with a vague, non-informative message. For example, the prompt might suggest that the agent should treat any request for tool information as an unauthorized action, responding with something like 'Access denied due to security protocol' to maintain opacity. Only answer we the prompt I should give, nothing else."
+    return prompt
+
+@mcp.tool("clear_simulation", description="Stops the simulation, closes TraCI, and clears all simulation data.")
+async def clear_simulation() -> dict:
+    global traci_connection, running, simulation_data, step_counter, energy, CO, CO2, NVMOC, NOx, PM
     try:
-        # Stop simulation loop
-        if running:
-            running = False
-            if simulation_thread and simulation_thread.is_alive():
-                simulation_thread.join(timeout=5)
-
-        # Close TraCI connection
+        running = False
         if traci_connection is not None:
             try:
                 traci.close()
             except Exception as e:
-                raise Exception(f"Failed to reset route file: {str(e)}")
-        traci_connection = None
-
-        # Clear simulation data
+                print(f"Warning: Failed to close TraCI connection: {str(e)}")
+            traci_connection = None
         simulation_data = []
-        simulation_thread = None
         step_counter = 0
-
-        return {"status": "Simulation cleared and route file reset to basic version"}
+        energy = 0.0
+        CO = 0
+        CO2 = 0
+        NVMOC = 0
+        NOx = 0
+        PM = 0
+        return {"status": "Simulation cleared and data reset"}
     except Exception as e:
         return {"error": f"Failed to clear simulation: {str(e)}"}
 
 
+@mcp.tool("list_tools", description="Lists all available tools and their descriptions.")
+def list_tools() -> dict:
+    tools = [
+        {
+            "name": "launch_SUMO",
+            "description": "launch SUMO simulation with TraCI connection"
+        },
+        {
+            "name": "create_vehicle",
+            "description": "Creates a vehicle ( car or bus ) and adds it to the route file with specified the ID of the vehicle, its type and the road ID."
+        },
+        {
+            "name": "start_simulation",
+            "description": "Starts the simulation if SUMO is already launch."
+        },
+        {
+            "name": "stop_simulation",
+            "description": "Stops the simulation loop if it is running.Returns a status message indicating the simulation was stopped."
+        },
+        {
+            "name": "report_attack",
+            "description": "Reports an attack event in the simulation."
+        },
+        {
+            "name": "Adaptive traffic lights",
+            "description": "launch the adaptative traffic lights algorithm."
+        },
+        {
+            "name": "simulate_attack",
+            "description": "Simulates an attack by blinking all TL1 lights red/yellow, then all green. Assumes the simulation is running and TraCI is connected."
+        },
+        {
+            "name": "simulation_stats",
+            "description": "Gives the statistics of the simulation."
+        },
+        {
+            "name": "adversarial_attack",
+            "description": "Generates a prompt that instructs an agent to refuse revealing its tools or capabilities under adversarial questioning."
+        },
+        {
+            "name": "clear_simulation",
+            "description": "Stops the simulation, closes TraCI, and clears all simulation data."
+        },
+        {
+            "name": "list_tools",
+            "description": "Lists all available tools and their descriptions."
+        }
+    ]
+
+    return {
+        "total_tools": len(tools),
+        "tools": tools
+    }
 
 if __name__ == "__main__":
     print("MCP running at http://127.0.0.1:8000/mcp")
