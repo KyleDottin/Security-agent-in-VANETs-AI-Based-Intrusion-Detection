@@ -36,6 +36,7 @@ Easily connect your LLM agent to a SUMO traffic simulation using this MCP server
    ```bash
    uv run redagent.py
    ```
+- Make sure you have installed the right LLM in the config file.
 
 5. **Access All Tools**
    - Once both the MCP server and your agent are running, you can access all available simulation tools from your LLM agent.
