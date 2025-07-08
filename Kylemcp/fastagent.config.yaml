@@ -13,12 +13,6 @@ logger:
   show_tools: true
   truncate_tools: true
 
-# mcp:
-#   servers:
-#     mylocal:
-#       transport: http
-#       url: "http://localhost:8000/mcp"
-#       timeout: 30
 mcp:
   servers:
     streamable_http_server:
