@@ -28,14 +28,15 @@ Easily connect your LLM agent to a SUMO traffic simulation using this MCP server
    source .venv/bin/activate
    ```
 
-4. **Launch Your Agent**
+4. **Launch The Agent**
    ```bash
-   uv run agent.py
+   uv run blueagent.py
    ```
-   or, for FastAgent:
+   or
    ```bash
-   fast-agent go --url=http://127.0.0.1:8000/mcp --auth=token
+   uv run redagent.py
    ```
+- Make sure you have installed the right LLM in the config file.
 
 5. **Access All Tools**
    - Once both the MCP server and your agent are running, you can access all available simulation tools from your LLM agent.
