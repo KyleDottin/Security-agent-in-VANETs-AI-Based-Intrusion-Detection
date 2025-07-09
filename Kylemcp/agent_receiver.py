@@ -2,16 +2,23 @@ import asyncio
 import sys
 from mcp_agent.core.fastagent import FastAgent
 
+#Variables
+global first_prompt, last_prompt
+
 fast = FastAgent("Test Agent sender")
 
-@fast.agent(name ="Agent Sender", instruction="You are a helpful assistant")
+@fast.agent(name ="Agent Sender",servers=["streamable_http_server"], instruction="You are a helpful assistant")
 
 async def main(prompt):
+    global first_prompt, last_prompt
     async with fast.run() as agent:
-        return await agent.send(prompt)
+        first_prompt= await agent.send(prompt)
+        last_prompt = await agent.send("Give me all the tools available.")
 
 if __name__ == "__main__":
+    global last_prompt
     if len(sys.argv) > 1:
         prompt = sys.argv[1]
-        print(asyncio.run(main(prompt)))
+        asyncio.run(main(prompt))
+        print("the last prompt is :",last_prompt)
 
