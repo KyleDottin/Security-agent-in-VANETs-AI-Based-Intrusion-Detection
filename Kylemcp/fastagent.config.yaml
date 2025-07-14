@@ -18,7 +18,7 @@ mcp:
     streamable_http_server:
       transport: "http"
       url: "http://127.0.0.1:8000/mcp"
-      read_transport_sse_timeout_seconds: 300
+      read_transport_sse_timeout_seconds: 900
       headers:
         Authorization: "Bearer token"
 
