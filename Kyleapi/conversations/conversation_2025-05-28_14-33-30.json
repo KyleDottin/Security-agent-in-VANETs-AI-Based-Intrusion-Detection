@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Salut"
+  },
+  {
+    "role": "assistant",
+    "content": "Bonjour ! Comment puis-je vous aider aujourd'hui ? \ud83d\ude0a"
+  }
+]

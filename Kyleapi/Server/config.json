@@ -1,0 +1,40 @@
+{
+  "server": {
+    "name": "vanet-security-mcp",
+    "version": "1.0.0",
+    "description": "MCP Server for VANET Security Simulation and Intrusion Detection"
+  },
+  "simulation": {
+    "max_vehicles": 1000,
+    "simulation_area": {
+      "width": 5000,
+      "height": 5000
+    },
+    "time_step": 0.1,
+    "default_vehicle_speed": 30.0
+  },
+  "security": {
+    "attack_types": [
+      "DoS",
+      "Sybil",
+      "Black Hole",
+      "Gray Hole",
+      "Wormhole",
+      "Replay",
+      "Message Tampering",
+      "Position Falsification"
+    ],
+    "detection_algorithms": [
+      "statistical_analysis",
+      "machine_learning",
+      "rule_based",
+      "hybrid"
+    ]
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "vanet_mcp_server.log",
+    "max_size": "10MB",
+    "backup_count": 5
+  }
+}
