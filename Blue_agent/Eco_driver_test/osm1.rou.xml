@@ -1,5 +1,0 @@
-<routes>
-    <vType id="bus" mass="1200.00" accel="3.5" decel="3.5" maxSpeed="19.44"/>
-	<vType id="passenger" mass="1000.00" accel="3.5" decel="3.5"/>
-    <route id="r_0" edges="E0 E1 E2"/>
-</routes>

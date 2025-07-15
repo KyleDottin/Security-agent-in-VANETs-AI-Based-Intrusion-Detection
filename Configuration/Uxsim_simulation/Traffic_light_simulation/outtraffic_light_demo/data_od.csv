@@ -1,3 +1,0 @@
-orig,dest,total_trips,completed_trips,free_travel_time,average_travel_time,stddiv_travel_time,shortest_distance,average_distance_traveled_per_veh,stddiv_distance_traveled_per_veh
-orig1,dest,1000,640,100.0,236.09375,128.6967995364978,2000.0,1514.0,828.898516104354
-orig2,dest,1000,240,100.0,345.0,138.6692708088806,2000.0,709.5,926.4467065082589
