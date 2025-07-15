@@ -1,7 +1,0 @@
-link,start_node,end_node,traffic_volume,vehicles_remain,free_travel_time,average_travel_time,stddiv_travel_time,length,scenario
-link1,orig1,merge,400,0,50.0,128.125,82.21177556570997,1000,normal
-link2,orig2,merge,300,0,50.0,55.208333333333336,5.548867502072433,1000,normal
-link3,merge,dest,675,25,50.0,52.166666666666664,2.4776781245530843,1000,normal
-link1,orig1,merge,495,170,50.0,307.1875,235.78085307565442,1000,red_agent
-link2,orig2,merge,415,75,50.0,80.125,28.210241195943954,1000,red_agent
-link3,merge,dest,870,40,50.0,52.166666666666664,2.4776781245530843,1000,red_agent
