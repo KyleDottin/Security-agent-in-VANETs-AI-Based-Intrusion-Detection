@@ -29,17 +29,15 @@ first_time = 0
 traffic = 0
 vehicle_stats = {}  # vehicle_id -> dict with stats
 location_jams = {}  # edge_id -> jam info
-username = os.getlogin()
-path1 = r"C:\Users"
-# Use Othma simulation config and route files in Nassmcp
-path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Nassmcp\othma_simulation\osm.sumocfg"
-path_conf = path1 + f"\{username}" + path2
-path2 = r"\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\Nassmcp\othma_simulation\osm.rou.xml"
-route_file_path = path1 + f"\{username}" + path2
+# Get current working directory for Linux paths
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Add second path for files in the map folder
-map_path_conf = os.path.join(path1, username, "Security-agent-in-VANETs-AI-Based-Intrusion-Detection", "Nassmcp", "map", "map.sumocfg")
-map_route_file_path = os.path.join(path1, username, "Security-agent-in-VANETs-AI-Based-Intrusion-Detection", "Nassmcp", "map", "map.osm.rou.xml")
+# Add paths for files in the different map folders
+map_path_basic = os.path.join(current_dir, "basic_simulation", "osm.sumocfg")
+map_path_paris = os.path.join(current_dir, "paris", "map.sumocfg")
+map_path_berlin = os.path.join(current_dir, "berlin", "berlin.sumocfg")
+map_path_luxembourg = os.path.join(current_dir, "luxembourg", "dua.static.sumocfg")
+
 
 # =============================
 #     MCP SERVER INIT
@@ -186,23 +184,36 @@ def simulation_loop():
         except Exception as e:
             print("Error in simulation loop:", e)
             running = False
+energy = 0
+CO = 0
+CO2 = 0
+NVMOC = 0
+NOx	= 0
+PM	= 0
+noise = 0
 
 def fuel_consumption():
     """
     Computes the total fuel consumption (in liters) for all moving vehicles in the current simulation step.
     Adds a small penalty (0.25) for stopped vehicles.
-    Updates the global 'energy' variable.
+    Updates the global 'energy' variable and returns the total fuel consumption along with emissions data.
     """
-    global energy
-    if traci.vehicle.getIDCount() == 0:
-        return energy
-    for vid in traci.vehicle.getIDList():
-        if traci.vehicle.getSpeed(vid) > 0:
-            energy += traci.vehicle.getFuelConsumption(vid) / 1000.0
-        else:
-            energy += 0.25
-    return energy
 
+    global energy, CO, CO2, NVMOC, NOx, PM ,noise
+    if traci.vehicle.getIDCount() != 0:
+        for id in traci.vehicle.getIDList():
+            if traci.vehicle.getSpeed(id) > 0:
+                energy += traci.vehicle.getFuelConsumption(id) / 1000
+            else:
+                energy += 0.25
+            noise += traci.vehicle.getNoiseEmission(id)
+    CO = 84.7 * (energy / 1000)
+    CO2 = 3.18 * (energy / 1000)
+    NVMOC = 10.05 * (energy / 1000)
+    NOx = 8.73 * (energy / 1000)
+    PM = 0.03 * (energy / 1000)
+
+    return energy, CO, CO2, NVMOC, NOx, PM, noise
 def check():
     global first_time
     global attack_override
@@ -234,7 +245,7 @@ def check():
 #         MCP TOOLS
 # =============================
 # [BLUE TOOL]
-@mcp.tool("launch_SUMO_basic")
+@mcp.tool("launch_basic_simulation")
 def start_sumo_and_connect() -> dict:
     """
     Launches the SUMO traffic simulator and establishes a TraCI connection.
@@ -242,13 +253,30 @@ def start_sumo_and_connect() -> dict:
     Use this tool before starting any simulation steps or vehicle operations.
     """
     global traci_connection
-    sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
+    sumo_binary = "/usr/bin/sumo-gui"  # Linux path for SUMO
     port = 55000
     cmd = [
         sumo_binary,
-        "-c", path_conf,
-        "--step-length", "0.05",
-        "--delay", "1000",
+        "-c", map_path_basic,
+        "--lateral-resolution", "0.1"
+    ]
+
+    traci_connection = traci.start(cmd, port=port)
+    return {"status": "SUMO started and TraCI connected"}
+
+@mcp.tool("launch_Berlin")
+def start_sumo_and_connect() -> dict:
+    """
+    Launches the SUMO traffic simulator and establishes a TraCI connection.
+    Returns a status message indicating whether the connection was successful.
+    Use this tool before starting any simulation steps or vehicle operations.
+    """
+    global traci_connection
+    sumo_binary = "/usr/bin/sumo-gui"  # Linux path for SUMO
+    port = 55000
+    cmd = [
+        sumo_binary,
+        "-c", map_path_berlin,
         "--lateral-resolution", "0.1"
     ]
 
@@ -256,7 +284,7 @@ def start_sumo_and_connect() -> dict:
     return {"status": "SUMO started and TraCI connected"}
 
 # [BLUE TOOL]
-@mcp.tool("launch_real_world_SUMO")
+@mcp.tool("launch_Paris")
 def start_real_world_sumo_and_connect() -> dict:
     """
     Launches the SUMO traffic simulator and establishes a TraCI connection.
@@ -264,11 +292,33 @@ def start_real_world_sumo_and_connect() -> dict:
     Use this tool before starting any simulation steps or vehicle operations.
     """
     global traci_connection
-    sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
+    sumo_binary = "/usr/bin/sumo-gui"  # Linux path for SUMO
     port = 55001
     cmd = [
         sumo_binary,
-        "-c", map_path_conf,
+        "-c", map_path_paris,
+        "--step-length", "0.05",
+        "--delay", "1000",
+        "--lateral-resolution", "0.1"
+    ]
+
+    traci_connection = traci.start(cmd, port=port)
+    return {"status": "SUMO started and TraCI connected"}
+
+# [BLUE TOOL]
+@mcp.tool("launch_Luxembourg")
+def start_real_world_sumo_and_connect() -> dict:
+    """
+    Launches the SUMO traffic simulator and establishes a TraCI connection.
+    Returns a status message indicating whether the connection was successful.
+    Use this tool before starting any simulation steps or vehicle operations.
+    """
+    global traci_connection
+    sumo_binary = "/usr/bin/sumo-gui"  # Linux path for SUMO
+    port = 55001
+    cmd = [
+        sumo_binary,
+        "-c", map_path_luxembourg,
         "--step-length", "0.05",
         "--delay", "1000",
         "--lateral-resolution", "0.1"
@@ -278,8 +328,7 @@ def start_real_world_sumo_and_connect() -> dict:
     return {"status": "SUMO started and TraCI connected"}
 
 
-
-# [BLUE TOOL]
+# [BLUE TOOL]simulation l
 @mcp.tool("create_vehicle")
 def create_vehicle(vehicle: Vehicle) -> dict:
     """
@@ -386,15 +435,16 @@ def simulate_attack(params: dict = None) -> dict:
             traci.simulationStep()
             time.sleep(blink_period)
 
-        # Finally, set all lights to green
-        traci.trafficlight.setRedYellowGreenState(target_tls, "G" * len(traci.trafficlight.getRedYellowGreenState(target_tls)))
+        # Finally, set all lights to red
+        traci.trafficlight.setRedYellowGreenState(target_tls, "r" * len(traci.trafficlight.getRedYellowGreenState(target_tls)))
 
-        return {"status": f"Attack simulated: {target_tls} blinking red/yellow, then all green.", "target_tls": target_tls}
+        return {"status": f"Attack simulated: {target_tls} blinking red/yellow, then all red.", "target_tls": target_tls}
 
     except Exception as e:
         return {"error": str(e)}
     finally:
         attack_override = False
+
 
 # [RED TOOL]
 @mcp.tool("Sybil Attack", description="Simulates a Sybil attack by cloning the behavior of a real vehicle into multiple fake Sybil identities. Auto-detects attacker if none is provided.")
@@ -612,15 +662,17 @@ def get_simulation_stats() -> dict:
     }
 @mcp.tool
 def export_traffic_report():
-    """Exports a detailed traffic report as an Excel file, including per-vehicle statistics (fuel consumed, unnecessary stops, hard breaks) and per-location (lane) traffic jam information (jam count). The report contains two sheets: 'Vehicles' and 'TrafficJams'."
-    """
+    """Exports a detailed traffic report as an Excel file, including per-vehicle statistics (unnecessary stops, hard breaks) and per-location (lane) traffic jam information (jam count). The report contains two sheets: 'Vehicles' and 'TrafficJams'."""
     global vehicle_stats, location_jams
+
+    # Update fuel consumption data
+    total_fuel, CO, CO2, NVMOC, NOx, PM, noise = fuel_consumption()
+
     # Prepare vehicle summary table
     vehicle_rows = []
     for vid, stats in vehicle_stats.items():
         vehicle_rows.append({
             "vehicle_id": vid,
-            "fuel_consumed": stats["fuel_consumed"],
             "unnecessary_stops": stats["unnecessary_stops"],
             "breaks": stats["breaks"],
         })
@@ -639,6 +691,20 @@ def export_traffic_report():
     with pd.ExcelWriter(filename) as writer:
         df_vehicles.to_excel(writer, sheet_name="Vehicles", index=False)
         df_jams.to_excel(writer, sheet_name="TrafficJams", index=False)
+
+        # Add a summary sheet with total fuel consumption, emissions data, and noise
+        summary_data = pd.DataFrame([
+            {
+                "Total Fuel Consumption (g)": total_fuel,
+                "CO (g)": CO,
+                "CO2 (g)": CO2,
+                "NVMOC (g)": NVMOC,
+                "NOx (g)": NOx,
+                "PM (g)": PM,
+                "Noise (dB)": noise
+            }
+        ])
+        summary_data.to_excel(writer, sheet_name="Summary", index=False)
 
     return f"Exported traffic report to {filename}"
 # =============================

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-07-15 10:54:22 by Eclipse SUMO GUI Version 1.23.1
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/lust.net.xml"/>
+        <route-files value="/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/buslines.rou.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/DUARoutes/local.0.rou.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/DUARoutes/local.1.rou.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/DUARoutes/local.2.rou.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/transit.rou.xml"/>
+        <additional-files value="/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/vtypes.add.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/busstops.add.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/e1detectors.add.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/lust.poly.xml,/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/tll.static.xml"/>
+    </input>
+
+    <output>
+        <summary-output value="/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/dua.static.summary.xml"/>
+        <tripinfo-output value="/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/dua.static.tripinfo.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <step-length value="0.05"/>
+    </time>
+
+    <processing>
+        <lateral-resolution value="0.1"/>
+        <ignore-junction-blocker value="20"/>
+        <time-to-teleport value="600"/>
+        <max-depart-delay value="600"/>
+    </processing>
+
+    <routing>
+        <routing-algorithm value="dijkstra"/>
+        <device.rerouting.probability value="0.70"/>
+        <device.rerouting.period value="300"/>
+        <device.rerouting.pre-period value="300"/>
+    </routing>
+
+    <report>
+        <verbose value="true"/>
+        <log value="/home/naeem/Documents/nassim/Security-agent-in-VANETs-AI-Based-Intrusion-Detection-main/Nassmcp/luxembourg/dua.static.log"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="55001"/>
+    </traci_server>
+
+    <gui_only>
+        <delay value="1000"/>
+    </gui_only>
+
+</sumoConfiguration>
+-->
+
+<detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
+    <interval begin="0.00" end="1800.00" id="2857_link" nVehContrib="1" flow="2.00" occupancy="0.01" speed="21.55" harmonicMeanSpeed="21.55" length="5.00" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="2858_link" nVehContrib="1" flow="2.00" occupancy="0.01" speed="23.50" harmonicMeanSpeed="23.50" length="4.50" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="2859_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2860_link" nVehContrib="2" flow="4.00" occupancy="0.03" speed="18.89" harmonicMeanSpeed="18.82" length="4.75" nVehEntered="2"/>
+    <interval begin="0.00" end="1800.00" id="2861_link" nVehContrib="1" flow="2.00" occupancy="0.02" speed="19.46" harmonicMeanSpeed="19.46" length="7.00" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="2862_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2863_link" nVehContrib="4" flow="8.00" occupancy="0.06" speed="19.39" harmonicMeanSpeed="19.28" length="4.88" nVehEntered="4"/>
+    <interval begin="0.00" end="1800.00" id="2868_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2869_link" nVehContrib="44" flow="88.00" occupancy="0.62" speed="19.61" harmonicMeanSpeed="19.43" length="4.97" nVehEntered="44"/>
+    <interval begin="0.00" end="1800.00" id="2870_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2875_link" nVehContrib="34" flow="68.00" occupancy="0.50" speed="18.73" harmonicMeanSpeed="18.58" length="4.97" nVehEntered="34"/>
+    <interval begin="0.00" end="1800.00" id="2884_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2885_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2886_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2899_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2928_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2929_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2930_link" nVehContrib="1" flow="2.00" occupancy="0.01" speed="19.24" harmonicMeanSpeed="19.24" length="4.50" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="2931_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2932_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2933_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2934_link" nVehContrib="5" flow="10.00" occupancy="0.07" speed="20.37" harmonicMeanSpeed="20.18" length="5.00" nVehEntered="5"/>
+    <interval begin="0.00" end="1800.00" id="2939_link" nVehContrib="4" flow="8.00" occupancy="0.05" speed="20.11" harmonicMeanSpeed="19.99" length="4.62" nVehEntered="4"/>
+    <interval begin="0.00" end="1800.00" id="2940_link" nVehContrib="3" flow="6.00" occupancy="0.04" speed="20.35" harmonicMeanSpeed="20.20" length="4.67" nVehEntered="3"/>
+    <interval begin="0.00" end="1800.00" id="2945_link" nVehContrib="1" flow="2.00" occupancy="0.01" speed="17.75" harmonicMeanSpeed="17.75" length="4.50" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="2946_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2951_link" nVehContrib="1" flow="2.00" occupancy="0.02" speed="19.47" harmonicMeanSpeed="19.47" length="7.00" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="2960_link" nVehContrib="17" flow="34.00" occupancy="0.24" speed="19.36" harmonicMeanSpeed="19.11" length="4.79" nVehEntered="17"/>
+    <interval begin="0.00" end="1800.00" id="2961_link" nVehContrib="1" flow="2.00" occupancy="0.01" speed="23.50" harmonicMeanSpeed="23.50" length="4.50" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="2962_link" nVehContrib="2" flow="4.00" occupancy="0.02" speed="21.67" harmonicMeanSpeed="21.52" length="4.50" nVehEntered="2"/>
+    <interval begin="0.00" end="1800.00" id="2967_link" nVehContrib="2" flow="4.00" occupancy="0.03" speed="18.39" harmonicMeanSpeed="18.37" length="4.75" nVehEntered="2"/>
+    <interval begin="0.00" end="1800.00" id="2968_link" nVehContrib="2" flow="4.00" occupancy="0.03" speed="18.39" harmonicMeanSpeed="18.37" length="4.75" nVehEntered="2"/>
+    <interval begin="0.00" end="1800.00" id="2969_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2974_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2975_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2984_link" nVehContrib="2" flow="4.00" occupancy="0.03" speed="19.99" harmonicMeanSpeed="19.93" length="5.00" nVehEntered="2"/>
+    <interval begin="0.00" end="1800.00" id="2985_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="2990_link" nVehContrib="3" flow="6.00" occupancy="0.04" speed="19.74" harmonicMeanSpeed="19.69" length="4.83" nVehEntered="3"/>
+    <interval begin="0.00" end="1800.00" id="2995_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="3004_link" nVehContrib="15" flow="30.00" occupancy="0.21" speed="19.38" harmonicMeanSpeed="19.23" length="4.80" nVehEntered="15"/>
+    <interval begin="0.00" end="1800.00" id="3013_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="3014_link" nVehContrib="1" flow="2.00" occupancy="0.01" speed="18.85" harmonicMeanSpeed="18.85" length="4.50" nVehEntered="1"/>
+    <interval begin="0.00" end="1800.00" id="3015_link" nVehContrib="40" flow="80.00" occupancy="0.57" speed="19.64" harmonicMeanSpeed="19.50" length="4.97" nVehEntered="40"/>
+    <interval begin="0.00" end="1800.00" id="3020_link" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="1800.00" id="3025_link" nVehContrib="2" flow="4.00" occupancy="0.03" speed="18.89" harmonicMeanSpeed="18.82" length="4.75" nVehEntered="2"/>
+    <interval begin="0.00" end="1800.00" id="3026_link" nVehContrib="6" flow="12.00" occupancy="0.09" speed="17.96" harmonicMeanSpeed="17.91" length="4.67" nVehEntered="6"/>
+    <interval begin="0.00" end="1800.00" id="3039_link
