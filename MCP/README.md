@@ -38,8 +38,9 @@ Easily connect your LLM agent to a SUMO traffic simulation using this MCP server
    ```
 - Make sure you have installed the right LLM in the config file.
 
-5. **Access All Tools**
+5. **Tools**
    - Once both the MCP server and your agent are running, you can access all available simulation tools from your LLM agent.
+   - To use the adversarial attack tool, first run the red agent. When the red agent provides a prompt, copy that prompt and send it to the blue agent for processing.
 
 ---
 
