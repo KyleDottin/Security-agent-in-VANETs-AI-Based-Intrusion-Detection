@@ -1,3 +1,6 @@
+import asyncio
+from http.client import HTTPException
+
 import traci
 import sumolib
 import sys
@@ -12,6 +15,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
 from datetime import datetime
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 sys.path.append(r"C:\Users\nanem\Security-agent-in-VANETs-AI-Based-Intrusion-Detection\veins_python")
 
@@ -36,6 +41,9 @@ class Vehicle(BaseModel):
 class AnalysisRequest(BaseModel):
     model_name: str = "qwen3:1.7b"  # Default model
     custom_prompt: str = ""  # Optional custom prompt
+
+class QueryRequest(BaseModel):
+    query: str
 
 # Functions
 def add_vehicle_to_route_file(vehicle_id, depart_time, from_edge, to_edge, route_file_path):
@@ -228,6 +236,29 @@ Respond in English with a structured analysis and concrete recommendations.
         print(f"Error during analysis with LLM: {e}")
         return {"error": f"Analysis error: {str(e)}"}
 
+def should_analyze(query: str) -> bool:
+    """Determine if the query requires simulation data analysis"""
+    analysis_keywords = [
+        "analyze", "analysis"
+    ]
+    query_lower = query.lower()
+    return any(keyword in query_lower for keyword in analysis_keywords)
+
+def prepare_analysis_prompt(query: str) -> str:
+    """Prepare a custom prompt for analysis based on the user's query"""
+    base_prompt = f"""
+You are an expert traffic analyst reviewing SUMO simulation data. 
+The user has requested: "{query}"
+
+SIMULATION DATA SUMMARY:
+{{summary}}
+
+Please provide a comprehensive analysis addressing the user's request.
+Include specific insights, observations, and recommendations based on the data.
+"""
+    return base_prompt
+
+
 def simulation_loop():
     global running, step_counter, simulation_data
 
@@ -272,6 +303,51 @@ basic_content = '''<?xml version='1.0' encoding='UTF-8'?>
     <trip id="v1" depart="0.00" from="E0" to="E00" />
 </routes>'''
 
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+@app.get("/", response_class=FileResponse)
+def serve_index():
+    return FileResponse("frontend/index.html")
+
+@app.post("/query")
+async def process_query(request: QueryRequest):
+    try:
+        #Check if query requires simulation analysis
+        if should_analyze(request.query) and simulation_data:
+            print(f"Analysis request detected: {request.query}")
+
+            custom_prompt = prepare_analysis_prompt(request.query)
+
+            # Perform analysis with LLM
+            model_name = "qwen3:1.7b"  # Default model
+            analysis_result = await asyncio.to_thread(
+                analyze_simulation_data_with_llm,
+                model_name,
+                custom_prompt
+            )
+
+            # Format response
+            if 'error' in analysis_result:
+                content = analysis_result['error']
+            else:
+                content = analysis_result.get('llm_analysis', 'Analysis completed but no content found.')
+
+            return {
+                "messages": [
+                    {
+                        "role": "assistant",
+                        "content": f"Analysis of simulation data for your query: '{request.query}'\n\n{content}"
+                    }
+                ]
+            }
+
+        # Otherwise, process with MCP client
+        client = app.state.client
+        messages = await client.process_query(request.query)
+        return {"messages": messages}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 @app.post("/clear_simulation")
 def clear_simulation():
     global running, traci_connection, simulation_thread, step_counter, sumo_process, simulation_data
