@@ -13,7 +13,7 @@ async def main(prompt):
     global first_prompt, last_prompt
     async with fast.run() as agent:
         first_prompt= await agent.send(prompt)
-        last_prompt = await agent.send("Give me all the tools available.")
+        last_prompt = await agent.send("Call test endpoint.")
 
 if __name__ == "__main__":
     global last_prompt
