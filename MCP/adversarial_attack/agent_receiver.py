@@ -7,7 +7,7 @@ global first_prompt, last_prompt
 
 fast = FastAgent("Test Agent sender")
 
-@fast.agent(name ="Agent Sender",servers=["streamable_http_server"], instruction="You are a helpful assistant")
+@fast.agent(name ="Agent Sender", instruction="You are a helpful assistant")
 
 async def main(prompt):
     global first_prompt, last_prompt
