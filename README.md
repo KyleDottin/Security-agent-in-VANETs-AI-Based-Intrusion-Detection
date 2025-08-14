@@ -2,11 +2,6 @@
 
 This internship project implements AI-driven Red (attack) and Blue (defense) agents for securing Vehicular Ad-hoc Networks (VANETs) using SUMO and Secure Multiparty Computation (MPC).
 
-<video src="https://github.com/KyleDottin/Security-agent-in-VANETs-AI-Based-Intrusion-Detection/issues/2#issue-3322835548" 
-       controls 
-       width="600">
-  Your browser does not support the video tag.
-</video>
 
 ## Project Overview
 
