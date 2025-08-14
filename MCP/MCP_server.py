@@ -32,7 +32,7 @@ traffic = 0
 vehicle_stats = {}  # vehicle_id -> dict with stats
 location_jams = {}  # edge_id -> jam info
 # Get current working directory for Linux paths
-current_dir = os.path.dirname(os.path.abspath(__file__))
+current_dir = os.path.dirname(os.path.abspath(__file__))    
 sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
 # Add paths for files in the different map folders
 map_path_basic = os.path.join(current_dir, "basic_simulation", "osm.sumocfg")
@@ -44,7 +44,6 @@ map_path_luxembourg = os.path.join(current_dir, "luxembourg", "dua.static.sumocf
 # =============================
 #     MCP SERVER INIT
 # =============================
-# Initialization of the MCP server
 mcp = FastMCP("Demo")
 
 # =============================
@@ -422,7 +421,7 @@ def start_simulation():
 
 # [BLUE TOOL]
 @mcp.tool("stop_simulation")
-def stop_simulation():
+def stop_simulation() -> dict:
     """
     Stops the simulation loop if it is running.
     Returns a status message indicating the simulation was stopped.
