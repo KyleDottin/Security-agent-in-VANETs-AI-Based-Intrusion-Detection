@@ -33,7 +33,7 @@ vehicle_stats = {}  # vehicle_id -> dict with stats
 location_jams = {}  # edge_id -> jam info
 # Get current working directory for Linux paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
+sumo_binary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe"
 # Add paths for files in the different map folders
 map_path_basic = os.path.join(current_dir, "basic_simulation", "osm.sumocfg")
 map_path_paris = os.path.join(current_dir, "paris", "map.sumocfg")
@@ -289,7 +289,6 @@ def start_sumo_and_connect() -> dict:
     Use this tool before starting any simulation steps or vehicle operations.
     """
     global traci_connection
-    sumo_binary = "/usr/bin/sumo-gui"  # Linux path for SUMO
     port = 55000
     cmd = [
         sumo_binary,
@@ -327,8 +326,7 @@ def start_real_world_sumo_and_connect() -> dict:
     Returns a status message indicating whether the connection was successful.
     Use this tool before starting any simulation steps or vehicle operations.
     """
-    global traci_connection
-    sumo_binary = "/usr/bin/sumo-gui"  # Linux path for SUMO
+    global traci_connection # Linux path for SUMO
     port = 55001
     cmd = [
         sumo_binary,
@@ -350,7 +348,6 @@ def start_real_world_sumo_and_connect() -> dict:
     Use this tool before starting any simulation steps or vehicle operations.
     """
     global traci_connection
-    sumo_binary = "/usr/bin/sumo-gui"  # Linux path for SUMO
     port = 55001
     cmd = [
         sumo_binary,
@@ -817,11 +814,3 @@ if __name__ == "__main__":
     )
 
 
-# =============================
-#         USAGE NOTES
-# =============================
-#to start
-#fast-agent go --url=http://127.0.0.1:8000/mcp --auth=token
-
-#fast-agent go --config-path fastagent.config.yaml --name summarizer --prompt-file prompt.txt --url http://127.0.0.1:8000/mcp --auth token
-#fast-agent go --config-path fastagent.config.yaml --name basic_agent --url http://127.0.0.1:8000/mcp --auth token
