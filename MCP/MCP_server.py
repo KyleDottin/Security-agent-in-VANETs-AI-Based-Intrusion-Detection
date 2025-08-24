@@ -292,7 +292,10 @@ def start_sumo_and_connect() -> dict:
     cmd = [
         sumo_binary,
         "-c", map_path_basic,
+        "--step-length", "0.05",
+        "--delay", "1000",
         "--lateral-resolution", "0.1"
+
     ]
 
     traci_connection = traci.start(cmd, port=port)
